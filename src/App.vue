@@ -1,16 +1,18 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <a-config-provider>
+    <router-view />
+  </a-config-provider>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import HelloWorld from './components/HelloWorld.vue';
+  import { ConfigProvider } from 'ant-design-vue';
+  // import zhCN from 'ant-design-vue/es/locale/zh_CN';
 
   export default defineComponent({
     name: 'App',
     components: {
-      HelloWorld,
+      'a-config-provider': ConfigProvider,
     },
   });
 </script>

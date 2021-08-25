@@ -52,9 +52,9 @@ declare global {
   // declare interface WheelEvent {
   //   path?: EventTarget[];
   // }
-  // interface ImportMetaEnv extends ViteEnv {
-  //   __: unknown;
-  // }
+  interface ImportMetaEnv extends ViteEnv {
+    __: unknown;
+  }
 
   declare interface ViteEnv {
     VITE_PORT: number;
