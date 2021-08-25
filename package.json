@@ -7,6 +7,7 @@
     "url": ""
   },
   "scripts": {
+    "bootstrap": "yarn install",
     "serve": "npm run dev",
     "dev": "vite",
     "build": "cross-env NODE_ENV=production vite build",
@@ -23,6 +24,7 @@
     "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
     "lint:pretty": "pretty-quick --staged",
+    "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -83,6 +85,7 @@
     "bin-wrapper": "npm:bin-wrapper-china",
     "rollup": "^2.56.2"
   },
+  "license": "MIT",
   "engines": {
     "node": "^12 || >=14"
   }
