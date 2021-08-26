@@ -1,276 +1,139 @@
 <template>
   <div class="login-page">
-    <div class="container">
-      <div class="logo"></div>
-      <a-form ref="form" :model="model" :rules="rules">
-        <div class="field">
-          <a-form-item name="employeeNo">
-            <a-input
-              v-model:value="model.employeeNo"
-              placeholder="员工编号"
-              size="large"
-              allow-clear
-              @press-enter="onLogin"
-            >
-              <template #prefix>
-                <UserOutlined />
-              </template>
-            </a-input>
-          </a-form-item>
-        </div>
-
-        <div v-if="message">
-          <a-alert :message="message" type="error" show-icon closable />
-        </div>
-
-        <div class="field captcha-field">
-          <a-form-item class="captcha-field-input" name="mobileCode">
-            <a-input
-              v-model:value="model.mobileCode"
-              placeholder="验证码"
-              size="large"
-              allow-clear
-              @press-enter="onLogin"
-            >
-              <template #prefix>
-                <MailOutlined />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-button v-if="countdown > 0" class="captcha-btn" size="large" disabled>
-            {{ countdown }}秒后重发
-          </a-button>
-          <a-button
-            v-else
-            :loading="captchaLoading"
-            class="captcha-btn"
-            size="large"
-            @click="onSendCaptcha"
-          >
-            获取验证码
-          </a-button>
-        </div>
-        <div>
-          <a-form-item name="type">
-            <a-radio-group v-model:value="model.type" :options="loginTypes" />
-          </a-form-item>
-        </div>
-        <a-button
-          class="login-btn"
-          type="primary"
-          size="large"
-          block
-          :loading="loginLoading"
-          @click="onLogin"
-        >
-          登录
-        </a-button>
-        <p class="tips">若您的手机号已变更，请联系HR人员进行处理</p>
+    <div class="login-page__content">
+      <div class="login-page__logo">D</div>
+      <div class="login-page__title">DanceUP后台管理系统</div>
+      <a-form class="login-page__section" ref="formRef" :model="formState" :rules="rules">
+        <a-form-item name="mock1">
+          <a-input v-model:value="formState.mock1" placeholder="账号" size="large" allowClear />
+        </a-form-item>
+        <a-form-item name="mock2">
+          <a-input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
+        </a-form-item>
       </a-form>
+      <a-button
+        class="login-page__section login-page__button"
+        type="primary"
+        size="large"
+        block
+        :loading="loginLoading"
+        @click="onLogin"
+      >
+        登录
+      </a-button>
     </div>
   </div>
 </template>
 
-<script>
-  import { Form, Input, Button, Alert, Radio } from 'ant-design-vue';
-  import { UserOutlined, MailOutlined } from '@ant-design/icons-vue';
+<script lang="ts">
+  import { defineComponent, reactive, UnwrapRef, ref } from 'vue';
+  import { Form, Input, Button } from 'ant-design-vue';
   // import request from '@common/request';
 
-  export default {
+  interface FormState {
+    mock1: string;
+    mock2: string;
+  }
+
+  const rules = {
+    // employeeNo: [
+    //   { required: true, message: '请输入员工编号', trigger: 'none' },
+    //   { pattern: /\d{8}/, message: '员工编号为8位数字', trigger: 'none' },
+    // ],
+    // mobileCode: [
+    //   { required: true, message: '请输入验证码', trigger: 'none' },
+    //   { pattern: /\d{6}/, message: '验证码为6位数字', trigger: 'none' },
+    // ],
+  };
+
+  export default defineComponent({
+    name: 'Blank',
     components: {
       'a-form': Form,
       'a-form-item': Form.Item,
       'a-input': Input,
       'a-button': Button,
-      'a-alert': Alert,
-      'a-radio-group': Radio.Group,
-      UserOutlined,
-      MailOutlined,
     },
-    data() {
+    setup() {
+      const formRef = ref();
+      const formState: UnwrapRef<FormState> = reactive({
+        mock1: '',
+        mock2: '',
+      });
+
+      const loginLoading = ref(false);
+
+      // const
+
+      const onLogin = async () => {
+        try {
+          const validate = await formRef.value.validate();
+          console.log(validate);
+
+          loginLoading.value = true;
+        } catch (error) {
+          loginLoading.value = false;
+        }
+      };
+
       return {
-        model: {
-          employeeNo: '',
-          mobile: '',
-          mobileCode: '',
-          type: 2,
-        },
-        captchaLoading: false,
-        loginLoading: false,
-        countdown: null,
-        message: '',
-        rules: {
-          employeeNo: [
-            { required: true, message: '请输入员工编号', trigger: 'none' },
-            { pattern: /\d{8}/, message: '员工编号为8位数字', trigger: 'none' },
-          ],
-          mobileCode: [
-            { required: true, message: '请输入验证码', trigger: 'none' },
-            { pattern: /\d{6}/, message: '验证码为6位数字', trigger: 'none' },
-          ],
-        },
-        loginTypes: [
-          { label: '企业微信接收验证码', value: 2 },
-          { label: '短信接收验证码', value: 1 },
-        ],
+        formRef,
+        formState,
+        rules,
+        loginLoading,
+        onLogin,
       };
     },
-
-    // unmounted() {
-    //   if (this.timeHandler) {
-    //     clearInterval(this.timeHandler);
-    //   }
-    // },
-
-    // methods: {
-    //   onSendCaptcha() {
-    //     this.$refs.form
-    //       .validateFields(['employeeNo'])
-    //       .then(() => {
-    //         this.message = '';
-    //         this.sendCaptcha();
-    //       })
-    //       .catch((e) => {
-    //         console.log(e);
-    //       });
-    //   },
-
-    //   doCountdown: function() {
-    //     this.countdown = 60;
-    //     this.timeHandler = setInterval(() => {
-    //       if (this.countdown <= 0) {
-    //         clearInterval(this.timeHandler);
-    //         this.timeHandler = null;
-    //       }
-    //       this.countdown--;
-    //     }, 1000);
-    //   },
-
-    //   sendCaptcha: function() {
-    //     const { employeeNo, type } = this.model;
-
-    //     this.captchaLoading = true;
-
-    //     request({
-    //       url: '/login/pc',
-    //       data: {
-    //         employeeNo,
-    //         type,
-    //       },
-    //       handleError: [7020001],
-    //     })
-    //       .then((data) => {
-    //         message.success('验证码已发送');
-
-    //         this.model.mobile = data.mobile;
-    //         this.captchaLoading = false;
-    //         this.doCountdown();
-    //       })
-    //       .catch((err) => {
-    //         this.captchaLoading = false;
-
-    //         if (err.code === 7020001) {
-    //           this.message = '未查询到符合的员工数据，请核对后重新输入';
-    //         }
-    //       });
-    //   },
-
-    //   onLogin: function() {
-    //     const result = this.$refs.form.validate();
-
-    //     result
-    //       .then(() => {
-    //         this.login();
-    //       })
-    //       .catch((e) => {
-    //         // form表单校验必选项时，不抛出错误，就不会被 sentry 捕获
-    //         console.log(e);
-    //       });
-    //   },
-
-    //   login: function() {
-    //     const { employeeNo, mobile, mobileCode } = this.model;
-
-    //     this.loginLoading = true;
-    //     request({
-    //       url: '/login/bind',
-    //       data: {
-    //         employeeNo,
-    //         mobile,
-    //         mobileCode,
-    //         loginType: 5,
-    //       },
-    //     })
-    //       .then((data) => {
-    //         localStorage.setItem('token', data.token);
-
-    //         this.loginLoading = false;
-
-    //         const { backUrl } = this.$route.query;
-
-    //         location.replace(backUrl || '/');
-    //       })
-    //       .catch(() => {
-    //         this.loginLoading = false;
-    //       });
-    //   },
-    // },
-  };
+  });
 </script>
 
 <style lang="less">
   .login-page {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 100%;
-    background: url(../../static/images/login/bg.svg);
+    background: rgba(230, 230, 230, 1);
     background-size: contain;
 
-    .container {
-      width: 370px;
-      margin: 0 auto;
-    }
-
-    .logo {
-      width: 264px;
-      height: 65px;
-      margin: 0 auto 100px;
-      background: url(../../static/images/common/logo.png);
-      background-size: contain;
-    }
-
-    .ant-col {
-      width: 100%;
-    }
-
-    .field {
-      margin-top: 24px;
-    }
-
-    .ant-input-prefix {
-      color: #1890ff;
-    }
-
-    .captcha-field {
+    .login-page__content {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 500px;
+      height: 500px;
+      background: #fff;
     }
 
-    .captcha-field-input {
-      flex: 1;
+    .login-page__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      margin-bottom: 20px;
+      color: rgb(255, 255, 255);
+      font-size: 40px;
+      background: rgb(244, 0, 0);
+      border-radius: 8px;
     }
 
-    .captcha-btn {
-      margin-left: 8px;
-    }
-
-    .login-btn {
-      margin-top: 20px;
-    }
-
-    .tips {
-      margin-top: 16px;
-      color: #666;
+    .login-page__title {
+      margin-bottom: 60px;
+      font-size: 14px;
+      line-height: 20px;
       text-align: center;
+    }
+
+    .login-page__section {
+      width: 290px;
+    }
+
+    .login-page__button {
+      margin-top: 20px;
+      // background: rgb(244, 0, 0);
+      // border-color: rgb(244, 0, 0);
     }
   }
 </style>

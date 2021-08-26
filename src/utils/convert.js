@@ -30,4 +30,4 @@ function convert(routes, parentNode = null) {
   return [currentMenus, currentRoutes];
 }
 
-export default convert;
+export { convert };

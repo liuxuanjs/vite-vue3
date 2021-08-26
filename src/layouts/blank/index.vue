@@ -2,6 +2,10 @@
   <router-view />
 </template>
 
-<script></script>
+<script lang="ts">
+  import { defineComponent } from 'vue';
 
-<style></style>
+  export default defineComponent({
+    name: 'Blank',
+  });
+</script>

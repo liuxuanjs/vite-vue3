@@ -233,12 +233,14 @@ function handleErrorFn(code, message, data, res, options) {
 function request(options) {
   const { original, url, method = 'POST', headers = {}, isFile = false, ...restOptions } = options;
 
-  const actualUrl = /^http/.test(url) ? url : `${apiPath}/${url.replace(/\//g, '')}`;
+  const actualUrl = /^http/.test(url) ? url : apiPath + '/' + (url[0] === '/' ? url.slice(1) : url);
   const token = localStorage.getItem('token');
   const requestId = buildUUID();
   const actualHeaders = {
     'Content-Type': 'application/json',
     'Auth-Token': token,
+    deviceType: 1,
+    deviceId: requestId,
     RequestId: requestId,
     ...headers,
   };

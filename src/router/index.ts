@@ -2,10 +2,8 @@ import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
 import { createRouter, createWebHistory } from 'vue-router';
-import convert from '/@/utils/convert';
-import routerConfig from './routes';
 
-const [, routes] = convert(routerConfig, null);
+import { routes } from './routes';
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),

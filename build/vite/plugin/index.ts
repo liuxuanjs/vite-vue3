@@ -11,6 +11,7 @@ import { configSvgIconsPlugin } from './svgSprite';
 import { configMockPlugin } from './mock';
 import { configStyleImportPlugin } from './styleImport';
 import { configVisualizerConfig } from './visualizer';
+import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
@@ -38,6 +39,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   vitePlugins.push(configStyleImportPlugin(isBuild));
 
   vitePlugins.push(configVisualizerConfig());
+
+  vitePlugins.push(configThemePlugin(isBuild));
 
   if (isBuild) {
     //vite-plugin-imagemin

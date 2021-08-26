@@ -7,6 +7,7 @@ import { createProxy } from './build/vite/proxy';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugin';
 import { OUTPUT_DIR } from './build/constant';
+import { generateModifyVars } from './build/generate/generateModifyVars';
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
@@ -68,6 +69,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       preprocessorOptions: {
         less: {
           javascriptEnabled: true,
+          modifyVars: generateModifyVars(),
         },
       },
     },
@@ -78,8 +80,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '@iconify/iconify',
         'ant-design-vue/es/locale/zh_CN',
         'moment/dist/locale/zh-cn',
-        'ant-design-vue/es/locale/en_US',
-        'moment/dist/locale/eu',
+        // 'ant-design-vue/es/locale/en_US',
+        // 'moment/dist/locale/eu',
       ],
       // exclude: ['vue-demi', 'consolidate'],
     },
