@@ -1,87 +1,44 @@
 import type { App } from 'vue';
+import type { AppState } from '/#/store';
 
 import { createStore } from 'vuex';
-import request from '/@/utils/request';
-
-const cache = {};
+import { getAuthoritiesApi, getUserInfoApi } from '/@/api/user';
 
 const store = createStore({
-  state: {
-    authorities: null,
-    userInfo: {},
-    allStores: null,
-  },
+  state: (): AppState => ({
+    authorities: [],
+    userInfo: null,
+  }),
   mutations: {
     setAuthorities(state, authorities) {
       state.authorities = authorities;
     },
-
     setUserInfo(state, userInfo) {
       state.userInfo = userInfo;
     },
-
-    setAllStores(state, allStores) {
-      state.allStores = allStores;
-    },
   },
   actions: {
-    getAuthorities(context) {
-      let requesting = cache['getAuthorities'];
-
-      if (requesting) {
-        return requesting;
+    async getAuthorities(context) {
+      try {
+        const res = await getAuthoritiesApi({
+          data: {},
+          handleError: true,
+        });
+        const authorities = res && res.userRoleAuthorityList;
+        context.commit('setAuthorities', authorities || []);
+      } catch (error) {
+        context.commit('setAuthorities', []);
       }
-
-      requesting = cache['getAuthorities'] = request({
-        handleError: true,
-        url: '/userRole/selectUserRoleAuthority',
-        data: {},
-      }).then((data = {}) => {
-        const authorities = (data.userRoleAuthorityList || []).map((item) => item.code);
-
-        context.commit('setAuthorities', authorities);
-      });
-
-      return requesting;
     },
-
-    getUserInfo(context) {
-      let requesting = cache['getUserInfo'];
-
-      if (requesting) {
-        return requesting;
+    async getUserInfo(context) {
+      try {
+        const res = await getUserInfoApi({
+          handleError: true,
+        });
+        context.commit('setUserInfo', res || {});
+      } catch (error) {
+        context.commit('setUserInfo', {});
       }
-
-      requesting = cache['getUserInfo'] = request({
-        handleError: true,
-        url: 'admin/emp/getInfo',
-      }).then((data = {}) => {
-        context.commit('setUserInfo', data);
-      });
-
-      return requesting;
-    },
-
-    getAllStores(context) {
-      let requesting = cache['getAllStores'];
-
-      if (requesting) {
-        return requesting;
-      }
-
-      requesting = cache['getAllStores'] = request({
-        handleError: true,
-        url: '/system/clubRelation/select',
-        data: {
-          pageSize: 1000,
-          pageNum: 1,
-          isStore: 1,
-        },
-      }).then((data = {}) => {
-        context.commit('setAllStores', data.dataList || []);
-      });
-
-      return requesting;
     },
   },
 });

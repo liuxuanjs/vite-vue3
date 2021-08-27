@@ -1,7 +1,7 @@
 @import 'transition/index.less';
 @import 'var/index.less';
 @import 'public.less';
-@import 'ant/index.less';
+// @import 'ant/index.less';
 @import './theme.less';
 
 input:-webkit-autofill {
@@ -12,26 +12,10 @@ input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
 }
 
-html {
-  overflow: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
 html,
 body {
   width: 100%;
   height: 100%;
-  overflow: visible !important;
-  overflow-x: hidden !important;
-
-  &.color-weak {
-    filter: invert(80%);
-  }
-
-  &.gray-mode {
-    filter: grayscale(100%);
-    filter: progid:dximagetransform.microsoft.basicimage(grayscale=1);
-  }
 }
 
 a:focus,

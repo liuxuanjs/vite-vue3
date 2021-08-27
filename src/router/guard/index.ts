@@ -123,6 +123,10 @@ export function createMessageGuard(router: Router) {
   });
 }
 
+/**
+ * 切换路由时，进度条
+ * @param router
+ */
 export function createProgressGuard(router: Router) {
   router.beforeEach(async (to) => {
     // const { path, fullPath } = to;

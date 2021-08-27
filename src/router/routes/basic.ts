@@ -1,6 +1,7 @@
 import type { AppRouteRecordRaw } from '../types';
 
-import BlankLayout from '/@/layouts/blank/index.vue';
+// import BlankLayout from '/@/layouts/blank/index.vue';
+import BasicLayout from '/@/layouts/basic/index.vue';
 
 import { HomeRoute } from './modules/home';
 import { ErrorRoute } from './modules/error';
@@ -20,7 +21,7 @@ export const RootRoute: AppRouteRecordRaw = {
     name: 'Root',
   },
   redirect: '/home',
-  component: BlankLayout,
+  component: BasicLayout,
   children: [HomeRoute, ErrorRoute],
 };
 
