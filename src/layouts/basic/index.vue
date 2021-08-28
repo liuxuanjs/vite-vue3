@@ -1,15 +1,14 @@
 <template>
   <a-layout class="basic-layout">
-    <a-layout-sider :style="{ overflowY: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+    <a-layout-sider
+      :style="{ overflowY: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+      width="210"
+    >
       <div class="logo"></div>
-      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1">
-          <user-outlined />
-          <span class="nav-text">nav 1</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <video-camera-outlined />
-          <span class="nav-text">nav 2</span>
+      <a-menu theme="dark" mode="inline" :selectedKeys="selectedKeys" @select="onSelect">
+        <a-menu-item v-for="menu in filterMenus" :key="menu.path">
+          <SvgIcon v-if="menu.icon" :name="menu.icon" class="anticon" :size="17" />
+          <span class="menu-text">{{ menu.name }}</span>
         </a-menu-item>
         <a-sub-menu key="3">
           <template #title>
@@ -22,96 +21,88 @@
           <a-menu-item key="3-2">Bill</a-menu-item>
           <a-menu-item key="3-3">Alex</a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="4">
-          <bar-chart-outlined />
-          <span class="nav-text">nav 4</span>
-        </a-menu-item>
-        <a-menu-item key="5">
-          <cloud-outlined />
-          <span class="nav-text">nav 5</span>
-        </a-menu-item>
-        <a-menu-item key="6">
-          <appstore-outlined />
-          <span class="nav-text">nav 6</span>
-        </a-menu-item>
-        <a-menu-item key="7">
-          <team-outlined />
-          <span class="nav-text">nav 7</span>
-        </a-menu-item>
-        <a-menu-item key="8">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
-        <a-menu-item key="9">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
-        <a-menu-item key="10">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
-        <a-menu-item key="11">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
-        <a-menu-item key="12">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
-        <a-menu-item key="13">
-          <shop-outlined />
-          <span class="nav-text">nav 8</span>
-        </a-menu-item>
       </a-menu>
     </a-layout-sider>
-    <a-layout :style="{ marginLeft: '200px' }">
-      <a-layout-header :style="{ background: '#fff', padding: 0 }" />
+    <a-layout :style="{ marginLeft: '210px' }">
+      <BasicHeader />
       <BasicContent />
       <BasicFooter />
     </a-layout>
   </a-layout>
 </template>
 <script lang="ts">
-  import {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    AppstoreOutlined,
-    TeamOutlined,
-    ShopOutlined,
-  } from '@ant-design/icons-vue';
+  import { UploadOutlined } from '@ant-design/icons-vue';
   import { Layout, Menu } from 'ant-design-vue';
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, computed } from 'vue';
+  import { useStore } from 'vuex';
+  import { useRoute, useRouter } from 'vue-router';
 
+  import BasicHeader from './header/index.vue';
   import BasicContent from './content/index.vue';
   import BasicFooter from './footer/index.vue';
+  import SvgIcon from '/@/components/SvgIcon/index.vue';
+
+  import { menus } from '/@/router/routes';
 
   export default defineComponent({
     components: {
       'a-layout': Layout,
       'a-layout-sider': Layout.Sider,
-      'a-layout-header': Layout.Header,
-      // 'a-layout-footer': Layout.Footer,
       'a-menu': Menu,
       'a-menu-item': Menu.Item,
       'a-sub-menu': Menu.SubMenu,
+      BasicHeader,
       BasicContent,
       BasicFooter,
-      // 'my-sub-menu': MySubMenu,
-      UserOutlined,
-      VideoCameraOutlined,
+      SvgIcon,
       UploadOutlined,
-      BarChartOutlined,
-      CloudOutlined,
-      AppstoreOutlined,
-      TeamOutlined,
-      ShopOutlined,
     },
     setup() {
+      const store = useStore();
+      const route = useRoute();
+      const router = useRouter();
+
+      const selectedKeys = ref<string[]>([route.path]);
+
+      console.log(route.path);
+
+      const handleMenu = (menus, authorities, data) => {
+        menus.forEach((menu) => {
+          const { authority, children } = menu;
+
+          if (!authority || authorities.indexOf(authority) > -1) {
+            data.push(menu);
+
+            if (children.length) {
+              const subMenus = [];
+
+              handleMenu(children, authorities, subMenus);
+              menu.children = subMenus;
+            }
+          }
+        });
+      };
+
+      const onSelect = (e): void => {
+        const current: string[] = e.selectedKeys;
+        selectedKeys.value = current;
+
+        router.push({ path: current[0] });
+      };
+
+      const filterMenus = computed(() => {
+        const { authorities } = store.state;
+        const data = [];
+
+        handleMenu(menus, authorities, data);
+
+        return data;
+      });
+
       return {
-        selectedKeys: ref<string[]>(['4']),
+        selectedKeys,
+        filterMenus,
+        onSelect,
       };
     },
   });
@@ -133,5 +124,15 @@
 
   [data-theme='dark'] .site-layout .site-layout-background {
     background: #141414;
+  }
+
+  .basic-slider-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  basic-slider-icon:hover {
+    color: #fff;
+    background-color: transparent;
   }
 </style>

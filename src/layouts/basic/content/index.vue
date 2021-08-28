@@ -25,7 +25,7 @@
   }
 
   .basic-content-main {
-    height: 100%;
+    // height: 100%;
     padding: 24px;
     background: #fff;
     text-align: center;

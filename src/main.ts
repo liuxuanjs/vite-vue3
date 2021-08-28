@@ -1,6 +1,6 @@
 import '/@/design/index.less';
 
-// import 'virtual:svg-icons-register';
+import 'virtual:svg-icons-register';
 
 import { createApp } from 'vue';
 import App from './App.vue';

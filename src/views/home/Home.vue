@@ -1,9 +1,17 @@
 <template>
   <div class="home-page">
-    <img class="logo" src="/@/assets/images/logo.png" />
-    <div class="welcome">欢迎使用一兆韦德业务管理系统</div>
+    <img class="home-page__logo" src="/@/assets/images/logo.png" />
+    <div class="home-page__welcome">欢迎使用一兆韦德业务管理系统</div>
   </div>
 </template>
+
+<script lang="ts">
+  import { defineComponent } from 'vue';
+
+  export default defineComponent({
+    name: 'Home',
+  });
+</script>
 
 <style lang="less">
   .home-page {
@@ -13,11 +21,11 @@
     background: #fff;
   }
 
-  .logo {
+  .home-page__logo {
     width: 264px;
   }
 
-  .welcome {
+  .home-page__welcome {
     margin-top: 80px;
     font-size: 30px;
     font-weight: 600;

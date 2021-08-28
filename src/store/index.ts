@@ -24,7 +24,7 @@ const store = createStore({
           data: {},
           handleError: true,
         });
-        const authorities = res && res.userRoleAuthorityList;
+        const authorities = ((res && res.userRoleAuthorityList) || []).map((item) => item.code);
         context.commit('setAuthorities', authorities || []);
       } catch (error) {
         context.commit('setAuthorities', []);
@@ -32,9 +32,7 @@ const store = createStore({
     },
     async getUserInfo(context) {
       try {
-        const res = await getUserInfoApi({
-          handleError: true,
-        });
+        const res = await getUserInfoApi();
         context.commit('setUserInfo', res || {});
       } catch (error) {
         context.commit('setUserInfo', {});

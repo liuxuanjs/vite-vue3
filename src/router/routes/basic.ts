@@ -5,6 +5,10 @@ import BasicLayout from '/@/layouts/basic/index.vue';
 
 import { HomeRoute } from './modules/home';
 import { ErrorRoute } from './modules/error';
+import { UserRoute } from './modules/user';
+import { DanceRoute } from './modules/dance';
+import { MessageRoute } from './modules/message';
+import { AdminRoute } from './modules/admin';
 
 export const LoginRoute: AppRouteRecordRaw = {
   path: '/login',
@@ -22,7 +26,7 @@ export const RootRoute: AppRouteRecordRaw = {
   },
   redirect: '/home',
   component: BasicLayout,
-  children: [HomeRoute, ErrorRoute],
+  children: [HomeRoute, ErrorRoute, UserRoute, DanceRoute, MessageRoute, AdminRoute],
 };
 
-export const basicRoutes = [LoginRoute, RootRoute];
+export const basicRoutes: AppRouteRecordRaw[] = [LoginRoute, RootRoute];

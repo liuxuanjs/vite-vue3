@@ -11,7 +11,7 @@ enum Api {
 /**
  * @description: getUserInfoApi
  */
-export function getUserInfoApi(params) {
+export function getUserInfoApi(params?) {
   return request.post<GetUserInfoModel>({ url: Api.GetUserInfo, ...params });
 }
 

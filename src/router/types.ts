@@ -10,49 +10,35 @@ export type Component<T extends any = any> =
 // @ts-ignore
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   path: string;
-  meta: RouteMeta;
-  component?: Component | string;
-  components?: Component;
+  meta?: RouteMeta;
+  redirect?: string;
+  component?: Component;
   children?: AppRouteRecordRaw[];
-  props?: Recordable;
-  fullPath?: string;
+  parent?: AppRouteRecordRaw | null;
 }
 
-export interface MenuTag {
-  type?: 'primary' | 'error' | 'warn' | 'success';
-  content?: string;
-  dot?: boolean;
-}
+// export interface MenuTag {
+//   type?: 'primary' | 'error' | 'warn' | 'success';
+//   content?: string;
+//   dot?: boolean;
+// }
 
 export interface Menu {
-  name: string;
+  path: string;
+
+  name?: string;
 
   icon?: string;
 
-  path: string;
-
-  // path contains param, auto assignment.
-  paramPath?: string;
-
-  disabled?: boolean;
+  authority?: string;
 
   children?: Menu[];
-
-  orderNo?: number;
-
-  // roles?: RoleEnum[];
-
-  meta?: Partial<RouteMeta>;
-
-  tag?: MenuTag;
-
-  hideMenu?: boolean;
 }
 
-export interface MenuModule {
-  orderNo?: number;
-  menu: Menu;
-}
+// export interface MenuModule {
+//   orderNo?: number;
+//   menu: Menu;
+// }
 
-// export type AppRouteModule = RouteModule | AppRouteRecordRaw;
-export type AppRouteModule = AppRouteRecordRaw;
+// // export type AppRouteModule = RouteModule | AppRouteRecordRaw;
+// export type AppRouteModule = AppRouteRecordRaw;

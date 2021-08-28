@@ -1,6 +1,7 @@
 import { basicRoutes } from './basic';
-import { convert } from '/@/utils/convert';
+import { menuAndRouteHelper } from './helper/menuAndRouteHelper';
 
-const [menus, routes] = convert(basicRoutes, null);
+const [menus, routes] = menuAndRouteHelper(basicRoutes, null);
+console.log(menus, routes);
 
 export { menus, routes };
