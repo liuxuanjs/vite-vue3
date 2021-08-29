@@ -1,33 +1,29 @@
 <template>
-  <a-layout-content class="basic-content">
-    <div class="basic-content-main">
+  <div class="ant-layout page-default-layout-main">
+    <div class="page-default-layout-content">
       <router-view />
     </div>
-  </a-layout-content>
+  </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Layout } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'BasicContent',
-    components: {
-      'a-layout-content': Layout.Content,
-    },
   });
 </script>
 
 <style lang="less">
-  .basic-content {
-    margin: 24px 16px 0;
-    overflow: initial;
+  .page-default-layout-main {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
-  .basic-content-main {
-    // height: 100%;
-    padding: 24px;
-    background: #fff;
-    text-align: center;
+  .page-default-layout-content {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 </style>

@@ -49,13 +49,13 @@ function handleErrorFn(
   }
 
   // 登录态实效，跳转到个人中心页重新登录
-  if (code === 401 || code === 40000003) {
-    if (window.location.pathname !== '/login') {
-      window.location.replace(`/login?backUrl=${encodeURIComponent(window.location.href)}`);
-    }
+  // if (code === 401 || code === 40000003) {
+  //   if (window.location.pathname !== '/login') {
+  //     window.location.replace(`/login?backUrl=${encodeURIComponent(window.location.href)}`);
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   notification.error({
     message: '请求错误',

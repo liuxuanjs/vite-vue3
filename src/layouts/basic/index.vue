@@ -109,7 +109,11 @@
 </script>
 <style lang="less">
   .basic-layout {
-    height: 100%;
+    display: flex;
+    width: 100%;
+    min-height: 100% !important;
+    background-color: #f4f7f9;
+    flex-direction: column;
   }
 
   .logo {
@@ -135,4 +139,8 @@
     color: #fff;
     background-color: transparent;
   }
+
+  // .ant-layout-sider {
+  //   background: rgba(40, 40, 40);
+  // }
 </style>
