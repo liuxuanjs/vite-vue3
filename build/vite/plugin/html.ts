@@ -1,7 +1,8 @@
 /**
- * Plugin to minimize and use ejs template syntax in index.html.
+ * html 模版转换，可以在html文件内进行书写模版语法
  * https://github.com/anncwb/vite-plugin-html
  */
+
 import type { Plugin } from 'vite';
 
 import html from 'vite-plugin-html';
@@ -21,11 +22,10 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
   const htmlPlugin: Plugin[] = html({
     minify: isBuild,
     inject: {
-      // Inject data into ejs template
+      // 注入ejs模板的数据
       injectData: {
         title: VITE_GLOB_APP_TITLE,
       },
-      // Embed the generated app.config.js file
       tags: isBuild
         ? [
             {

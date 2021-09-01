@@ -627,27 +627,6 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@iconify/iconify@2.0.0-rc.6":
-  version "2.0.0-rc.6"
-  resolved "https://registry.npmjs.org/@iconify/iconify/-/iconify-2.0.0-rc.6.tgz#e3f5376b63b441dcb3696317784b98e2e678cf46"
-  integrity sha512-pXvLXqLPQsjpDY4qbbyh5cPEtakTfWfQCAo6SdYNhYQzat+/0fbeEhScryqaketNAG0bT4/+deKezkJZTvbuSg==
-  dependencies:
-    cross-fetch "^3.0.6"
-
-"@iconify/iconify@>=2.0.0-rc.6":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@iconify/iconify/-/iconify-2.0.2.tgz#8e8be6c8f20042ab69324bc6db6fc884be98b418"
-  integrity sha512-m3MDKXYRRsrVLZFFUkSaTv9/jTk0sLOlIhlmupj2/VhHnZt0i3ACyUD7rx/Vd5bLvtotrHaT5e/ZOLP7uiFmKQ==
-  dependencies:
-    cross-fetch "^3.0.6"
-
-"@iconify/iconify@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@iconify/iconify/-/iconify-2.0.3.tgz#1ae5bc81c2615b4d24ae495e6bdd6b5109f6e1dc"
-  integrity sha512-Ctjre38vIf0PjjU2joj+DheSDFajdLiZ7gNdttjsXPqB9yYrmqOIDe1ce8L8v0qO86kM05hF9lUMriQTlgiSPA==
-  dependencies:
-    cross-fetch "^3.0.6"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -668,24 +647,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@purge-icons/core@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/@purge-icons/core/-/core-0.7.0.tgz#097ba8d4d8b7e8d662df687bd2391eb8b83caba0"
-  integrity sha512-PaCeTFjkQUX+MzBsNg3L8x5aCZqXwaUSNw1FY3Jn7wlLqNqxRNoShw5P//a1DQAy7hLlUHvEL6IGeDoN/xf98A==
-  dependencies:
-    "@iconify/iconify" "2.0.0-rc.6"
-    axios "^0.21.1"
-    debug "^4.3.2"
-    fast-glob "^3.2.5"
-    fs-extra "^9.1.0"
-
-"@purge-icons/generated@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/@purge-icons/generated/-/generated-0.7.0.tgz#d87dbb3145e8b9a64e2e12ff660aa3cb13cbeb56"
-  integrity sha512-4SHVpZnKaW5ekRTjhPY9b1pALVlF0pDuGIDRAlxAm0V+gQVOL0+Ghav6U9XqXFj2kiG1+eQ8swpvB+kd0a+tqg==
-  dependencies:
-    "@iconify/iconify" ">=2.0.0-rc.6"
 
 "@rollup/plugin-node-resolve@^13.0.2":
   version "13.0.2"
@@ -881,11 +842,6 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-15.12.2.tgz#1f2b42c4be7156ff4a6f914b2fb03d05fa84e38d"
   integrity sha512-zjQ69G564OCIWIOHSXyQEEDpdpGl+G348RAKY0XXy9Z5kU9Vzv1GMNnkar/ZJ8dzXB3COzD9Mo9NtRZ4xfgUww==
 
-"@types/node@^14.17.1":
-  version "14.17.12"
-  resolved "https://registry.nlark.com/@types/node/download/@types/node-14.17.12.tgz#7a31f720b85a617e54e42d24c4ace136601656c7"
-  integrity sha1-ejH3ILhaYX5U5C0kxKzhNmAWVsc=
-
 "@types/node@^16.6.1":
   version "16.6.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.6.1.tgz#aee62c7b966f55fc66c7b6dfa1d58db2a616da61"
@@ -917,11 +873,6 @@
   version "2.3.1"
   resolved "https://registry.npmjs.org/@types/svgo/-/svgo-2.3.1.tgz#85442587bc72bbfb92f3721020e28d678b8744ec"
   integrity sha512-L7gdQLO8cfGKksOVtlpS0jwh04SL3W7xe+efuWbNnfSwl3cKSdgX0gLl5VnHDtSAX//xfCbEgB+RSN64tfShqQ==
-
-"@types/tinycolor2@^1.4.2":
-  version "1.4.3"
-  resolved "https://registry.nlark.com/@types/tinycolor2/download/@types/tinycolor2-1.4.3.tgz?cache=0&sync_timestamp=1629709494923&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Ftinycolor2%2Fdownload%2F%40types%2Ftinycolor2-1.4.3.tgz#ed4a0901f954b126e6a914b4839c77462d56e706"
-  integrity sha1-7UoJAflUsSbmqRS0g5x3Ri1W5wY=
 
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2":
   version "2.0.3"
@@ -1926,13 +1877,6 @@ clean-css@^4.2.3:
   dependencies:
     source-map "~0.6.0"
 
-clean-css@^5.1.2:
-  version "5.1.5"
-  resolved "https://registry.nlark.com/clean-css/download/clean-css-5.1.5.tgz?cache=0&sync_timestamp=1628166380513&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fclean-css%2Fdownload%2Fclean-css-5.1.5.tgz#3b0af240dcfc9a3779a08c2332df3ebd4474f232"
-  integrity sha1-OwryQNz8mjd5oIwjMt8+vUR08jI=
-  dependencies:
-    source-map "~0.6.0"
-
 clean-stack@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
@@ -2369,13 +2313,6 @@ cross-env@^7.0.3:
   integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
   dependencies:
     cross-spawn "^7.0.1"
-
-cross-fetch@^3.0.6:
-  version "3.1.4"
-  resolved "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
-  integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
-  dependencies:
-    node-fetch "2.6.1"
 
 cross-spawn@^5.0.1:
   version "5.1.0"
@@ -2882,11 +2819,6 @@ es-module-lexer@^0.7.1:
   version "0.7.1"
   resolved "https://registry.npmjs.org/es-module-lexer/-/es-module-lexer-0.7.1.tgz#c2c8e0f46f2df06274cdaf0dd3f3b33e0a0b267d"
   integrity sha512-MgtWFl5No+4S3TmhDmCz2ObFGm6lEpTnzbQi+Dd+pw4mlTIZTmM2iAs5gRlmx5zS9luzobCSBSI90JM/1/JgOw==
-
-esbuild-plugin-alias@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npm.taobao.org/esbuild-plugin-alias/download/esbuild-plugin-alias-0.1.2.tgz#1232fbde807c0c8ad44c44ec859819eb492e12a8"
-  integrity sha1-EjL73oB8DIrUTETshZgZ60kuEqg=
 
 esbuild@0.11.3:
   version "0.11.3"
@@ -5467,11 +5399,6 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-fetch@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
-
 node-releases@^1.1.71:
   version "1.1.73"
   resolved "https://registry.npmjs.org/node-releases/-/node-releases-1.1.73.tgz#dd4e81ddd5277ff846b80b52bb40c49edf7a7b20"
@@ -6706,14 +6633,6 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rollup-plugin-purge-icons@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/rollup-plugin-purge-icons/-/rollup-plugin-purge-icons-0.7.0.tgz#4419b810d5d75f1bba3af72a238e70b4a675f03c"
-  integrity sha512-zAff7SrjC2nA7TCm6gaOclh1cZ2IBupX1tnebn+sfvcvrezu+avS7k0BhhAC2pAtfhdOvD6G/2a+kkkm6hvpiw==
-  dependencies:
-    "@purge-icons/core" "^0.7.0"
-    "@purge-icons/generated" "^0.7.0"
-
 rollup-plugin-visualizer@5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.5.2.tgz#ae2130ee5ae4a2d901e764e492b71357cb95eed7"
@@ -7512,11 +7431,6 @@ timed-out@^4.0.0, timed-out@^4.0.1:
   resolved "https://registry.npmjs.org/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
   integrity sha1-8y6srFoXW+ol1/q1Zas+2HQe9W8=
 
-tinycolor2@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.nlark.com/tinycolor2/download/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
-  integrity sha1-P2pNEHGtB2dtf6Ry4frECnGdiAM=
-
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.npmjs.org/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -7932,15 +7846,6 @@ vite-plugin-mock@^2.9.4:
     fast-glob "^3.2.7"
     path-to-regexp "^6.2.0"
 
-vite-plugin-purge-icons@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/vite-plugin-purge-icons/-/vite-plugin-purge-icons-0.7.0.tgz#c460037438fd71372153360ccb9e7d97b030fb58"
-  integrity sha512-oGZUKFAL4waIZIeiCPT5KZvGbBA500AO/03oxW+ODTKUMq+0jbh9s+T8NPzfJQFC1jtE7eUb2ium82IP/gxZjA==
-  dependencies:
-    "@purge-icons/core" "^0.7.0"
-    "@purge-icons/generated" "^0.7.0"
-    rollup-plugin-purge-icons "^0.7.0"
-
 vite-plugin-style-import@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/vite-plugin-style-import/-/vite-plugin-style-import-1.1.1.tgz#7ccebb042bce94eeb2f695c7339354a2dac48c25"
@@ -7964,20 +7869,6 @@ vite-plugin-svg-icons@^1.0.4:
     fs-extra "^10.0.0"
     svg-baker "1.7.0"
     svgo "^2.3.1"
-
-vite-plugin-theme@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.nlark.com/vite-plugin-theme/download/vite-plugin-theme-0.8.1.tgz#9008256a58a57dca81004ffa1de63ce9f60bf9eb"
-  integrity sha1-kAglalilfcqBAE/6HeY86fYL+es=
-  dependencies:
-    "@types/node" "^14.17.1"
-    "@types/tinycolor2" "^1.4.2"
-    chalk "^4.1.1"
-    clean-css "^5.1.2"
-    debug "^4.3.2"
-    esbuild "^0.11.23"
-    esbuild-plugin-alias "^0.1.2"
-    tinycolor2 "^1.4.2"
 
 vite@2.5.0:
   version "2.5.0"

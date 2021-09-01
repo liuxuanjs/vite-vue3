@@ -1,5 +1,5 @@
 /**
- *  Introduces component library styles on demand.
+ * 组件库样式按需引入
  * https://github.com/anncwb/vite-plugin-style-import
  */
 

@@ -1,23 +1,13 @@
-// import fs from 'fs';
-// import path from 'path';
-// import dotenv from 'dotenv';
-
-export function isDevFn(mode: string): boolean {
-  return mode === 'development';
-}
-
-export function isProdFn(mode: string): boolean {
-  return mode === 'production';
-}
-
 /**
- * Whether to generate package preview
+ * 是否开启打包分析
  */
 export function isReportMode(): boolean {
   return process.env.REPORT === 'true';
 }
 
-// Read all environment variable configuration files to process.env
+/**
+ * 读取process.env中的所有环境变量配置文件
+ */
 export function wrapperEnv(envConf: Recordable): ViteEnv {
   const ret: any = {};
 

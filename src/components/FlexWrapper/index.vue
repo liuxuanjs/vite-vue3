@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, PropType } from 'vue';
 
   export default defineComponent({
     name: 'FlexWrapper',
@@ -34,11 +34,11 @@
         default: () => [],
       },
       selectedMenuKey: {
-        type: Number,
+        type: Number as PropType<number>,
         default: 0,
       },
       onchange: {
-        type: Function as PropType<() => Promise<boolean>>,
+        type: Function as PropType<(v: number) => void>,
         default: null,
       },
     },

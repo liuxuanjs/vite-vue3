@@ -18,7 +18,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 
   const env = loadEnv(mode, root);
 
-  // The boolean type read by loadEnv is a string. This function can be converted to boolean type
+  // loadEnv读取的布尔类型和number都是是一个字符串，需要做转换
   const viteEnv = wrapperEnv(env);
 
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
@@ -43,28 +43,22 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     server: {
-      // Listening on all local IPs
       host: true,
       port: VITE_PORT,
-      // Load proxy configuration from .env
       proxy: createProxy(VITE_PROXY),
     },
-
     build: {
       target: 'es2015',
       outDir: OUTPUT_DIR,
       terserOptions: {
         compress: {
           keep_infinity: true,
-          // Used to delete console in production environment
           drop_console: VITE_DROP_CONSOLE,
         },
       },
-      // Turning off brotliSize display can slightly reduce packaging time
       brotliSize: false,
       chunkSizeWarningLimit: 2000,
     },
-
     css: {
       preprocessorOptions: {
         less: {
@@ -75,15 +69,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     plugins: createVitePlugins(viteEnv, isBuild),
     optimizeDeps: {
-      // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
-      include: [
-        '@iconify/iconify',
-        'ant-design-vue/es/locale/zh_CN',
-        'moment/dist/locale/zh-cn',
-        // 'ant-design-vue/es/locale/en_US',
-        // 'moment/dist/locale/eu',
-      ],
-      // exclude: ['vue-demi', 'consolidate'],
+      include: ['ant-design-vue/es/locale/zh_CN', 'moment/dist/locale/zh-cn'],
     },
   };
 };

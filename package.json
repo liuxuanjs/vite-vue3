@@ -28,7 +28,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@iconify/iconify": "^2.0.3",
     "ant-design-vue": "2.2.6",
     "axios": "^0.21.1",
     "echarts": "^5.1.2",
@@ -78,10 +77,8 @@
     "vite-plugin-html": "^2.0.7",
     "vite-plugin-imagemin": "^0.4.3",
     "vite-plugin-mock": "^2.9.4",
-    "vite-plugin-purge-icons": "^0.7.0",
     "vite-plugin-style-import": "^1.1.1",
     "vite-plugin-svg-icons": "^1.0.4",
-    "vite-plugin-theme": "^0.8.1",
     "vue-eslint-parser": "^7.10.0",
     "vue-tsc": "^0.2.3"
   },

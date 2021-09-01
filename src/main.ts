@@ -11,7 +11,7 @@ import { setupRouterGuard } from '/@/router/guard';
 import { isDevMode, isProdMode } from './utils/env';
 
 if (isDevMode()) {
-  import('ant-design-vue/dist/antd.less');
+  await import('ant-design-vue/dist/antd.less');
 }
 
 // 生产环境自动跳转HTTPS访问

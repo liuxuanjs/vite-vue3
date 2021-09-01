@@ -1,5 +1,6 @@
 /**
- * Package file volume analysis
+ * 打包分析
+ * https://github.com/btd/rollup-plugin-visualizer
  */
 import visualizer from 'rollup-plugin-visualizer';
 import { isReportMode } from '../../utils';

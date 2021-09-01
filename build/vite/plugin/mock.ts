@@ -1,7 +1,8 @@
 /**
- * Mock plugin for development and production.
+ * 本地及开发环境数据 mock
  * https://github.com/anncwb/vite-plugin-mock
  */
+
 import { viteMockServe } from 'vite-plugin-mock';
 
 export function configMockPlugin(isBuild: boolean) {

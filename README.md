@@ -1,27 +1,61 @@
-# Vue 3 + Typescript + Vite
+# vite-vue3
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+Vue 3 + Typescript + Vite.
 
-## Recommended IDE Setup
+## 准备
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) -项目开发环境
+- [Vite](https://vitejs.dev/) - 熟悉 vite 特性
+- [Vue3](https://v3.vuejs.org/) - 熟悉 Vue 基础语法
+- [TypeScript](https://www.typescriptlang.org/) - 熟悉`TypeScript`基本语法
+- [Es6+](http://es6.ruanyifeng.com/) - 熟悉 es6 基本语法
+- [Vue-Router-Next](https://next.router.vuejs.org/) - 熟悉 vue-router 基本使用
+- [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/) - ui 基本使用
+- [Mock.js](https://github.com/nuysoft/Mock) - mockjs 基本语法
 
-### If Using `<script setup>`
+## 安装使用
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+- 获取项目代码
 
-## Type Support For `.vue` Imports in TS
+```bash
+git clone https://github.com/liu-fatty/vite-vue3.git
+```
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+- 安装依赖
 
-### If Using Volar
+```bash
+cd vite-vue3
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+yarn install
 
-### If Using Vetur
+```
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+- 运行
+
+```bash
+yarn serve
+```
+
+- 打包
+
+```bash
+yarn build
+```
+
+## Git 贡献提交规范
+
+- 参考 [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) 规范 ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+
+  - `feat` 增加新功能
+  - `fix` 修复问题/BUG
+  - `style` 代码风格相关无影响运行结果的
+  - `perf` 优化/性能提升
+  - `refactor` 重构
+  - `revert` 撤销修改
+  - `test` 测试相关
+  - `docs` 文档/注释
+  - `chore` 依赖更新/脚手架配置修改等
+  - `workflow` 工作流改进
+  - `ci` 持续集成
+  - `types` 类型定义文件更改
+  - `wip` 开发中

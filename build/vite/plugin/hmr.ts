@@ -1,10 +1,9 @@
-import type { Plugin } from 'vite';
-
 /**
- * TODO
- * Temporarily solve the Vite circular dependency problem, and wait for a better solution to fix it later. I don't know what problems this writing will bring.
+ * 解决Vite循环依赖问题
  * @returns
  */
+
+import type { Plugin } from 'vite';
 
 export function configHmrPlugin(): Plugin {
   return {
