@@ -1,7 +1,7 @@
 <template>
-  <a-layout-footer :style="{ textAlign: 'center' }">
+  <LayoutFooter :style="{ textAlign: 'center' }">
     Ant Design ©2018 Created by Ant UED
-  </a-layout-footer>
+  </LayoutFooter>
 </template>
 
 <script lang="ts">
@@ -11,7 +11,7 @@
   export default defineComponent({
     name: 'BasicFooter',
     components: {
-      'a-layout-footer': Layout.Footer,
+      LayoutFooter: Layout.Footer,
     },
   });
 </script>

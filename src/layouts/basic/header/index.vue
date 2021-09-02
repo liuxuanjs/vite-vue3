@@ -1,5 +1,5 @@
 <template>
-  <a-layout-header :style="{ background: '#fff', padding: 0 }" />
+  <LayoutHeader :style="{ background: '#fff', padding: 0 }" />
 </template>
 
 <script lang="ts">
@@ -9,7 +9,7 @@
   export default defineComponent({
     name: 'BasicHeader',
     components: {
-      'a-layout-header': Layout.Header,
+      LayoutHeader: Layout.Header,
     },
   });
 </script>

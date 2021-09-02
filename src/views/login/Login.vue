@@ -132,8 +132,15 @@
 
     .login-page__button {
       margin-top: 20px;
-      // background: rgb(244, 0, 0);
-      // border-color: rgb(244, 0, 0);
+      background: #f40000;
+      border-color: #f40000;
+    }
+
+    .ant-btn-primary:hover,
+    .ant-btn-primary:focus {
+      color: #fff;
+      background: #ff3029;
+      border-color: #ff3029;
     }
   }
 </style>

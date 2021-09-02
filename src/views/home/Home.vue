@@ -1,26 +1,29 @@
 <template>
   <div class="home-page">
     <div class="home-page-content">
-      <div
-        class="home-page-section"
-        v-for="(item, index) in homeData"
-        :key="index"
-        :style="{ background: item.bgc }"
-        @click="onGoToDetail(item.path)"
-      >
-        <div class="home-page-section-title">{{ item.name }}</div>
-        <div class="home-page-section-count">{{ item.count }}</div>
-        <div class="home-page-section-desc">详情</div>
-      </div>
+      <Row :gutter="[80, 48]" wrap>
+        <Col class="gutter-row" :span="8" v-for="(item, index) in homeData" :key="index">
+          <div class="gutter-box" :style="{ background: item.bgc }">
+            <div class="home-page-section-title">{{ item.name }}</div>
+            <div class="home-page-section-count">{{ item.count }}</div>
+            <div class="home-page-section-desc">详情</div>
+          </div>
+        </Col>
+      </Row>
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent, reactive, toRefs } from 'vue';
+  import { Row, Col } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'Home',
+    components: {
+      Row,
+      Col,
+    },
     setup() {
       const state = reactive({
         homeData: [
@@ -52,19 +55,11 @@
   }
 
   .home-page-content {
-    margin: 0 100px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-bottom: 50px;
+    padding: 50px 100px;
   }
 
-  .home-page-section {
-    width: 320px;
-    height: 180px;
-    margin-top: 50px;
-    color: #fff;
-    padding: 20px;
+  .home-page-card {
+    padding: 20px 40px;
     position: relative;
     cursor: pointer;
   }
@@ -83,5 +78,14 @@
     right: 20px;
     bottom: 20px;
     font-size: 20px;
+  }
+
+  .gutter-box {
+    background: #00a0e9;
+    // margin: 50px 80px;
+    height: 180px;
+    position: relative;
+    padding: 20px;
+    cursor: pointer;
   }
 </style>

@@ -39,7 +39,7 @@ async function bootstrap() {
 
 void bootstrap();
 
-// 加载用户信息数据和权限信息数据
+// 加载用户信息数据和权限信息数据;
 if (location.pathname !== '/login') {
   store.dispatch('getAuthorities');
   store.dispatch('getUserInfo');
