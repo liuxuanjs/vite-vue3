@@ -1,9 +1,7 @@
 <template>
   <div class="flex-wrapper">
     <div class="flex-wrapper-left">
-      <!-- <slot name="left"></slot> -->
       <div class="flex-wrapper-menu">
-        <!-- <div class="flex-wrapper-menu-item flex-wrapper-menu-item--selected">全部</div> -->
         <div
           v-for="(menu, index) in menuList"
           :key="index"
@@ -25,12 +23,17 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
 
+  interface MenuInfo {
+    key: number;
+    value: string;
+  }
+
   export default defineComponent({
     name: 'FlexWrapper',
     components: {},
     props: {
       menuList: {
-        type: Array,
+        type: Array as PropType<MenuInfo[]>,
         default: () => [],
       },
       selectedMenuKey: {

@@ -1,9 +1,9 @@
 <template>
   <div class="login-page">
-    <div class="login-page__content">
-      <div class="login-page__logo">D</div>
-      <div class="login-page__title">DanceUP后台管理系统</div>
-      <a-form class="login-page__section" ref="formRef" :model="formState" :rules="rules">
+    <div class="login-page-content">
+      <div class="login-page-logo">D</div>
+      <div class="login-page-title">DanceUP后台管理系统</div>
+      <a-form class="login-page-section" ref="formRef" :model="formState" :rules="rules">
         <a-form-item name="mock1">
           <a-input v-model:value="formState.mock1" placeholder="账号" size="large" allowClear />
         </a-form-item>
@@ -12,7 +12,7 @@
         </a-form-item>
       </a-form>
       <a-button
-        class="login-page__section login-page__button"
+        class="login-page-section login-page-button"
         type="primary"
         size="large"
         block
@@ -63,8 +63,6 @@
 
       const loginLoading = ref(false);
 
-      // const
-
       const onLogin = async () => {
         try {
           const validate = await formRef.value.validate();
@@ -96,7 +94,7 @@
     background: rgba(230, 230, 230, 1);
     background-size: contain;
 
-    .login-page__content {
+    .login-page-content {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,7 +104,7 @@
       background: #fff;
     }
 
-    .login-page__logo {
+    .login-page-logo {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -119,18 +117,18 @@
       border-radius: 8px;
     }
 
-    .login-page__title {
+    .login-page-title {
       margin-bottom: 60px;
       font-size: 14px;
       line-height: 20px;
       text-align: center;
     }
 
-    .login-page__section {
+    .login-page-section {
       width: 290px;
     }
 
-    .login-page__button {
+    .login-page-button {
       margin-top: 20px;
       background: #f40000;
       border-color: #f40000;

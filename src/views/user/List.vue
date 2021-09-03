@@ -5,56 +5,53 @@
     :selectedMenuKey="formState.mock4"
     :onchange="onchange"
   >
-    <template #left>
-      <div> 12312 </div>
-    </template>
     <template #rigth>
       <div class="user-list-section">
-        <a-form ref="formRef" :model="formState" layout="inline">
-          <a-form-item>
-            <a-select v-model:value="formState.mock1" placeholder="请选择性别">
-              <a-select-option v-for="option in []" :key="option.key">
+        <Form ref="formRef" :model="formState" layout="inline">
+          <FormItem>
+            <Select v-model:value="formState.mock1" placeholder="请选择性别">
+              <SelectOption v-for="option in []" :key="option.key">
                 {{ option.value }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item>
-            <a-select v-model:value="formState.mock2" placeholder="请选择年龄">
-              <a-select-option v-for="option in []" :key="option.key">
+              </SelectOption>
+            </Select>
+          </FormItem>
+          <FormItem>
+            <Select v-model:value="formState.mock2" placeholder="请选择年龄">
+              <SelectOption v-for="option in []" :key="option.key">
                 {{ option.value }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
+              </SelectOption>
+            </Select>
+          </FormItem>
           <div class="user-list-form-item">
-            <a-form-item>
-              <a-input-search
+            <FormItem>
+              <InputSearch
                 v-model:value="formState.mock3"
                 placeholder="请输入用户名"
                 @search="onSearch"
               >
                 <template #enterButton>
-                  <a-button>搜索</a-button>
+                  <Button>搜索</Button>
                 </template>
-              </a-input-search>
-            </a-form-item>
+              </InputSearch>
+            </FormItem>
           </div>
-        </a-form>
+        </Form>
       </div>
       <div class="user-list-section">
-        <a-table :dataSource="dataSource" :columns="columns">
+        <Table :dataSource="dataSource" :columns="columns">
           <template #operation>
-            <a-button v-if="formState.mock4 === 1">禁用</a-button>
-            <a-button v-if="formState.mock4 === 2" type="primary" ghost>解禁</a-button>
-            <a-button class="ml10" danger @click="onDelete">删除</a-button>
+            <Button v-if="formState.mock4 === 1">禁用</Button>
+            <Button v-if="formState.mock4 === 2" type="primary" ghost>解禁</Button>
+            <Button class="ml10" danger @click="onDelete">删除</Button>
           </template>
-        </a-table>
+        </Table>
       </div>
     </template>
   </FlexWrapper>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, UnwrapRef, toRefs, createVNode } from 'vue';
+  import { defineComponent, reactive, ref, UnwrapRef, createVNode } from 'vue';
   import { Form, Select, Input, Button, Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
@@ -71,21 +68,21 @@
     name: 'UserList',
     components: {
       FlexWrapper,
-      'a-table': Table,
-      'a-form': Form,
-      'a-form-item': Form.Item,
-      'a-select': Select,
-      'a-select-option': Select.Option,
-      'a-input-search': Input.Search,
-      'a-button': Button,
+      Table,
+      Form,
+      FormItem: Form.Item,
+      Select,
+      SelectOption: Select.Option,
+      InputSearch: Input.Search,
+      Button,
     },
     setup() {
-      const state = reactive({
-        menuList: [
-          { key: 1, value: '全部' },
-          { key: 2, value: '禁用' },
-        ],
-      });
+      // const state = reactive({
+      //   menuList: [
+      //     { key: 1, value: '全部' },
+      //     { key: 2, value: '禁用' },
+      //   ],
+      // });
 
       const formRef = ref();
       const formState: UnwrapRef<FormState> = reactive({ mock4: 1 });
@@ -94,7 +91,9 @@
         formState.mock4 = v;
       };
 
-      const onSearch = () => {};
+      const onSearch = () => {
+        console.log('formState===', formState);
+      };
 
       /**
        * 删除操作
@@ -114,7 +113,11 @@
       };
 
       return {
-        ...toRefs(state),
+        // ...toRefs(state),
+        menuList: [
+          { key: 1, value: '全部' },
+          { key: 2, value: '禁用' },
+        ],
         onchange,
         formRef,
         formState,

@@ -3,13 +3,16 @@
     :style="{ overflowY: 'auto', height: '100vh', position: 'fixed', left: 0 }"
     width="210"
   >
-    <div class="basic-sider-logo"></div>
+    <div class="basic-sider-top">
+      <div>DanceUP</div>
+      <div>后台管理</div>
+    </div>
     <Menu theme="dark" mode="inline" :selectedKeys="selectedKeys" @select="onSelect">
       <MenuItem v-for="menu in filterMenus" :key="menu.path">
         <SvgIcon v-if="menu.icon" :name="menu.icon" class="anticon" :size="17" />
         <span class="menu-text">{{ menu.name }}</span>
       </MenuItem>
-      <MenuSubMenu key="3">
+      <!-- <MenuSubMenu key="3">
         <template #title>
           <span>
             <UploadOutlined />
@@ -19,7 +22,7 @@
         <MenuItem key="3-1">Tom</MenuItem>
         <MenuItem key="3-2">Bill</MenuItem>
         <MenuItem key="3-3">Alex</MenuItem>
-      </MenuSubMenu>
+      </MenuSubMenu> -->
     </Menu>
   </LayoutSider>
 </template>
@@ -27,7 +30,6 @@
 <script lang="ts">
   import { defineComponent, ref, computed } from 'vue';
   import { Layout, Menu } from 'ant-design-vue';
-  import { UploadOutlined } from '@ant-design/icons-vue';
   import { useStore } from 'vuex';
   import { useRoute, useRouter } from 'vue-router';
 
@@ -41,9 +43,7 @@
       LayoutSider: Layout.Sider,
       Menu,
       MenuItem: Menu.Item,
-      MenuSubMenu: Menu.SubMenu,
       SvgIcon,
-      UploadOutlined,
     },
     setup() {
       const store = useStore();
@@ -51,8 +51,6 @@
       const router = useRouter();
 
       const selectedKeys = ref<string[]>([route.path]);
-
-      console.log(route.path);
 
       const handleMenu = (menus, authorities, data) => {
         menus.forEach((menu) => {
@@ -71,7 +69,7 @@
         });
       };
 
-      const onSelect = (e): void => {
+      const onSelect = (e) => {
         const current: string[] = e.selectedKeys;
         selectedKeys.value = current;
 
@@ -87,19 +85,16 @@
         return data;
       });
 
-      return {
-        selectedKeys,
-        filterMenus,
-        onSelect,
-      };
+      return { selectedKeys, filterMenus, onSelect };
     },
   });
 </script>
 
 <style lang="less">
-  .basic-sider-logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
+  .basic-sider-top {
     margin: 16px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
   }
 </style>

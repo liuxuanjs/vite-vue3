@@ -1,14 +1,16 @@
-import type { AppRouteRecordRaw, Menu } from '../../types';
+import type { AppRouteRecordRaw, Menu, RouteMap } from '../../types';
+
+const routeMap: RouteMap = new Map();
 
 function menuAndRouteHelper(
   routes: AppRouteRecordRaw[] | undefined,
   parentNode: AppRouteRecordRaw | null
-): [Menu[], AppRouteRecordRaw[]] {
+): [Menu[], AppRouteRecordRaw[], RouteMap | null] {
   const currentMenus: Menu[] = [];
   const currentRoutes: AppRouteRecordRaw[] = [];
 
   if (!routes || !routes.length) {
-    return [currentMenus, currentRoutes];
+    return [currentMenus, currentRoutes, null];
   }
 
   routes.forEach((route: AppRouteRecordRaw) => {
@@ -16,9 +18,13 @@ function menuAndRouteHelper(
     const { name, menu, authority, icon } = meta;
     const currentRoute: AppRouteRecordRaw = { path, meta, children, ...restProps };
     const currentMenu: Menu = { path, name, authority, icon };
+
+    if (menu !== false && !routeMap.get(path)) {
+      routeMap.set(path, true);
+    }
+
     const [currentSubMenus, currentSubRoutes] = menuAndRouteHelper(children, currentRoute);
 
-    // meta.parent = parentNode;
     currentRoute.parent = parentNode;
     currentRoute.children = currentSubRoutes;
     currentRoutes.push(currentRoute);
@@ -33,7 +39,7 @@ function menuAndRouteHelper(
     }
   });
 
-  return [currentMenus, currentRoutes];
+  return [currentMenus, currentRoutes, routeMap];
 }
 
 export { menuAndRouteHelper };

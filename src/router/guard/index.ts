@@ -27,7 +27,7 @@ export function setupRouterGuard(router: Router) {
 }
 
 /**
- * Hooks for handling page state
+ * 标记已经切换的路由
  */
 function createPageGuard(router: Router) {
   const loadedPageMap = new Map<string, boolean>();
@@ -108,7 +108,7 @@ function createPageGuard(router: Router) {
 // }
 
 /**
- * 切换路由时，关闭消息实例
+ * 切换路由时，关闭 Modal 和 notification 实例
  * @param router
  */
 export function createMessageGuard(router: Router) {
@@ -129,7 +129,6 @@ export function createMessageGuard(router: Router) {
  */
 export function createProgressGuard(router: Router) {
   router.beforeEach(async (to) => {
-    // const { path, fullPath } = to;
     if (to.meta.loaded) {
       return true;
     }
