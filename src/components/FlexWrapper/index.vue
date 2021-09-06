@@ -40,19 +40,15 @@
         type: Number as PropType<number>,
         default: 0,
       },
-      onchange: {
-        type: Function as PropType<(v: number) => void>,
-        default: null,
-      },
     },
-    // setup(props) {
-    //   const { menuList } = props;
-    //   const
+    emits: ['change-menu'],
+    setup(_props, context) {
+      const onchange = (value: number) => {
+        context.emit('change-menu', value);
+      };
 
-    //   const onchange = () => {
-
-    //   }
-    // },
+      return { onchange };
+    },
   });
 </script>
 

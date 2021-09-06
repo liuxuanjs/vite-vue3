@@ -4,7 +4,7 @@ import BlankLayout from '/@/layouts/blank/index.vue';
 
 export const UserListRoute: AppRouteRecordRaw = {
   path: '/user/list',
-  meta: { name: '用户管理' },
+  meta: { name: '用户列表' },
   component: () => import('/@/views/user/List.vue'),
 };
 
@@ -22,7 +22,7 @@ export const UserVitalityRoute: AppRouteRecordRaw = {
 
 export const UserRoute: AppRouteRecordRaw = {
   path: '/user',
-  meta: { name: '用户', icon: 'user' },
+  meta: { name: '用户管理', icon: 'user' },
   redirect: '/user/list',
   component: BlankLayout,
   children: [UserListRoute, UserStatisticsRoute, UserVitalityRoute],

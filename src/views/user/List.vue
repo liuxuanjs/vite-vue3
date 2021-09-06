@@ -1,23 +1,23 @@
 <template>
   <FlexWrapper
     class="user-list"
-    :menuList="menuList"
+    :menuList="typeList"
     :selectedMenuKey="formState.mock4"
-    :onchange="onchange"
+    @change-menu="onchange"
   >
     <template #rigth>
       <div class="user-list-section">
         <Form ref="formRef" :model="formState" layout="inline">
-          <FormItem>
+          <FormItem :style="{ minWidth: '112px' }">
             <Select v-model:value="formState.mock1" placeholder="请选择性别">
-              <SelectOption v-for="option in []" :key="option.key">
+              <SelectOption v-for="option in genderEnums" :key="option.key">
                 {{ option.value }}
               </SelectOption>
             </Select>
           </FormItem>
-          <FormItem>
+          <FormItem :style="{ minWidth: '112px' }">
             <Select v-model:value="formState.mock2" placeholder="请选择年龄">
-              <SelectOption v-for="option in []" :key="option.key">
+              <SelectOption v-for="option in ageEnums" :key="option.key">
                 {{ option.value }}
               </SelectOption>
             </Select>
@@ -38,7 +38,14 @@
         </Form>
       </div>
       <div class="user-list-section">
-        <Table :dataSource="dataSource" :columns="columns">
+        <Table
+          :loading="loading"
+          :dataSource="dataSource"
+          :columns="columns"
+          :pagination="pagination"
+          row-key="id"
+          @change="onTableChange"
+        >
           <template #operation>
             <Button v-if="formState.mock4 === 1">禁用</Button>
             <Button v-if="formState.mock4 === 2" type="primary" ghost>解禁</Button>
@@ -51,10 +58,15 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, UnwrapRef, createVNode } from 'vue';
+  import { defineComponent, reactive, ref, UnwrapRef, toRefs, createVNode } from 'vue';
   import { Form, Select, Input, Button, Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
+  import usePagination from '/@/hooks/usePagination';
+  import { genderEnums } from '/@/enums/user/gender';
+  import { ageEnums } from '/@/enums/user/age';
+  import { typeList } from '/@/enums/user/type';
+  import { userListTableColumns } from './data';
   import FlexWrapper from '/@/components/FlexWrapper/index.vue';
 
   interface FormState {
@@ -62,6 +74,15 @@
     mock2?: number;
     mock3?: string;
     mock4: number;
+  }
+
+  interface TableStateItem {
+    a?: string;
+  }
+
+  interface TableState {
+    loading: boolean;
+    dataSource: TableStateItem[];
   }
 
   export default defineComponent({
@@ -77,15 +98,12 @@
       Button,
     },
     setup() {
-      // const state = reactive({
-      //   menuList: [
-      //     { key: 1, value: '全部' },
-      //     { key: 2, value: '禁用' },
-      //   ],
-      // });
-
+      const { pagination, onPageChange } = usePagination();
       const formRef = ref();
       const formState: UnwrapRef<FormState> = reactive({ mock4: 1 });
+      const tableState = reactive<TableState>({ loading: false, dataSource: [] });
+
+      const getList = () => {};
 
       const onchange = (v: number) => {
         formState.mock4 = v;
@@ -103,8 +121,6 @@
           title: '删除确认?',
           icon: createVNode(ExclamationCircleOutlined),
           content: '删除后不能恢复，确定要删除吗',
-          cancelText: '取消',
-          okText: '确认',
           okType: 'danger',
           onOk() {
             console.log('OK');
@@ -112,70 +128,24 @@
         });
       };
 
+      const onTableChange = (pagination) => {
+        onPageChange(pagination);
+        getList();
+      };
+
       return {
-        // ...toRefs(state),
-        menuList: [
-          { key: 1, value: '全部' },
-          { key: 2, value: '禁用' },
-        ],
+        ...toRefs(tableState),
         onchange,
         formRef,
         formState,
         onSearch,
         onDelete,
-        dataSource: [
-          {
-            key: '1',
-            name: '胡彦斌',
-            age: 32,
-            address: '西湖区湖底公园1号',
-          },
-          {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号',
-          },
-        ],
-        columns: [
-          {
-            title: '用户id',
-            dataIndex: 'mock10',
-          },
-          {
-            title: '头像',
-            dataIndex: 'mock11',
-          },
-          {
-            title: '用户名',
-            dataIndex: 'mock12',
-          },
-          {
-            title: '舞者登记',
-            dataIndex: 'mock13',
-          },
-          {
-            title: '性别',
-            dataIndex: 'mock14',
-          },
-          {
-            title: '生日',
-            dataIndex: 'mock15',
-          },
-          {
-            title: '跳舞次数',
-            dataIndex: 'mock16',
-          },
-          {
-            title: '注册时间',
-            dataIndex: 'mock17',
-          },
-          {
-            title: '操作',
-            dataIndex: 'operation',
-            slots: { customRender: 'operation' },
-          },
-        ],
+        columns: userListTableColumns,
+        pagination,
+        onTableChange,
+        typeList,
+        genderEnums,
+        ageEnums,
       };
     },
   });
