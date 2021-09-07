@@ -9,18 +9,18 @@
         <div>后台管理</div>
       </router-link>
     </div>
-    <PageMenu :menus="filterMenus" />
+    <PageMenu :menus="menus" />
   </LayoutSider>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed } from 'vue';
+  import { defineComponent } from 'vue';
   import { Layout } from 'ant-design-vue';
-  import { useStore } from 'vuex';
-  import { useRoute, useRouter } from 'vue-router';
+  // import { useStore } from 'vuex';
 
   import { menus } from '/@/router/routes';
 
+  // import type { AppRouteRecordRaw } from '/@/router/types';
   import PageMenu from '/@/components/PageMenu/index.vue';
 
   export default defineComponent({
@@ -30,65 +30,33 @@
       PageMenu,
     },
     setup() {
-      const store = useStore();
-      const route = useRoute();
-      const router = useRouter();
+      // const handleMenu = (menus, authorities, data) => {
+      //   menus.forEach((menu) => {
+      //     const { authority, children } = menu;
 
-      console.log('route===', router.currentRoute.value);
+      //     if (!authority || authorities.indexOf(authority) > -1) {
+      //       data.push(menu);
 
-      const selectedKeys = ref<string[]>([route.path]);
+      //       if (children.length) {
+      //         const subMenus = [];
 
-      const handleMenu = (menus, authorities, data) => {
-        menus.forEach((menu) => {
-          const { authority, children } = menu;
+      //         handleMenu(children, authorities, subMenus);
+      //         menu.children = subMenus;
+      //       }
+      //     }
+      //   });
+      // };
 
-          if (!authority || authorities.indexOf(authority) > -1) {
-            data.push(menu);
+      // const filterMenus = computed(() => {
+      //   // const { authorities } = store.state;
+      //   // const data = [];
 
-            if (children.length) {
-              const subMenus = [];
+      //   // handleMenu(menus, authorities, data);
 
-              handleMenu(children, authorities, subMenus);
-              menu.children = subMenus;
-            }
-          }
-        });
-      };
-
-      const onSelect = (e) => {
-        const current: string[] = e.selectedKeys;
-        selectedKeys.value = current;
-
-        router.push({ path: current[0] });
-      };
-
-      // const getOpenKeys = computed(() => {
-      //   const openKeys: string[] = [];
-      //   console.log('route===', route);
-
-      //   while (route) {
-      //     const {
-      //       path,
-      //       meta: { parent },
-      //     } = route;
-
-      //     openKeys.push(path);
-      //     route = parent;
-      //   }
-      //   console.log('openKeys==', openKeys);
-      //   return openKeys;
+      //   // return data;
       // });
 
-      const filterMenus = computed(() => {
-        const { authorities } = store.state;
-        const data = [];
-
-        handleMenu(menus, authorities, data);
-
-        return data;
-      });
-
-      return { selectedKeys, filterMenus, onSelect };
+      return { menus };
     },
   });
 </script>

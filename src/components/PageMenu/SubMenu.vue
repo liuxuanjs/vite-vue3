@@ -1,16 +1,16 @@
 <template>
-  <MenuSubMenu>
+  <MenuSubMenu :key="currentPath">
     <template #title>
       <span>
         <SvgIcon v-if="menuInfo.icon" :name="menuInfo.icon" class="anticon" :size="17" />
         <span>{{ menuInfo.name }}</span>
       </span>
     </template>
-    <template v-for="item in menuInfo.children">
+    <template v-for="item in menuInfo.children" :key="item.path">
       <PageSubMenu
         v-if="item.children && item.children.length"
-        :key="item.path"
-        :menu-info="item"
+        :currentPath="item.path"
+        :menuInfo="item"
       />
       <MenuItem v-else :key="item.path" :title="item.name">
         <router-link :to="item.path">{{ item.name }}</router-link>
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, PropType } from 'vue';
   import { Menu } from 'ant-design-vue';
 
   import SvgIcon from '/@/components/SvgIcon/index.vue';
@@ -36,6 +36,10 @@
       menuInfo: {
         type: Object,
         default: () => ({}),
+      },
+      currentPath: {
+        type: String as PropType<string>,
+        required: true,
       },
     },
   });

@@ -1,12 +1,11 @@
 <template>
-  <Menu theme="dark" mode="inline" :selectedKeys="selectedKeys" @select="onSelect">
+  <Menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys" :openKeys="openKeys">
     <template v-for="menu in menus" :key="menu.path">
       <PageSubMenu
         v-if="menu.children && menu.children.length"
-        :key="menu.path"
-        :menu-info="menu"
+        :currentPath="menu.path"
+        :menuInfo="menu"
       />
-
       <MenuItem v-else :key="menu.path">
         <router-link :to="menu.path">
           <SvgIcon v-if="menu.icon" :name="menu.icon" class="anticon" :size="17" />
@@ -18,9 +17,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, watchEffect, reactive, toRefs } from 'vue';
   import { Menu } from 'ant-design-vue';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
 
   import SvgIcon from '/@/components/SvgIcon/index.vue';
   import PageSubMenu from './SubMenu.vue';
@@ -40,19 +39,24 @@
       },
     },
     setup() {
-      const route = useRoute();
       const router = useRouter();
+      const { currentRoute } = router;
 
-      const selectedKeys = ref<string[]>([route.path]);
+      const state = reactive({
+        openKeys: [] as string[],
+        selectedKeys: [] as string[],
+      });
 
-      const onSelect = (e) => {
-        const current: string[] = e.selectedKeys;
-        selectedKeys.value = current;
+      watchEffect(async () => {
+        const { matched: routeMatched, path } = currentRoute.value;
 
-        router.push({ path: current[0] });
-      };
+        if (!routeMatched || routeMatched.length === 0) return;
 
-      return { selectedKeys, onSelect };
+        state.selectedKeys = [path];
+        state.openKeys = routeMatched.map(({ path }) => path).reverse();
+      });
+
+      return { ...toRefs(state) };
     },
   });
 </script>
