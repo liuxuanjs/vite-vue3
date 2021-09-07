@@ -21,6 +21,8 @@
   import { Menu } from 'ant-design-vue';
   import { useRouter } from 'vue-router';
 
+  import type { Menu as MenuType } from '/@/router/types';
+
   import SvgIcon from '/@/components/SvgIcon/index.vue';
   import PageSubMenu from './SubMenu.vue';
 
@@ -34,7 +36,7 @@
     },
     props: {
       menus: {
-        type: Array,
+        type: Array as PropType<MenuType[]>,
         default: () => [],
       },
     },
@@ -48,12 +50,14 @@
       });
 
       watchEffect(async () => {
-        const { matched: routeMatched, path } = currentRoute.value;
+        const { matched: routeMatched, path, meta } = currentRoute.value;
 
         if (!routeMatched || routeMatched.length === 0) return;
 
         state.selectedKeys = [path];
-        state.openKeys = routeMatched.map(({ path }) => path).reverse();
+        if (meta.menu !== false) {
+          state.openKeys = routeMatched.map(({ path }) => path).reverse();
+        }
       });
 
       return { ...toRefs(state) };

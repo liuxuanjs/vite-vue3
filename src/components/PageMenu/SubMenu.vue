@@ -20,8 +20,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue';
+  import { defineComponent } from 'vue';
   import { Menu } from 'ant-design-vue';
+
+  import type { Menu as MenuType } from '/@/router/types';
 
   import SvgIcon from '/@/components/SvgIcon/index.vue';
 
@@ -34,7 +36,7 @@
     },
     props: {
       menuInfo: {
-        type: Object,
+        type: Object as PropType<MenuType>,
         default: () => ({}),
       },
       currentPath: {

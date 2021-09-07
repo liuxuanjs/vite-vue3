@@ -25,7 +25,7 @@ function menuAndRouteHelper(
 
     const [currentSubMenus, currentSubRoutes] = menuAndRouteHelper(children, currentRoute);
 
-    currentRoute.parent = parentNode;
+    meta.parent = parentNode;
     currentRoute.children = currentSubRoutes;
     currentRoutes.push(currentRoute);
 

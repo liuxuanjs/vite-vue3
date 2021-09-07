@@ -47,14 +47,10 @@
       const router = useRouter();
 
       const onGoToDetail = ({ path }) => {
-        console.log(path);
         router.push({ path });
       };
 
-      return {
-        ...toRefs(state),
-        onGoToDetail,
-      };
+      return { ...toRefs(state), onGoToDetail };
     },
   });
 </script>
