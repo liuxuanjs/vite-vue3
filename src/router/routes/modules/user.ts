@@ -10,8 +10,8 @@ export const UserListRoute: AppRouteRecordRaw = {
 
 export const UserStatisticsRoute: AppRouteRecordRaw = {
   path: '/user/statistics',
-  meta: { name: '用户统计', menu: false },
-  component: () => import('/@/views/user/Statistics.vue'),
+  meta: { name: '用户详情', menu: false },
+  component: () => import('/@/views/user/Statistics/index.vue'),
 };
 
 export const UserVitalityRoute: AppRouteRecordRaw = {

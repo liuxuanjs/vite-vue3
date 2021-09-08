@@ -1133,6 +1133,21 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.2.tgz#6104185ebd57af5a14ac51c1f491b2205fc24054"
   integrity sha512-dvYb318tk9uOzHtSaT3WII/HscQSIRzoCZ5GyxEb3JlkEXASpAUAQwKnvSe2CudnF8XHFRTB7VITWSnWNLZUtA==
 
+"@vueuse/core@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.nlark.com/@vueuse/core/download/@vueuse/core-5.3.0.tgz#d8c6e939e18089afa224fab6e443fae2bdb57a51"
+  integrity sha1-2MbpOeGAia+iJPq25EP64r21elE=
+  dependencies:
+    "@vueuse/shared" "5.3.0"
+    vue-demi "*"
+
+"@vueuse/shared@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.nlark.com/@vueuse/shared/download/@vueuse/shared-5.3.0.tgz#2b9583f80f1284242f808925e7e141310e400e45"
+  integrity sha1-K5WD+A8ShCQvgIkl5+FBMQ5ADkU=
+  dependencies:
+    vue-demi "*"
+
 JSONStream@^1.0.4:
   version "1.3.5"
   resolved "https://registry.npmjs.org/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
@@ -8015,6 +8030,11 @@ vscode-vue-languageservice@^0.27.0:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-pug-languageservice "^0.27.1"
     vscode-typescript-languageservice "^0.27.1"
+
+vue-demi@*:
+  version "0.11.4"
+  resolved "https://registry.nlark.com/vue-demi/download/vue-demi-0.11.4.tgz#6101992fe4724cf5634018a16e953f3052e94e2a"
+  integrity sha1-YQGZL+RyTPVjQBihbpU/MFLpTio=
 
 vue-eslint-parser@^7.10.0:
   version "7.10.0"
