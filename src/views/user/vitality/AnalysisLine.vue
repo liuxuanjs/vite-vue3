@@ -3,8 +3,8 @@
     <Spin :spinning="loading">
       <div class="analysisLine-head">
         <RadioGroup v-model:value="value1" button-style="solid">
-          <RadioButton value="a">用户新增</RadioButton>
-          <RadioButton value="b">用户增长率</RadioButton>
+          <RadioButton value="a">活跃人数</RadioButton>
+          <RadioButton value="b">活跃比例</RadioButton>
         </RadioGroup>
         <RadioGroup v-model:value="value2">
           <RadioButton value="a">日</RadioButton>

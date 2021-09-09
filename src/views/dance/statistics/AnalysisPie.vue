@@ -1,10 +1,19 @@
 <template>
   <div class="analysisPie">
     <Spin :spinning="loading">
-      <div :style="{ display: 'flex' }">
-        <MyChart class="analysisPie-chart" :options="pieData" height="380px" />
-        <MyChart class="analysisPie-chart" :options="pieData" height="380px" />
-        <MyChart class="analysisPie-chart" :options="pieData" height="380px" />
+      <div class="analysisPie-content">
+        <div class="analysisPie-item">
+          <MyChart :options="pieData" height="380px" />
+        </div>
+        <div class="analysisPie-item">
+          <MyChart :options="pieData" height="380px" />
+        </div>
+        <div class="analysisPie-item">
+          <MyChart :options="pieData" height="380px" />
+        </div>
+        <div class="analysisPie-item">
+          <MyChart :options="pieData" height="380px" />
+        </div>
       </div>
     </Spin>
   </div>
@@ -70,8 +79,13 @@
     background: #fff;
   }
 
-  .analysisPie-chart {
+  .analysisPie-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .analysisPie-item {
     padding: 20px;
-    display: inline-block;
+    width: 50%;
   }
 </style>

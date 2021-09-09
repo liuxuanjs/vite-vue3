@@ -20,6 +20,7 @@
   import { useRouter } from 'vue-router';
 
   import { UserStatisticsRoute, UserVitalityRoute } from '/@/router/routes/modules/user';
+  import { DanceStatisticsRoute } from '/@/router/routes/modules/dance';
 
   export default defineComponent({
     name: 'Home',
@@ -36,8 +37,18 @@
             bgc: 'rgb(13, 202, 175)',
             path: UserStatisticsRoute.path,
           },
-          { name: '舞曲总量', count: 1234, bgc: 'rgb(24, 151, 232)', path: '' },
-          { name: '用户跳舞总次数', count: 1234, bgc: 'rgb(162, 84, 255)', path: '' },
+          {
+            name: '舞曲总量',
+            count: 1234,
+            bgc: 'rgb(24, 151, 232)',
+            path: DanceStatisticsRoute.path,
+          },
+          {
+            name: '用户跳舞总次数',
+            count: 1234,
+            bgc: 'rgb(162, 84, 255)',
+            path: DanceStatisticsRoute.path,
+          },
           { name: '日活', count: 1234, bgc: 'rgb(247, 121, 20)', path: UserVitalityRoute.path },
           { name: '周活', count: 1234, bgc: 'rgb(228, 34, 238)', path: UserVitalityRoute.path },
           { name: '月活', count: 1234, bgc: 'rgb(244, 62, 62)', path: UserVitalityRoute.path },

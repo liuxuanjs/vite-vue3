@@ -9,8 +9,6 @@
       </div>
     </div>
     <AnalysisPie />
-    <AnalysisLine />
-    <AnalysisTable />
   </div>
 </template>
 
@@ -18,18 +16,16 @@
   import { defineComponent, reactive, toRefs } from 'vue';
 
   import AnalysisPie from './AnalysisPie.vue';
-  import AnalysisLine from './AnalysisLine.vue';
-  import AnalysisTable from './AnalysisTable.vue';
 
   export default defineComponent({
     name: 'UserStatistics',
-    components: { AnalysisPie, AnalysisLine, AnalysisTable },
+    components: { AnalysisPie },
     setup() {
       const state = reactive({
         userDetail: [
-          { title: '用户总量', value: '325423', color: 'rgb(228, 34, 238)' },
-          { title: '用户新增（月）', value: '2345', color: 'rgba(24, 202, 232, 1)' },
-          { title: '用户增长率（月）', value: '12%', color: 'rgba(244, 62, 62, 1)' },
+          { title: '舞曲总量', value: '325423', color: 'rgb(228, 34, 238)' },
+          { title: '舞曲新增（月）', value: '2345', color: 'rgba(24, 202, 232, 1)' },
+          { title: '用户跳舞次数统计', value: '123121', color: 'rgba(244, 62, 62, 1)' },
         ],
       });
 
