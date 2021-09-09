@@ -10,6 +10,7 @@
     </div>
     <AnalysisPie class="user-statistics-section" />
     <AnalysisLine class="user-statistics-section" />
+    <AnalysisTable class="user-statistics-section" />
   </div>
 </template>
 
@@ -18,13 +19,11 @@
 
   import AnalysisPie from './AnalysisPie.vue';
   import AnalysisLine from './AnalysisLine.vue';
+  import AnalysisTable from './AnalysisTable.vue';
 
   export default defineComponent({
     name: 'UserStatistics',
-    components: {
-      AnalysisPie,
-      AnalysisLine,
-    },
+    components: { AnalysisPie, AnalysisLine, AnalysisTable },
     setup() {
       const state = reactive({
         userDetail: [

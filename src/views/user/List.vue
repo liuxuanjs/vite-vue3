@@ -62,7 +62,7 @@
   import { Form, Select, Input, Button, Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
-  import usePagination from '../../hooks/usePagination';
+  import usePagination from '/@/hooks/usePagination';
   import { genderEnums } from '/@/enums/user/gender';
   import { ageEnums } from '/@/enums/user/age';
   import { typeList } from '/@/enums/user/type';
