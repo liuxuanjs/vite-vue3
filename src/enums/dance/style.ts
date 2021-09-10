@@ -1,9 +1,12 @@
-import { UserStatus } from '../types';
+export interface Style {
+  value: number;
+  label: string;
+}
 
-export const styleEnum: UserStatus[] = [
-  { key: 1, value: '全部' },
-  { key: 2, value: '爵士' },
-  { key: 3, value: '现代舞' },
-  { key: 4, value: '芭蕾' },
-  { key: 5, value: '街舞' },
+export const styleEnum: Style[] = [
+  { value: 1, label: '全部' },
+  { value: 2, label: '爵士' },
+  { value: 3, label: '现代舞' },
+  { value: 4, label: '芭蕾' },
+  { value: 5, label: '街舞' },
 ];

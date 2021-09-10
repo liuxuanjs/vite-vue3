@@ -50,7 +50,7 @@ export function createDanceListColumns({
           { title: '下架', onClick: () => handleDelisting(record) },
           { title: '编辑', onClick: () => handleEdit(record) },
           { title: '删除', onClick: () => handleDelete(record), danger: true },
-        ];
+        ].filter(Boolean);
 
         return <ActionGroup actions={actions} defaultAction />;
       },

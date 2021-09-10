@@ -1,41 +1,15 @@
 <template>
   <div class="dance-list">
-    <DanceListSidebar
-      :menuList="typeList"
-      :selectedMenuKey="formState.mock4"
-      :onchange="onchange"
-    />
+    <DanceListSidebar :menuList="typeList" :selectedKey="selectedMenuKey" @change="handleSelect" />
     <div class="dance-list-main">
       <div class="dance-list-section">
-        <Form ref="formRef" :model="formState" layout="inline">
-          <FormItem :style="{ minWidth: '112px' }">
-            <Select v-model:value="formState.mock1" placeholder="请选择舞曲难度">
-              <SelectOption v-for="option in difficultyEnum" :key="option.key">
-                {{ option.value }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <FormItem :style="{ minWidth: '112px' }">
-            <Select v-model:value="formState.mock2" placeholder="请选择舞曲风格">
-              <SelectOption v-for="option in styleEnum" :key="option.key">
-                {{ option.value }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <div class="dance-list-form-item">
-            <FormItem>
-              <InputSearch
-                v-model:value="formState.mock3"
-                placeholder="请输入歌曲名或作者"
-                @search="onSearch"
-              >
-                <template #enterButton>
-                  <Button>搜索</Button>
-                </template>
-              </InputSearch>
-            </FormItem>
-          </div>
-        </Form>
+        <SearchFilter
+          ref="formRef"
+          :loading="loading"
+          :configs="filterConfigs"
+          @on-search="handleSearch"
+          @set-default-value="setDefaultValue"
+        />
       </div>
       <div class="dance-list-section">
         <Table
@@ -52,8 +26,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, UnwrapRef, toRefs, createVNode } from 'vue';
-  import { Form, Select, Input, Button, Table, Modal } from 'ant-design-vue';
+  import { defineComponent, reactive, ref, computed, toRefs, createVNode } from 'vue';
+  import { Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import usePagination from '/@/hooks/usePagination';
@@ -61,50 +35,47 @@
   import { styleEnum } from '/@/enums/dance/style';
   import { typeList } from '/@/enums/dance/type';
   import { createDanceListColumns } from './data';
+
   import DanceListSidebar from './Sidebar.vue';
-
-  interface FormState {
-    mock1?: number;
-    mock2?: number;
-    mock3?: string;
-    mock4: number;
-  }
-
-  interface TableStateItem {
-    a?: string;
-  }
-
-  interface TableState {
-    loading: boolean;
-    dataSource: TableStateItem[];
-  }
+  import SearchFilter from '/@/components/SearchFilter/index.vue';
 
   export default defineComponent({
-    name: 'UserList',
-    components: {
-      Table,
-      Form,
-      FormItem: Form.Item,
-      Select,
-      SelectOption: Select.Option,
-      InputSearch: Input.Search,
-      Button,
-      DanceListSidebar,
-    },
+    name: 'DanceList',
+    components: { Table, DanceListSidebar, SearchFilter },
     setup() {
-      const { pagination, onPageChange } = usePagination();
+      const loading = ref(false);
+      const selectedMenuKey = ref(1);
       const formRef = ref();
-      const formState: UnwrapRef<FormState> = reactive({ mock4: 1 });
-      const tableState = reactive<TableState>({ loading: false, dataSource: [{}] });
+      const tableState = reactive({ loading: false, dataSource: [] });
+
+      const { pagination, onPageChange } = usePagination();
 
       const getList = () => {};
 
-      const onchange = (v: number) => {
-        formState.mock4 = v;
+      /**
+       * 侧边栏选择
+       */
+      const handleSelect = (v: number) => {
+        selectedMenuKey.value = v;
       };
 
-      const onSearch = () => {
-        console.log('formState===', formState);
+      /**
+       * 搜索
+       */
+      const handleSearch = (params) => {
+        console.log('searchParams', params);
+      };
+
+      /**
+       * 翻页
+       */
+      const onTableChange = (pagination) => {
+        onPageChange(pagination);
+        getList();
+      };
+
+      const setDefaultValue = (params) => {
+        console.log('setParams', params);
       };
 
       /**
@@ -138,25 +109,51 @@
         });
       };
 
-      const onTableChange = (pagination) => {
-        onPageChange(pagination);
-        getList();
-      };
-
       const columns = createDanceListColumns({ handleDelisting, handleEdit, handleDelete });
+
+      const filterConfigs = computed(() => {
+        return [
+          {
+            name: 'mock1',
+            type: 'select',
+            placeholder: '请选择舞曲难度',
+            options: difficultyEnum,
+            formItemProps: { style: { minWidth: '140px' } },
+            props: { showSearch: true },
+          },
+          {
+            name: 'mock2',
+            type: 'select',
+            placeholder: '请选择舞曲风格',
+            options: styleEnum,
+            formItemProps: { style: { minWidth: '140px' } },
+            props: { showSearch: true },
+          },
+          {
+            name: 'mock3',
+            type: 'inputSearch',
+            placeholder: '请输入歌曲名或作者',
+            formItemProps: { style: { flex: 1 } },
+            props: {
+              showSearch: true,
+            },
+          },
+        ];
+      });
 
       return {
         ...toRefs(tableState),
-        onchange,
+        loading,
+        selectedMenuKey,
+        typeList,
         formRef,
-        formState,
-        onSearch,
+        filterConfigs,
         columns,
         pagination,
+        handleSelect,
+        handleSearch,
+        setDefaultValue,
         onTableChange,
-        typeList,
-        styleEnum,
-        difficultyEnum,
       };
     },
   });

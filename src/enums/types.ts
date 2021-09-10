@@ -12,3 +12,8 @@ export interface UserStatus {
   key: number;
   value: string;
 }
+
+export interface Difficulty {
+  key: number;
+  value: string;
+}

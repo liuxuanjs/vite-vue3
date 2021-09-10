@@ -1,10 +1,13 @@
-import { UserStatus } from '../types';
+export interface Difficulty {
+  value: number;
+  label: string;
+}
 
-export const difficultyEnum: UserStatus[] = [
-  { key: 1, value: '全部' },
-  { key: 2, value: '1星' },
-  { key: 3, value: '2星' },
-  { key: 4, value: '3星' },
-  { key: 5, value: '4星' },
-  { key: 6, value: '5星' },
+export const difficultyEnum: Difficulty[] = [
+  { value: 1, label: '全部' },
+  { value: 2, label: '1星' },
+  { value: 3, label: '2星' },
+  { value: 4, label: '3星' },
+  { value: 5, label: '4星' },
+  { value: 6, label: '5星' },
 ];

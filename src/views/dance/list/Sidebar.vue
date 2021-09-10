@@ -4,9 +4,9 @@
       <div
         v-for="(menu, index) in menuList"
         :key="index"
-        :class="['sidebar-item', selectedMenuKey === menu.key && 'sidebar-item--selected']"
-        @click="onchange(menu.key)"
-        >{{ menu.value }}</div
+        :class="['sidebar-item', selectedKey === menu.value && 'sidebar-item--selected']"
+        @click="onchange(menu.value)"
+        >{{ menu.label }}</div
       >
     </div>
   </div>
@@ -27,23 +27,19 @@
         type: Array as PropType<MenuInfo[]>,
         default: () => [],
       },
-      selectedMenuKey: {
+      selectedKey: {
         type: Number as PropType<number>,
         default: 0,
       },
-      onchange: {
-        type: Function as PropType<Fn>,
-        default: () => ({}),
-      },
     },
-    // emits: ['change-menu'],
-    // setup(_props, context) {
-    //   const onchange = (value: number) => {
-    //     context.emit('change-menu', value);
-    //   };
+    emits: ['change'],
+    setup(_props, { emit }) {
+      const onchange = (value: number) => {
+        emit('change', value);
+      };
 
-    //   return { onchange };
-    // },
+      return { onchange };
+    },
   });
 </script>
 
