@@ -1,8 +1,11 @@
 import { reactive } from 'vue';
 
-const defultPagination = {
+import { TableState } from 'ant-design-vue/es/table/interface';
+
+type Pagination = TableState['pagination'];
+
+const defultPagination: Pagination = {
   current: 1,
-  pageNum: 1,
   total: 0,
   pageSize: 10,
   pageSizeOptions: ['10', '20', '30', '50'],
@@ -11,7 +14,7 @@ const defultPagination = {
   showTotal: (t) => `共 ${t} 条数据`,
 };
 
-export default function usePagination(option = {}) {
+export default function usePagination(option: Pagination = {}) {
   const pagination = reactive({
     ...defultPagination,
     ...option,

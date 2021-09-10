@@ -5,7 +5,7 @@
       danger && 'action-group__dangerLink',
       disabled && 'action-group__disabledLink',
     ]"
-    @click="onClickFn"
+    @click="handleClick"
   >
     {{ title }}
   </a>
@@ -15,7 +15,7 @@
   import { defineComponent } from 'vue';
 
   export default defineComponent({
-    name: 'ActionButton',
+    name: 'TableAction',
     props: {
       title: {
         type: String as PropType<string>,
@@ -29,19 +29,20 @@
         type: Boolean as PropType<boolean>,
         default: false,
       },
-      onClick: {
-        type: Function as PropType<Fn>,
-        default: null,
-      },
     },
+    emits: ['click'],
 
-    setup(props) {
-      const onClickFn = () => {
-        if (props.disabled || !props.onClick) return;
-        props.onClick();
+    setup(props, { emit }) {
+      const handleClick = (event) => {
+        if (props.disabled) {
+          event.preventDefault();
+          return;
+        }
+
+        emit('click', event);
       };
 
-      return { onClickFn };
+      return { handleClick };
     },
   });
 </script>

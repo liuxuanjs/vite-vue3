@@ -21,12 +21,13 @@
 
 <script lang="ts">
   import { defineComponent, reactive, onMounted, toRefs } from 'vue';
+  import { Spin } from 'ant-design-vue';
 
   import MyChart from '/@/components/Chart/index.vue';
 
   export default defineComponent({
     name: 'AnalysisPie',
-    components: { MyChart },
+    components: { Spin, MyChart },
     setup() {
       const state = reactive({
         pieData: null as any,

@@ -10,11 +10,11 @@
         :key="index"
         @click="(e) => e.stopPropagation()"
       >
-        <ActionButton
+        <TableAction
           :title="item.title"
           :disabled="item.disabled"
           :danger="item.danger"
-          :onClick="item.onClick"
+          @click="item.onClick"
         />
       </span>
       <a class="action-group__link" v-if="menuList">
@@ -24,11 +24,11 @@
     <template #overlay v-if="menuList">
       <Menu>
         <MenuItem v-for="(menuItem, index) in menuList" :key="index">
-          <ActionButton
+          <TableAction
             :title="menuItem.title"
             :disabled="menuItem.disabled"
             :danger="menuItem.danger"
-            :onClick="menuItem.onClick"
+            @click="menuItem.onClick"
           />
         </MenuItem>
       </Menu>
@@ -37,11 +37,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watchEffect } from 'vue';
+  import { defineComponent, computed } from 'vue';
   import { Space, Dropdown, Menu } from 'ant-design-vue';
   import { DownOutlined } from '@ant-design/icons-vue';
 
-  import ActionButton from '../ActionButton/index.vue';
+  import TableAction from '../TableAction/index.vue';
 
   interface Action {
     title?: string;
@@ -52,7 +52,7 @@
 
   export default defineComponent({
     name: 'ActionGroup',
-    components: { Space, ActionButton, Dropdown, Menu, MenuItem: Menu.Item, DownOutlined },
+    components: { Space, TableAction, Dropdown, Menu, MenuItem: Menu.Item, DownOutlined },
     props: {
       actions: {
         type: Array as PropType<Action[]>,
@@ -69,29 +69,21 @@
     },
 
     setup(props) {
-      const actionList = ref<Action[] | null>(null);
-      const menuList = ref<Action[] | null>(null);
-
-      watchEffect(() => {
+      const actionList = computed(() => {
         const { actions, limit, defaultAction } = props;
+        if (!actions.length || defaultAction) return null;
 
-        if (!actions.length) return;
+        if (actions.length < limit) return actions;
+        return actions.slice(0, limit);
+      });
 
-        if (defaultAction) {
-          menuList.value = actions;
-          return;
-        }
+      const menuList = computed(() => {
+        const { actions, limit, defaultAction } = props;
+        if (!actions.length) return null;
+        if (defaultAction) return actions;
 
-        if (actions.length < limit) {
-          actionList.value = actions;
-          return;
-        }
-
-        actionList.value = actions.slice(0, limit);
-        menuList.value = actions.slice(limit - 1);
-
-        console.log('actionList.value===', actionList.value);
-        console.log('menuList.value===', menuList.value);
+        if (actions.length < limit) return null;
+        return actions.slice(limit - 1);
       });
 
       return { actionList, menuList };

@@ -5,7 +5,7 @@ import type { AppRouteRecordRaw } from '../../types';
 export const DanceListRoute: AppRouteRecordRaw = {
   path: '/dance/list',
   meta: { name: '舞曲管理', icon: 'dance' },
-  component: () => import('/@/views/dance/List.vue'),
+  component: () => import('/@/views/dance/list/index.vue'),
 };
 
 export const DanceStatisticsRoute: AppRouteRecordRaw = {
