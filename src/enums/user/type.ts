@@ -1,6 +1,9 @@
-import { UserStatus } from '../types';
+export interface Type {
+  value: number;
+  label: string;
+}
 
-export const typeList: UserStatus[] = [
-  { key: 1, value: '全部' },
-  { key: 2, value: '禁用' },
+export const typeList: Type[] = [
+  { value: 1, label: '全部' },
+  { value: 2, label: '已禁用' },
 ];

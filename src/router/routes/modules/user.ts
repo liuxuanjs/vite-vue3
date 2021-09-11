@@ -6,7 +6,7 @@ export const UserListRoute: AppRouteRecordRaw = {
   path: '/user/list',
   // meta: { name: '用户列表' },
   meta: { name: '用户管理', icon: 'user' },
-  component: () => import('/@/views/user/List.vue'),
+  component: () => import('/@/views/user/list/index.vue'),
 };
 
 export const UserStatisticsRoute: AppRouteRecordRaw = {

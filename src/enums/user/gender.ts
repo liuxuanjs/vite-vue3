@@ -1,8 +1,11 @@
-import { UserGender } from '../types';
+export interface Gender {
+  value: number;
+  label: string;
+}
 
-export const genderEnums: UserGender[] = [
-  { key: 1, value: '全部' },
-  { key: 2, value: '小哥哥' },
-  { key: 3, value: '小姐姐' },
-  { key: 4, value: '其他' },
+export const genderEnums: Gender[] = [
+  { value: 1, label: '全部' },
+  { value: 2, label: '小哥哥' },
+  { value: 3, label: '小姐姐' },
+  { value: 4, label: '其他' },
 ];

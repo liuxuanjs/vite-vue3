@@ -31,10 +31,10 @@
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import usePagination from '/@/hooks/usePagination';
-  import { difficultyEnum } from '/@/enums/dance/difficulty';
-  import { styleEnum } from '/@/enums/dance/style';
-  import { typeList } from '/@/enums/dance/type';
-  import { createDanceListColumns } from './data';
+  import { typeList } from '/@/enums/user/type';
+  import { genderEnums } from '/@/enums/user/gender';
+  import { ageEnums } from '/@/enums/user/age';
+  import { createUserListColumns } from './data';
 
   import DanceListSidebar from './Sidebar.vue';
   import SearchFilter from '/@/components/SearchFilter/index.vue';
@@ -79,16 +79,16 @@
       };
 
       /**
-       * 下架操作
+       * 禁用操作
        */
-      const handleDelisting = (record) => {
+      const handleDisable = (record) => {
         console.log('record===', record);
       };
 
       /**
-       * 编辑操作
+       * 解禁操作
        */
-      const handleEdit = (record) => {
+      const handleRelieve = (record) => {
         console.log('record===', record);
       };
 
@@ -109,20 +109,12 @@
         });
       };
 
-      /**
-       * 审核操作
-       */
-      const handleAudit = (record) => {
-        console.log('record===', record);
-      };
-
       const columns = computed(() => {
-        return createDanceListColumns({
+        return createUserListColumns({
           selectedMenuKey,
-          handleDelisting,
-          handleEdit,
+          handleDisable,
+          handleRelieve,
           handleDelete,
-          handleAudit,
         });
       });
 
@@ -131,23 +123,23 @@
           {
             name: 'mock1',
             type: 'select',
-            placeholder: '请选择舞曲难度',
-            options: difficultyEnum,
-            formItemProps: { style: { minWidth: '140px' } },
+            placeholder: '请选择性别',
+            options: genderEnums,
+            formItemProps: { style: { minWidth: '112px' } },
             props: { showSearch: true },
           },
           {
             name: 'mock2',
             type: 'select',
-            placeholder: '请选择舞曲风格',
-            options: styleEnum,
-            formItemProps: { style: { minWidth: '140px' } },
+            placeholder: '请选择年龄',
+            options: ageEnums,
+            formItemProps: { style: { minWidth: '112px' } },
             props: { showSearch: true },
           },
           {
             name: 'mock3',
             type: 'inputSearch',
-            placeholder: '请输入歌曲名或作者',
+            placeholder: '请输入用户名',
             formItemProps: { style: { flex: 1 } },
             props: {
               showSearch: true,

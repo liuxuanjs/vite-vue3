@@ -1,11 +1,14 @@
-import { UserAge } from '../types';
+export interface Age {
+  value: number;
+  label: string;
+}
 
-export const ageEnums: UserAge[] = [
-  { key: 1, value: '全部' },
-  { key: 2, value: '<18' },
-  { key: 3, value: '18-25' },
-  { key: 4, value: '25-32' },
-  { key: 5, value: '32-40' },
-  { key: 6, value: '40-50' },
-  { key: 7, value: '>50' },
+export const ageEnums: Age[] = [
+  { value: 1, label: '全部' },
+  { value: 2, label: '<18' },
+  { value: 3, label: '18-25' },
+  { value: 4, label: '25-32' },
+  { value: 5, label: '32-40' },
+  { value: 6, label: '40-50' },
+  { value: 7, label: '>50' },
 ];

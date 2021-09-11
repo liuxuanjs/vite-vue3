@@ -3,15 +3,15 @@
     <div class="login-page-content">
       <div class="login-page-logo">D</div>
       <div class="login-page-title">DanceUP后台管理系统</div>
-      <a-form class="login-page-section" ref="formRef" :model="formState" :rules="rules">
-        <a-form-item name="mock1">
-          <a-input v-model:value="formState.mock1" placeholder="账号" size="large" allowClear />
-        </a-form-item>
-        <a-form-item name="mock2">
-          <a-input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
-        </a-form-item>
-      </a-form>
-      <a-button
+      <Form class="login-page-section" ref="formRef" :model="formState" :rules="rules">
+        <FormItem name="mock1">
+          <Input v-model:value="formState.mock1" placeholder="账号" size="large" allowClear />
+        </FormItem>
+        <FormItem name="mock2">
+          <Input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
+        </FormItem>
+      </Form>
+      <Button
         class="login-page-section login-page-button"
         type="primary"
         size="large"
@@ -20,7 +20,7 @@
         @click="onLogin"
       >
         登录
-      </a-button>
+      </Button>
     </div>
   </div>
 </template>
@@ -48,12 +48,7 @@
 
   export default defineComponent({
     name: 'Blank',
-    components: {
-      'a-form': Form,
-      'a-form-item': Form.Item,
-      'a-input': Input,
-      'a-button': Button,
-    },
+    components: { Form, FormItem: Form.Item, Input, Button },
     setup() {
       const formRef = ref();
       const formState: UnwrapRef<FormState> = reactive({
