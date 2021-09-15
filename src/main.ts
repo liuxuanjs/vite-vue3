@@ -5,6 +5,7 @@ import 'virtual:svg-icons-register';
 import { createApp } from 'vue';
 import App from './App.vue';
 
+// eslint-disable-next-line
 import { setupStore, store } from '/@/store';
 import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
@@ -39,8 +40,8 @@ async function bootstrap() {
 
 void bootstrap();
 
-// 加载用户信息数据和权限信息数据;
-if (location.pathname !== '/login') {
-  // store.dispatch('getAuthorities');
-  store.dispatch('getUserInfo');
-}
+// // 加载用户信息数据和权限信息数据;
+// if (location.pathname !== '/login') {
+//   // store.dispatch('getAuthorities');
+//   store.dispatch('getUserInfo');
+// }
