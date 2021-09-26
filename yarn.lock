@@ -7498,16 +7498,6 @@ through@2, "through@>=2.2.7 <3", through@^2.3.6, through@^2.3.8:
   resolved "https://registry.npmjs.org/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-tim-js-sdk@^2.13.1:
-  version "2.14.0"
-  resolved "https://registry.npmmirror.com/tim-js-sdk/download/tim-js-sdk-2.14.0.tgz#205cf17ee648019a21ed5472f1022b61ae8b6df2"
-  integrity sha1-IFzxfuZIAZoh7VRy8QIrYa6LbfI=
-
-tim-upload-plugin@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.nlark.com/tim-upload-plugin/download/tim-upload-plugin-1.0.3.tgz#7de5d1ae178b8b6d010d090342f6d0f1cb76f447"
-  integrity sha1-feXRrheLi20BDQkDQvbQ8ct29Ec=
-
 timed-out@^4.0.0, timed-out@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
