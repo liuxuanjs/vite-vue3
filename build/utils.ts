@@ -54,7 +54,7 @@ function getConfFiles() {
 }
 
 /**
- * Get the environment variables starting with the specified prefix
+ * 获取以指定前缀开始的环境变量
  * @param match prefix
  * @param confFiles ext
  */
@@ -78,7 +78,7 @@ export function getEnvConfig(match = 'VITE_GLOB_', confFiles = getConfFiles()) {
 }
 
 /**
- * Get user root directory
+ * 获取根目录
  * @param dir file path
  */
 export function getRootPath(...dir: string[]) {

@@ -8,27 +8,9 @@ import type {
 } from 'vue';
 
 declare global {
-  // const __APP_INFO__: {
-  //   pkg: {
-  //     name: string;
-  //     version: string;
-  //     dependencies: Recordable<string>;
-  //     devDependencies: Recordable<string>;
-  //   };
-  //   lastBuildTime: string;
-  // };
-  // declare interface Window {
-  //   // Global vue app instance
-  //   __APP__: App<Element>;
-  // }
-
   // vue
   declare type PropType<T> = VuePropType<T>;
   declare type VueNode = VNodeChild | JSX.Element;
-
-  // export type Writable<T> = {
-  //   -readonly [P in keyof T]: T[P];
-  // };
 
   declare type Nullable<T> = T | null;
   // declare type NonNullable<T> = T extends null | undefined ? never : T;
@@ -59,7 +41,6 @@ declare global {
   declare interface ViteEnv {
     VITE_PORT: number;
     VITE_USE_MOCK: boolean;
-    VITE_USE_PWA: boolean;
     VITE_PUBLIC_PATH: string;
     VITE_PROXY: [string, string][];
     VITE_GLOB_APP_TITLE: string;
@@ -67,6 +48,7 @@ declare global {
     VITE_DROP_CONSOLE: boolean;
     VITE_LEGACY: boolean;
     VITE_USE_IMAGEMIN: boolean;
+    VITE_GLOB_API_URL: boolean;
   }
 
   // declare function parseInt(s: string | number, radix?: number): number;
