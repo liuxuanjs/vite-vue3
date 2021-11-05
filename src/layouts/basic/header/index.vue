@@ -38,6 +38,7 @@
        * 不在导航栏菜单范围内的，都可以有返回键
        */
       const isGoBack = computed((): Boolean => {
+        if (!routeMap) return false;
         return !routeMap.get(route.path);
       });
 

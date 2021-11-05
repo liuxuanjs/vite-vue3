@@ -3,11 +3,11 @@
     <div class="home-page-content">
       <Row :gutter="[80, 48]" wrap>
         <Col :xs="24" :sm="24" :md="12" :xl="8" v-for="(item, index) in homeData" :key="index">
-          <div class="home-page-card" :style="{ background: item.bgc }" @click="onGoToDetail(item)">
+          <router-link class="home-page-card" :style="{ background: item.bgc }" :to="item.path">
             <div class="home-page-section-title">{{ item.name }}</div>
-            <div class="home-page-section-count">{{ item.count }}</div>
+            <div class="home-page-section-count">{{ item.count || 0 }}</div>
             <div class="home-page-section-desc">详情</div>
-          </div>
+          </router-link>
         </Col>
       </Row>
     </div>
@@ -15,53 +15,46 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent, reactive, toRefs, onMounted } from 'vue';
   import { Row, Col } from 'ant-design-vue';
-  import { useRouter } from 'vue-router';
 
+  import { homeApi } from '/@/api/home';
   import { UserStatisticsRoute, UserVitalityRoute } from '/@/router/routes/modules/user';
   import { DanceStatisticsRoute } from '/@/router/routes/modules/dance';
 
   export default defineComponent({
     name: 'Home',
-    components: {
-      Row,
-      Col,
-    },
+    components: { Row, Col },
     setup() {
       const state = reactive({
         homeData: [
-          {
-            name: '用户总量',
-            count: 1234,
-            bgc: 'rgb(13, 202, 175)',
-            path: UserStatisticsRoute.path,
-          },
-          {
-            name: '舞曲总量',
-            count: 1234,
-            bgc: 'rgb(24, 151, 232)',
-            path: DanceStatisticsRoute.path,
-          },
+          { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: UserStatisticsRoute.path },
+          { name: '舞曲总量', key: 'danceCount', bgc: '#1897E8', path: DanceStatisticsRoute.path },
           {
             name: '用户跳舞总次数',
-            count: 1234,
-            bgc: 'rgb(162, 84, 255)',
+            key: 'recordCount',
+            bgc: '#A254FF',
             path: DanceStatisticsRoute.path,
           },
-          { name: '日活', count: 1234, bgc: 'rgb(247, 121, 20)', path: UserVitalityRoute.path },
-          { name: '周活', count: 1234, bgc: 'rgb(228, 34, 238)', path: UserVitalityRoute.path },
-          { name: '月活', count: 1234, bgc: 'rgb(244, 62, 62)', path: UserVitalityRoute.path },
+          { name: '日活', key: 'dayCount', bgc: '#F77914', path: UserVitalityRoute.path },
+          { name: '周活', key: 'weekCount', bgc: '#E422EE', path: UserVitalityRoute.path },
+          { name: '月活', key: 'monthCount', bgc: '#F43E3E', path: UserVitalityRoute.path },
         ],
       });
 
-      const router = useRouter();
-
-      const onGoToDetail = ({ path }) => {
-        router.push({ path });
+      const getData = () => {
+        homeApi().then((res) => {
+          state.homeData = state.homeData.map((item) => {
+            return { ...item, count: res && res[item.key] };
+          });
+        });
       };
 
-      return { ...toRefs(state), onGoToDetail };
+      onMounted(() => {
+        getData();
+      });
+
+      return { ...toRefs(state) };
     },
   });
 </script>
@@ -76,10 +69,12 @@
     }
 
     .home-page-card {
+      display: block;
       height: 180px;
       position: relative;
       padding: 20px;
       cursor: pointer;
+      color: #fff;
     }
 
     .home-page-section-title {

@@ -4,11 +4,11 @@
       <div class="login-page-logo">D</div>
       <div class="login-page-title">DanceUP后台管理系统</div>
       <Form class="login-page-section" ref="formRef" :model="formState" :rules="rules">
-        <FormItem name="mock1">
-          <Input v-model:value="formState.mock1" placeholder="账号" size="large" allowClear />
+        <FormItem name="username">
+          <Input v-model:value="formState.username" placeholder="账号" size="large" allowClear />
         </FormItem>
-        <FormItem name="mock2">
-          <Input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
+        <FormItem name="pass">
+          <Input v-model:value="formState.pass" placeholder="密码" size="large" allowClear />
         </FormItem>
       </Form>
       <Button
@@ -16,7 +16,7 @@
         type="primary"
         size="large"
         block
-        :loading="loginLoading"
+        :loading="loding"
         @click="onLogin"
       >
         登录
@@ -26,56 +26,51 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, UnwrapRef, ref } from 'vue';
+  import { defineComponent, reactive, ref } from 'vue';
   import { Form, Input, Button } from 'ant-design-vue';
-  // import request from '@common/request';
+
+  import { useRoute } from 'vue-router';
+
+  import { loginApi } from '/@/api/user';
 
   interface FormState {
-    mock1: string;
-    mock2: string;
+    username?: string;
+    pass?: string;
   }
 
   const rules = {
-    // employeeNo: [
-    //   { required: true, message: '请输入员工编号', trigger: 'none' },
-    //   { pattern: /\d{8}/, message: '员工编号为8位数字', trigger: 'none' },
-    // ],
-    // mobileCode: [
-    //   { required: true, message: '请输入验证码', trigger: 'none' },
-    //   { pattern: /\d{6}/, message: '验证码为6位数字', trigger: 'none' },
-    // ],
+    username: [{ required: true, message: '请输入账号', trigger: 'none' }],
+    pass: [{ required: true, message: '请输入密码', trigger: 'none' }],
   };
 
   export default defineComponent({
-    name: 'Blank',
+    name: 'LoginPage',
     components: { Form, FormItem: Form.Item, Input, Button },
     setup() {
       const formRef = ref();
-      const formState: UnwrapRef<FormState> = reactive({
-        mock1: '',
-        mock2: '',
-      });
+      const formState = reactive({} as FormState);
+      const loding = ref(false);
+      const { query } = useRoute();
 
-      const loginLoading = ref(false);
+      const onLogin = () => {
+        formRef.value.validate().then((value) => {
+          loding.value = true;
+          loginApi(value)
+            .then((res) => {
+              console.log(res);
 
-      const onLogin = async () => {
-        try {
-          const validate = await formRef.value.validate();
-          console.log(validate);
-
-          loginLoading.value = true;
-        } catch (error) {
-          loginLoading.value = false;
-        }
+              // localStorage.setItem('token', data.token);
+              // this.loginLoading = false;
+              const { backUrl } = query;
+              window.location.replace(backUrl?.toString() || '/');
+            })
+            .finally(() => {
+              loding.value = false;
+            });
+        });
       };
 
-      return {
-        formRef,
-        formState,
-        rules,
-        loginLoading,
-        onLogin,
-      };
+      return { formRef, formState, rules, loding, onLogin };
     },
   });
 </script>
@@ -86,7 +81,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    background: rgba(230, 230, 230, 1);
+    background: rgb(230 230 230 / 100%);
     background-size: contain;
 
     .login-page-content {
@@ -106,9 +101,9 @@
       width: 70px;
       height: 70px;
       margin-bottom: 20px;
-      color: rgb(255, 255, 255);
+      color: rgb(255 255 255);
       font-size: 40px;
-      background: rgb(244, 0, 0);
+      background: rgb(244 0 0);
       border-radius: 8px;
     }
 

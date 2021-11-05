@@ -1,5 +1,7 @@
 <template>
-  <LayoutContent :style="{ flex: '1 1 auto', position: 'relative' }">
+  <LayoutContent
+    :style="{ flex: '1 1 auto', position: 'relative', display: 'flex', flexDirection: 'column' }"
+  >
     <router-view />
   </LayoutContent>
 </template>
@@ -15,5 +17,3 @@
     },
   });
 </script>
-
-<style lang="less"></style>

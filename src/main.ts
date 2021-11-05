@@ -1,24 +1,17 @@
-import '/@/design/index.less';
+import '/@/assets/style/index.less';
 
 import 'virtual:svg-icons-register';
 
 import { createApp } from 'vue';
 import App from './App.vue';
 
-// eslint-disable-next-line
-import { setupStore, store } from '/@/store';
+import { setupStore } from '/@/store';
 import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
-import { isDevMode, isProdMode } from './utils/env';
+import { isDevMode } from './utils/env';
 
 if (isDevMode()) {
-  await import('ant-design-vue/dist/antd.less');
-}
-
-// 生产环境自动跳转HTTPS访问
-if (isProdMode() && location.protocol === 'http:') {
-  location.protocol = 'https:';
-  throw Error('');
+  import('ant-design-vue/dist/antd.less');
 }
 
 async function bootstrap() {
@@ -33,15 +26,9 @@ async function bootstrap() {
   // 路由守卫
   setupRouterGuard(router);
 
-  await router.isReady();
+  // await router.isReady();
 
-  app.mount('#app', true);
+  app.mount('#app');
 }
 
-void bootstrap();
-
-// // 加载用户信息数据和权限信息数据;
-// if (location.pathname !== '/login') {
-//   // store.dispatch('getAuthorities');
-//   store.dispatch('getUserInfo');
-// }
+bootstrap();

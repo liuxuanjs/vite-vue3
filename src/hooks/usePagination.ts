@@ -14,17 +14,14 @@ const defultPagination: Pagination = {
   showTotal: (t) => `共 ${t} 条数据`,
 };
 
-export default function usePagination(option: Pagination = {}) {
-  const pagination = reactive({
-    ...defultPagination,
-    ...option,
-  });
+export default function usePagination(option?: Pagination) {
+  const pagination = reactive({ ...defultPagination, ...option });
 
   function onPageChange(page): void {
-    if (page.pageSize !== pagination.pageSize) {
-      pagination.current = 1;
-    } else {
+    if (page.pageSize === pagination.pageSize) {
       pagination.current = page.current;
+    } else {
+      pagination.current = 1;
     }
 
     page.pageSize && (pagination.pageSize = page.pageSize);

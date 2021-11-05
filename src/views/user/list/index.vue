@@ -1,14 +1,13 @@
 <template>
   <div class="dance-list">
-    <DanceListSidebar :menuList="typeList" :selectedKey="selectedMenuKey" @change="handleSelect" />
+    <DanceListSidebar :menuList="statusList" :selectedKey="status" @change="handleSelect" />
     <div class="dance-list-main">
       <div class="dance-list-section">
         <SearchFilter
           ref="formRef"
           :loading="loading"
           :configs="filterConfigs"
-          @on-search="handleSearch"
-          @set-default-value="setDefaultValue"
+          @onSearch="getList"
         />
       </div>
       <div class="dance-list-section">
@@ -26,102 +25,95 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, toRefs, createVNode } from 'vue';
+  import { defineComponent, reactive, ref, computed, toRefs, createVNode, onMounted } from 'vue';
   import { Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import usePagination from '/@/hooks/usePagination';
-  import { typeList } from '/@/enums/user/type';
+  import { statusList } from '../../../enums/user/status';
   import { genderEnums } from '/@/enums/user/gender';
   import { ageEnums } from '/@/enums/user/age';
   import { createUserListColumns } from './data';
+  import { getParams } from './adaptor';
+  import { getCustomerListApi, updateCustomerApi, deleteCustomerApi } from '/@/api/customer';
 
   import DanceListSidebar from './Sidebar.vue';
   import SearchFilter from '/@/components/SearchFilter/index.vue';
 
   export default defineComponent({
-    name: 'DanceList',
+    name: 'UserList',
     components: { Table, DanceListSidebar, SearchFilter },
     setup() {
-      const loading = ref<boolean>(false);
-      const selectedMenuKey = ref<number>(1);
-      const formRef = ref();
-      const tableState = reactive({ loading: false, dataSource: [] });
+      const status = ref<number>(0);
+      const formRef = ref<any>({});
+      const tableState = reactive({ loading: false as Boolean, dataSource: [] as any[] });
 
       const { pagination, onPageChange } = usePagination();
 
-      const getList = () => {};
+      const getList = () => {
+        const params = getParams(pagination, { ...formRef.value.formData, status: status.value });
 
-      /**
-       * 侧边栏选择
-       */
+        tableState.loading = true;
+
+        getCustomerListApi(params)
+          .then((res) => {
+            const { current, total, records } = res || {};
+            pagination.current = current;
+            pagination.total = total;
+            tableState.dataSource = records || [];
+          })
+          .finally(() => {
+            tableState.loading = false;
+          });
+      };
+
+      // 侧边栏选择
       const handleSelect = (v: number) => {
-        selectedMenuKey.value = v;
+        status.value = v;
+        pagination.current = 1;
+        getList();
       };
 
-      /**
-       * 搜索
-       */
-      const handleSearch = (params) => {
-        console.log('searchParams', params);
-      };
-
-      /**
-       * 翻页
-       */
+      // 翻页
       const onTableChange = (pagination) => {
         onPageChange(pagination);
         getList();
       };
 
-      const setDefaultValue = (params) => {
-        console.log('setParams', params);
+      // 更新用户状态
+      const handleEditUser = (record, disable) => {
+        updateCustomerApi({ id: record.id, disable }).then(() => {
+          getList();
+        });
       };
 
-      /**
-       * 禁用操作
-       */
-      const handleDisable = (record) => {
-        console.log('record===', record);
-      };
-
-      /**
-       * 解禁操作
-       */
-      const handleRelieve = (record) => {
-        console.log('record===', record);
-      };
-
-      /**
-       * 删除操作
-       */
+      // 删除操作
       const handleDelete = (record) => {
-        console.log('record===', record);
-
         Modal.confirm({
           title: '删除确认?',
           icon: createVNode(ExclamationCircleOutlined),
           content: '删除后不能恢复，确定要删除吗',
           okType: 'danger',
           onOk() {
-            console.log('OK');
+            deleteCustomerApi({ id: record.id }).then(() => {
+              getList();
+            });
           },
         });
       };
 
+      onMounted(() => {
+        getList();
+      });
+
       const columns = computed(() => {
-        return createUserListColumns({
-          selectedMenuKey,
-          handleDisable,
-          handleRelieve,
-          handleDelete,
-        });
+        return createUserListColumns(handleEditUser, handleDelete);
       });
 
       const filterConfigs = computed(() => {
         return [
           {
-            name: 'mock1',
+            name: 'sex',
             type: 'select',
             placeholder: '请选择性别',
             options: genderEnums,
@@ -129,7 +121,7 @@
             props: { showSearch: true },
           },
           {
-            name: 'mock2',
+            name: 'age',
             type: 'select',
             placeholder: '请选择年龄',
             options: ageEnums,
@@ -137,30 +129,26 @@
             props: { showSearch: true },
           },
           {
-            name: 'mock3',
+            name: 'userName',
             type: 'inputSearch',
             placeholder: '请输入用户名',
             formItemProps: { style: { flex: 1 } },
-            props: {
-              showSearch: true,
-            },
+            props: { showSearch: true },
           },
         ];
       });
 
       return {
         ...toRefs(tableState),
-        loading,
-        selectedMenuKey,
-        typeList,
+        status,
+        statusList,
         formRef,
         filterConfigs,
         columns,
         pagination,
         handleSelect,
-        handleSearch,
-        setDefaultValue,
         onTableChange,
+        getList,
       };
     },
   });
@@ -189,6 +177,13 @@
       .ant-form-item {
         margin: 0;
       }
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
   }
 </style>

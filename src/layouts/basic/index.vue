@@ -4,7 +4,7 @@
     <Layout :style="{ marginLeft: '210px' }">
       <BasicHeader />
       <BasicContent />
-      <BasicFooter />
+      <!-- <BasicFooter /> -->
     </Layout>
   </Layout>
 </template>
@@ -14,7 +14,7 @@
 
   import BasicHeader from './header/index.vue';
   import BasicContent from './content/index.vue';
-  import BasicFooter from './footer/index.vue';
+  // import BasicFooter from './footer/index.vue';
   import BasicSider from './sider/index.vue';
 
   export default defineComponent({
@@ -23,7 +23,7 @@
       Layout,
       BasicHeader,
       BasicContent,
-      BasicFooter,
+      // BasicFooter,
       BasicSider,
     },
   });

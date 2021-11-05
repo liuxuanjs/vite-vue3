@@ -1,4 +1,3 @@
-// @ts-check
 const { defineConfig } = require('eslint-define-config');
 
 module.exports = defineConfig({
@@ -74,5 +73,7 @@ module.exports = defineConfig({
         math: 'always',
       },
     ],
+    'vue/multi-word-component-names': 'off',
+    'vue/v-on-event-hyphenation': 'off',
   },
 });

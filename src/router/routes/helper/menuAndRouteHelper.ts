@@ -3,14 +3,14 @@ import type { AppRouteRecordRaw, Menu, RouteMap } from '../../types';
 const routeMap: RouteMap = new Map();
 
 function menuAndRouteHelper(
-  routes: AppRouteRecordRaw[] | undefined,
-  parentNode: AppRouteRecordRaw | null
-): [Menu[], AppRouteRecordRaw[], RouteMap | null] {
+  routes?: AppRouteRecordRaw[],
+  parentNode?: AppRouteRecordRaw,
+): [Menu[], AppRouteRecordRaw[], RouteMap?] {
   const currentMenus: Menu[] = [];
   const currentRoutes: AppRouteRecordRaw[] = [];
 
   if (!routes || !routes.length) {
-    return [currentMenus, currentRoutes, null];
+    return [currentMenus, currentRoutes];
   }
 
   routes.forEach((route: AppRouteRecordRaw) => {

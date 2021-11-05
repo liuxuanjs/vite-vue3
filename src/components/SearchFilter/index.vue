@@ -19,11 +19,11 @@
         <InputSearch
           v-model:value="formData[item.name]"
           :placeholder="item.placeholder"
-          @search="onSearch"
+          @search="handleSearch"
           v-bind="item.props"
         >
           <template #enterButton>
-            <Button @click="onSearch">搜索</Button>
+            <Button @click="handleSearch">搜索</Button>
           </template>
         </InputSearch>
       </template>
@@ -31,7 +31,7 @@
         <InputNumber
           :placeholder="item.placeholder"
           v-model:value="formData[item.name]"
-          @press-enter="onSearch"
+          @press-enter="handleSearch"
           v-bind="item.props"
         />
       </template>
@@ -74,30 +74,23 @@
         default: () => [],
       },
     },
-    emits: ['on-reset', 'on-search', 'set-default-value'],
+    emits: ['onSearch'],
     setup(props, { emit }) {
       const formRef = ref();
+
       const defaultData = props.configs.reduce(
         // @ts-ignore
-        (pre, cur) => ({ [cur.name]: cur.default || undefined, ...pre }),
-        {}
+        (pre, cur) => ({ [cur.name]: cur.defaultValue, ...pre }),
+        {},
       );
-
-      emit('set-default-value', defaultData);
 
       const formData = ref(defaultData);
 
-      const onSearch = async () => {
-        const validate = await formRef.value.validate();
-        emit('on-search', validate);
+      const handleSearch = (event) => {
+        emit('onSearch', event);
       };
 
-      const getParams = async () => {
-        const validate = await formRef.value.validate();
-        return validate;
-      };
-
-      return { formRef, formData, onSearch, getParams };
+      return { formRef, formData, handleSearch };
     },
   });
 </script>

@@ -1,7 +1,5 @@
 import type { AppRouteRecordRaw } from '../../types';
 
-// import MESSAGE from '/@/assets/svg/message-icon.svg';
-
 export const MessageRoute: AppRouteRecordRaw = {
   path: '/message',
   meta: {

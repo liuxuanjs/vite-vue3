@@ -28,8 +28,8 @@
         default: () => [],
       },
       selectedKey: {
-        type: Number as PropType<number>,
-        default: 0,
+        type: String as PropType<string>,
+        default: '',
       },
     },
     emits: ['change'],

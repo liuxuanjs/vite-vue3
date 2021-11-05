@@ -12,6 +12,7 @@ export interface UseEventParams {
   isDebounce?: boolean;
   wait?: number;
 }
+
 export function useEventListener({
   el = window,
   name,
@@ -45,7 +46,7 @@ export function useEventListener({
           });
         }
       },
-      { immediate: true }
+      { immediate: true },
     );
 
     remove = () => {

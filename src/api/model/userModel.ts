@@ -3,12 +3,7 @@
  */
 export interface LoginParams {
   username: string;
-  password: string;
-}
-
-export interface RoleInfo {
-  roleName: string;
-  value: string;
+  pass: string;
 }
 
 /**
@@ -16,8 +11,13 @@ export interface RoleInfo {
  */
 export interface LoginResultModel {
   userId: string | number;
-  token: string;
-  role: RoleInfo;
+}
+
+/**
+ * @description: User information interface parameters
+ */
+export interface UserInfoParams {
+  username?: string;
 }
 
 /**
@@ -34,34 +34,4 @@ export interface GetUserInfoModel {
   roleType: number;
   // 用户角色类型名
   roleName: string;
-}
-
-interface AuthoritiesItem {
-  // 用户id
-  userId: number;
-  // 用户角色类型
-  roleType: number;
-  // 用户角色类型名
-  roleName: string;
-  // 权限code
-  code: string;
-  // 权限名
-  authorityName: string;
-}
-
-/**
- * @description: Get user authorities return value
- */
-export interface GetAuthoritiesModel {
-  // 用户id
-  userId: number;
-  // 用户名
-  name: string;
-  // 用户手机号
-  mobile: string;
-  // 用户角色类型
-  roleType: number;
-  // 用户角色类型名
-  roleName: string;
-  userRoleAuthorityList: AuthoritiesItem[];
 }

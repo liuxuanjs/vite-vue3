@@ -1,7 +1,5 @@
 import type { AppRouteRecordRaw } from '../../types';
 
-// import ADMIN from '/@/assets/svg/admin-icon.svg';
-
 export const AdminRoute: AppRouteRecordRaw = {
   path: '/admin',
   meta: {

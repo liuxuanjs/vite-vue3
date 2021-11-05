@@ -52,7 +52,7 @@
       justify-content: center;
       align-items: center;
       font-size: 16px;
-      color: rgb(16, 16, 16);
+      color: rgb(16 16 16);
       line-height: 24px;
     }
 

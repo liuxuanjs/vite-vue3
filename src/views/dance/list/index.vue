@@ -1,14 +1,13 @@
 <template>
   <div class="dance-list">
-    <DanceListSidebar :menuList="typeList" :selectedKey="selectedMenuKey" @change="handleSelect" />
+    <DanceListSidebar :menuList="statusList" :selectedKey="status" @change="handleSelect" />
     <div class="dance-list-main">
       <div class="dance-list-section">
         <SearchFilter
           ref="formRef"
           :loading="loading"
           :configs="filterConfigs"
-          @on-search="handleSearch"
-          @set-default-value="setDefaultValue"
+          @onSearch="getList"
         />
       </div>
       <div class="dance-list-section">
@@ -21,90 +20,144 @@
           @change="onTableChange"
         />
       </div>
+
+      <Modal
+        v-model:visible="visible"
+        title="编辑"
+        :width="600"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      >
+        <videoPlay v-if="modalInfo" width="auto" height="310.5px" :src="modalInfo.danceUrl" />
+        <Form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" :style="{ marginTop: '24px' }">
+          <FormItem name="mock1" label="难度">
+            <Rate />
+          </FormItem>
+          <FormItem name="mock1" label="风格">
+            <RadioGroup>
+              <RadioButton value="a">日</RadioButton>
+              <RadioButton value="b">周</RadioButton>
+              <RadioButton value="c">月</RadioButton>
+            </RadioGroup>
+          </FormItem>
+          <!-- <FormItem name="mock2">
+            <Input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
+          </FormItem> -->
+        </Form>
+      </Modal>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, toRefs, createVNode } from 'vue';
-  import { Table, Modal } from 'ant-design-vue';
+  import { defineComponent, reactive, ref, computed, toRefs, createVNode, onMounted } from 'vue';
+  import { Table, Modal, Form, Rate, Radio } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
+  import 'vue3-video-play/dist/style.css';
+  import { videoPlay } from 'vue3-video-play';
+
+  import { deleteDanceApi, getDanceListApi, updateDanceApi } from '/@/api/dance';
   import usePagination from '/@/hooks/usePagination';
   import { difficultyEnum } from '/@/enums/dance/difficulty';
   import { styleEnum } from '/@/enums/dance/style';
-  import { typeList } from '/@/enums/dance/type';
+  import { statusList } from '/@/enums/dance/status';
   import { createDanceListColumns } from './data';
+  import { getParams } from './adaptor';
 
   import DanceListSidebar from './Sidebar.vue';
   import SearchFilter from '/@/components/SearchFilter/index.vue';
 
+  interface DanceData {
+    records?: any[];
+    current: number;
+    total: number;
+  }
+
   export default defineComponent({
     name: 'DanceList',
-    components: { Table, DanceListSidebar, SearchFilter },
+    components: {
+      Table,
+      DanceListSidebar,
+      SearchFilter,
+      Modal,
+      videoPlay,
+      Form,
+      FormItem: Form.Item,
+      Rate,
+      RadioGroup: Radio.Group,
+      RadioButton: Radio.Button,
+    },
     setup() {
-      const loading = ref<boolean>(false);
-      const selectedMenuKey = ref<number>(1);
-      const formRef = ref();
-      const tableState = reactive({ loading: false, dataSource: [] });
+      const status = ref<string>('');
+      const formRef = ref<any>({});
+      const tableState = reactive({ loading: false as Boolean, dataSource: [] as any[] });
+      const visible = ref<boolean>(false);
+      const modalInfo = ref();
 
       const { pagination, onPageChange } = usePagination();
 
-      const getList = () => {};
+      const getList = () => {
+        const params = getParams(pagination, formRef.value.formData, status.value);
 
-      /**
-       * 侧边栏选择
-       */
-      const handleSelect = (v: number) => {
-        selectedMenuKey.value = v;
+        tableState.loading = true;
+
+        getDanceListApi(params)
+          .then((res: DanceData) => {
+            const { current, total, records } = res || {};
+            pagination.current = current;
+            pagination.total = total;
+            tableState.dataSource = records || [];
+          })
+          .finally(() => {
+            tableState.loading = false;
+          });
       };
 
-      /**
-       * 搜索
-       */
-      const handleSearch = (params) => {
-        console.log('searchParams', params);
-      };
-
-      /**
-       * 翻页
-       */
-      const onTableChange = (pagination) => {
-        onPageChange(pagination);
+      // 侧边栏选择
+      const handleSelect = (v: string) => {
+        status.value = v;
+        pagination.current = 1;
         getList();
       };
 
-      const setDefaultValue = (params) => {
-        console.log('setParams', params);
+      // 翻页
+      const onTableChange = (pagination) => {
+        onPageChange(pagination);
+        getList();
+        console.log(updateDanceApi);
       };
 
-      /**
-       * 下架操作
-       */
+      // 更新舞曲状态
+      // const handleEditDance = (record, status) => {
+      //   updateDanceApi({ id: record.id, status }).then(() => {
+      //     getList();
+      //   });
+      // };
+
+      // 下架操作
       const handleDelisting = (record) => {
         console.log('record===', record);
       };
 
-      /**
-       * 编辑操作
-       */
+      // 编辑操作
       const handleEdit = (record) => {
         console.log('record===', record);
+        visible.value = true;
+        modalInfo.value = record;
       };
 
-      /**
-       * 删除操作
-       */
+      // 删除操作
       const handleDelete = (record) => {
-        console.log('record===', record);
-
         Modal.confirm({
           title: '删除确认?',
           icon: createVNode(ExclamationCircleOutlined),
           content: '删除后不能恢复，确定要删除吗',
           okType: 'danger',
           onOk() {
-            console.log('OK');
+            deleteDanceApi({ id: record.id }).then(() => {
+              getList();
+            });
           },
         });
       };
@@ -116,9 +169,19 @@
         console.log('record===', record);
       };
 
+      const handleOk = () => {};
+      const handleCancel = () => {
+        visible.value = false;
+        modalInfo.value = null;
+      };
+
+      onMounted(() => {
+        getList();
+      });
+
       const columns = computed(() => {
         return createDanceListColumns({
-          selectedMenuKey,
+          status,
           handleDelisting,
           handleEdit,
           handleDelete,
@@ -129,7 +192,7 @@
       const filterConfigs = computed(() => {
         return [
           {
-            name: 'mock1',
+            name: 'difficulty',
             type: 'select',
             placeholder: '请选择舞曲难度',
             options: difficultyEnum,
@@ -137,7 +200,7 @@
             props: { showSearch: true },
           },
           {
-            name: 'mock2',
+            name: 'style',
             type: 'select',
             placeholder: '请选择舞曲风格',
             options: styleEnum,
@@ -145,7 +208,7 @@
             props: { showSearch: true },
           },
           {
-            name: 'mock3',
+            name: 'name',
             type: 'inputSearch',
             placeholder: '请输入歌曲名或作者',
             formItemProps: { style: { flex: 1 } },
@@ -158,17 +221,19 @@
 
       return {
         ...toRefs(tableState),
-        loading,
-        selectedMenuKey,
-        typeList,
+        status,
+        statusList,
         formRef,
         filterConfigs,
         columns,
         pagination,
+        visible,
+        modalInfo,
         handleSelect,
-        handleSearch,
-        setDefaultValue,
         onTableChange,
+        handleOk,
+        handleCancel,
+        getList,
       };
     },
   });
@@ -197,6 +262,12 @@
       .ant-form-item {
         margin: 0;
       }
+    }
+
+    .music-image {
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
     }
   }
 </style>

@@ -13,7 +13,7 @@ export function configVisualizerConfig() {
       open: true,
       gzipSize: true,
       brotliSize: true,
-    }) as Plugin;
+    });
   }
   return [];
 }

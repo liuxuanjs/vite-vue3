@@ -68,6 +68,6 @@
   .analysisLine-head {
     display: flex;
     justify-content: space-between;
-    padding: 30px 30px 0 30px;
+    padding: 30px 30px 0;
   }
 </style>

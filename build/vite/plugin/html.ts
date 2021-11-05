@@ -23,9 +23,10 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
     minify: isBuild,
     inject: {
       // 注入ejs模板的数据
-      injectData: {
+      data: {
         title: VITE_GLOB_APP_TITLE,
       },
+      // 嵌入生成的app.config.js文件
       tags: isBuild
         ? [
             {

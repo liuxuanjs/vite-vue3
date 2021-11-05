@@ -10,7 +10,7 @@ import { useEventListener } from '/@/hooks/useEventListener';
 
 export function useECharts(
   elRef: Ref<HTMLDivElement>,
-  theme: 'light' | 'dark' | 'default' = 'light'
+  theme: 'light' | 'dark' | 'default' = 'light',
 ) {
   let chartInstance: echarts.ECharts | null = null;
   let resizeFn: Fn = resize;

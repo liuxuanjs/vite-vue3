@@ -69,7 +69,7 @@
   }
 
   .basic-sider-top-text {
-    color: rgba(255, 255, 255, 0.65);
+    color: rgb(255 255 255 / 65%);
   }
 
   .basic-sider-top-text:hover {

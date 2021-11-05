@@ -97,9 +97,9 @@ yarn build
 ├── src # 主目录
 │   ├── api # 接口文件
 │   ├── assets # 资源文件
+│   │   ├── fonts # 字体图标文件夹
 │   │   ├── icons # icon sprite 图标文件夹
-│   │   ├── images # 项目存放图片的文件夹
-│   │   └── svg # 项目存放svg图片的文件夹
+│   │   └── images # 项目存放图片的文件夹
 │   ├── components # 公共组件
 │   ├── design # 样式文件
 │   ├── enums # 枚举/常量

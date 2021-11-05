@@ -1,50 +1,39 @@
-import type { Ref } from 'vue';
-
 import { Space, Button } from 'ant-design-vue';
 
-export function createUserListColumns({
-  selectedMenuKey,
-  handleDisable,
-  handleRelieve,
-  handleDelete,
-}: {
-  selectedMenuKey: Ref<number>;
-  handleDisable: Fn;
-  handleRelieve: Fn;
-  handleDelete: Fn;
-}) {
+import Avatar from '/@/components/Avatar/index.vue';
+
+export function createUserListColumns(handleEditUser: Fn, handleDelete: Fn) {
   return [
     {
       title: '用户id',
-      dataIndex: 'mock10',
+      dataIndex: 'id',
     },
     {
       title: '头像',
-      dataIndex: 'mock11',
+      dataIndex: 'profilePhoto',
+      customRender: ({ record }) => {
+        return <Avatar class="user-avatar" src={record.profilePhoto} type="C2C" />;
+      },
     },
     {
       title: '用户名',
-      dataIndex: 'mock12',
-    },
-    {
-      title: '舞者等级',
-      dataIndex: 'mock13',
+      dataIndex: 'nickName',
     },
     {
       title: '性别',
-      dataIndex: 'mock14',
+      dataIndex: 'sex',
     },
     {
       title: '生日',
-      dataIndex: 'mock15',
+      dataIndex: 'birthday',
     },
     {
       title: '跳舞次数',
-      dataIndex: 'mock16',
+      dataIndex: 'danceCount',
     },
     {
       title: '注册时间',
-      dataIndex: 'mock17',
+      dataIndex: 'insertTime',
     },
     {
       title: '操作',
@@ -52,11 +41,10 @@ export function createUserListColumns({
       customRender: ({ record }) => {
         return (
           <Space>
-            {selectedMenuKey.value === 1 && (
-              <Button onClick={() => handleDisable(record)}>禁用</Button>
-            )}
-            {selectedMenuKey.value === 2 && (
-              <Button type="primary" ghost onClick={() => handleRelieve(record)}>
+            {record.disable ? (
+              <Button onClick={() => handleEditUser(record, false)}>禁用</Button>
+            ) : (
+              <Button type="primary" ghost onClick={() => handleEditUser(record, true)}>
                 解禁
               </Button>
             )}

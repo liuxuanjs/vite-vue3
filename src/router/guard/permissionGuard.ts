@@ -30,7 +30,8 @@ function checkAuthority(authority) {
     return true;
   }
 
-  const authorities = store.state.authorities;
+  // @ts-ignore
+  const { authorities } = store.state;
 
   if (!authorities) {
     return true;
