@@ -67,6 +67,7 @@ module.exports = {
       ],
       { severity: 'warning' },
     ],
+    'keyframes-name-pattern': null,
   },
   ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
   overrides: [
