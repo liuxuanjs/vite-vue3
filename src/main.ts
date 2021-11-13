@@ -5,7 +5,7 @@ import 'virtual:svg-icons-register';
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import { setupStore } from '/@/store';
+import { setupStore, store } from '/@/store';
 import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
 import { isDevMode } from './utils/env';
@@ -32,3 +32,8 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+// 加载用户信息
+if (location.pathname !== '/login') {
+  store.dispatch('getUserInfo');
+}

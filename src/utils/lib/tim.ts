@@ -15,3 +15,34 @@ tim.setLogLevel(0); // 普通级别，日志量较多，接入时建议使用
 // 注册腾讯云即时通信 IM 上传插件
 tim.registerPlugin({ 'tim-upload-plugin': TIMUploadPlugin });
 export default tim;
+
+// // 引入
+// import TimSdk from 'tim-js-sdk';
+
+// /**
+//  * 创建SDK实例
+//  * SDKAppID在腾讯云上申请，在后台接口获取
+//  */
+// const tim = TimSdk.create({SDKAppID: SDKAppID});
+
+// // 日志级别 开发0 生产1
+// tim.setLogLevel(1);
+
+// // 注册 cos，在 login 前调用，以支持文件上传腾讯云对象存储
+// tim.registerPlugin({ 'cos-js-sdk': CosSdk });
+
+// /**
+//  * 进行事件的监听
+//  * 事件监听咬在登录之前
+//  * tim事件：https://web.sdk.qcloud.com/im/doc/zh-cn//SDK.html#on
+//  */
+
+// tim.on('even', () => {})
+// /**
+//  * 登录
+//  * userId、userSig从后台接口获取
+//  */
+// tim.login({
+// 	userID: userId,
+// 	userSig: userSig
+// })

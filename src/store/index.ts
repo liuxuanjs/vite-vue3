@@ -7,7 +7,6 @@ import { getUserInfoApi } from '/@/api/user';
 const store = createStore({
   state: (): AppState => ({
     userInfo: null,
-    authorities: null,
   }),
   mutations: {
     setUserInfo(state, userInfo) {

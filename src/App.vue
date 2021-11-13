@@ -15,9 +15,7 @@
       ConfigProvider,
     },
     setup() {
-      return {
-        zhCN,
-      };
+      return { zhCN };
     },
   });
 </script>

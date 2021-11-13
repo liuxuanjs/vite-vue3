@@ -56,11 +56,18 @@
         formRef.value.validate().then((value) => {
           loding.value = true;
           loginApi(value)
-            .then((res) => {
-              console.log(res);
+            .then(() => {
+              // 后台先写死用户信息
+              // localStorage.setItem('userId', 'administrator');
+              // localStorage.setItem('username', value.username);
+              localStorage.setItem(
+                'userInfo',
+                JSON.stringify({
+                  userId: 'administrator',
+                  username: value.username,
+                }),
+              );
 
-              // localStorage.setItem('token', data.token);
-              // this.loginLoading = false;
               const { backUrl } = query;
               window.location.replace(backUrl?.toString() || '/');
             })

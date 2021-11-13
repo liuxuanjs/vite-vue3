@@ -6,8 +6,8 @@
         <div class="basic-header-text">返回</div>
       </div>
     </div>
-    <div class="basic-header-section basic-header-section-user">
-      <div>欢迎你，admin</div>
+    <div class="basic-header-section basic-header-section-user" v-if="userInfo">
+      <div>欢迎你，{{ userInfo.username }}</div>
       <div class="basic-header-log-out" @click="onLogOut">退出</div>
     </div>
   </LayoutHeader>
@@ -17,11 +17,12 @@
   import { defineComponent, computed } from 'vue';
   import { Layout } from 'ant-design-vue';
   import { ArrowLeftOutlined } from '@ant-design/icons-vue';
-
   import { useRoute, useRouter } from 'vue-router';
+  import { useStore } from 'vuex';
 
   import { routeMap } from '/@/router/routes';
   import { LoginRoute } from '/@/router/routes/basic';
+  import { logoutApi } from '/@/api/user';
 
   export default defineComponent({
     name: 'BasicHeader',
@@ -33,6 +34,9 @@
     setup() {
       const route = useRoute();
       const router = useRouter();
+      const store = useStore();
+
+      const userInfo = computed(() => store.state.userInfo);
 
       /**
        * 不在导航栏菜单范围内的，都可以有返回键
@@ -53,11 +57,13 @@
        * 退出登陆
        */
       const onLogOut = () => {
-        localStorage.removeItem('token');
-        location.href = LoginRoute.path;
+        logoutApi().then(() => {
+          localStorage.removeItem('userInfo');
+          location.href = LoginRoute.path;
+        });
       };
 
-      return { isGoBack, onGoBack, onLogOut };
+      return { isGoBack, onGoBack, onLogOut, userInfo };
     },
   });
 </script>

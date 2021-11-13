@@ -27,11 +27,12 @@ export interface GetUserInfoModel {
   // 用户id
   userId: number;
   // 用户名
-  name: string;
-  // 用户手机号
-  mobile: string;
-  // 用户角色类型
-  roleType: number;
-  // 用户角色类型名
-  roleName: string;
+  userName: string;
+}
+
+/**
+ * @description: User Sig interface parameters
+ */
+export interface UserSigParams {
+  userId: string;
 }

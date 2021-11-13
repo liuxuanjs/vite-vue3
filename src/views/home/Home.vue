@@ -5,7 +5,7 @@
         <Col :xs="24" :sm="24" :md="12" :xl="8" v-for="(item, index) in homeData" :key="index">
           <router-link class="home-page-card" :style="{ background: item.bgc }" :to="item.path">
             <div class="home-page-section-title">{{ item.name }}</div>
-            <div class="home-page-section-count">{{ item.count || 0 }}</div>
+            <div class="home-page-section-count">{{ item.count }}</div>
             <div class="home-page-section-desc">详情</div>
           </router-link>
         </Col>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, onMounted } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
   import { Row, Col } from 'ant-design-vue';
 
   import { homeApi } from '/@/api/home';
@@ -26,35 +26,33 @@
     name: 'Home',
     components: { Row, Col },
     setup() {
-      const state = reactive({
-        homeData: [
-          { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: UserStatisticsRoute.path },
-          { name: '舞曲总量', key: 'danceCount', bgc: '#1897E8', path: DanceStatisticsRoute.path },
-          {
-            name: '用户跳舞总次数',
-            key: 'recordCount',
-            bgc: '#A254FF',
-            path: DanceStatisticsRoute.path,
-          },
-          { name: '日活', key: 'dayCount', bgc: '#F77914', path: UserVitalityRoute.path },
-          { name: '周活', key: 'weekCount', bgc: '#E422EE', path: UserVitalityRoute.path },
-          { name: '月活', key: 'monthCount', bgc: '#F43E3E', path: UserVitalityRoute.path },
-        ],
-      });
+      const homeData = ref([
+        { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: UserStatisticsRoute.path },
+        { name: '舞曲总量', key: 'danceCount', bgc: '#1897E8', path: DanceStatisticsRoute.path },
+        {
+          name: '用户跳舞总次数',
+          key: 'recordCount',
+          bgc: '#A254FF',
+          path: DanceStatisticsRoute.path,
+        },
+        { name: '日活', key: 'dayCount', bgc: '#F77914', path: UserVitalityRoute.path },
+        { name: '周活', key: 'weekCount', bgc: '#E422EE', path: UserVitalityRoute.path },
+        { name: '月活', key: 'monthCount', bgc: '#F43E3E', path: UserVitalityRoute.path },
+      ]);
 
-      const getData = () => {
-        homeApi().then((res) => {
-          state.homeData = state.homeData.map((item) => {
-            return { ...item, count: res && res[item.key] };
-          });
-        });
+      const getData = async () => {
+        const data = await homeApi();
+        homeData.value = homeData.value.map((item) => ({
+          ...item,
+          count: (data && data[item.key]) || 0,
+        }));
       };
 
       onMounted(() => {
         getData();
       });
 
-      return { ...toRefs(state) };
+      return { homeData };
     },
   });
 </script>

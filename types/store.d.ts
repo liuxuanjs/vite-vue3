@@ -1,12 +1,8 @@
 export interface UserInfo {
-  userId: number;
-  name: string;
-  mobile: string;
-  roleType: number;
-  roleName: string;
+  userId: string;
+  userNname: string;
 }
 
 export interface AppState {
   userInfo: Nullable<UserInfo>;
-  authorities: string[];
 }

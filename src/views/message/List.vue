@@ -3,34 +3,58 @@
     <Col :xs="10" :sm="10" :md="8" :lg="8" :xl="7" class="user-list-col1">
       <div class="user-list-left">
         <div class="header-bar">
-          <button class="header-bar-btn">
+          <button class="header-bar-btn" @click="onShowModal">
             <i class="iconfont iconfont-add"></i>
           </button>
-          <button class="header-bar-btn">
+          <button class="header-bar-btn" @click="getChatList">
             <i class="iconfont iconfont-refresh"></i>
           </button>
         </div>
         <div class="scroll-container">
-          <div class="conversation">
-            <div class="close-btn">
+          <div
+            v-for="(item, index) in chatList"
+            :key="index"
+            @click="
+              getChatDetail(
+                item.conversationID,
+                item.userProfile.userID,
+                item.userProfile.avatar,
+                item.userProfile.nick,
+              )
+            "
+            :class="['conversation', item.conversationID == activeId && 'conversation-active']"
+          >
+            <div
+              class="close-btn"
+              @click="
+                (e) =>
+                  deleteChat(
+                    e,
+                    item.conversationID,
+                    item.userProfile.nick || item.userProfile.userID,
+                  )
+              "
+            >
               <i class="iconfont iconfont-close"></i>
             </div>
             <div class="conversation-main">
-              <Avatar class="user-avatar" type="C2C" />
+              <Avatar class="user-avatar" type="C2C" :src="item.userProfile.avatar" />
               <div class="conversation-content">
                 <div class="content-row">
-                  <div class="name text-ellipsis">测试</div>
+                  <div class="name text-ellipsis">
+                    {{ item.userProfile.nick || item.userProfile.userID }}
+                  </div>
                   <div class="unread-count">
-                    <!-- <span class="badge" v-if="showUnreadCount">
-                      {{ conversation.unreadCount > 99 ? '99+' : conversation.unreadCount }}
-                    </span> -->
+                    <span class="badge" v-if="item.unreadCount > 0">
+                      {{ item.unreadCount > 99 ? '99+' : item.unreadCount }}
+                    </span>
                   </div>
                 </div>
                 <div class="content-row2">
                   <div class="summary">
-                    <div class="text-ellipsis">33333333333333333333333333333</div>
+                    <div class="text-ellipsis">{{ item.lastMessage.messageForShow }}</div>
                   </div>
-                  <div class="date">2021-09-17</div>
+                  <div class="date">{{ formatDate(item.lastMessage.lastTime) }}</div>
                 </div>
               </div>
             </div>
@@ -39,45 +63,33 @@
       </div>
     </Col>
     <Col :xs="14" :sm="14" :md="16" :lg="16" :xl="17" class="user-list-col2">
-      <div class="user-list-right">
-        <div class="header">测试</div>
-        <div class="content">
-          <div class="message-list">
-            <!-- <div class="more" v-if="!isCompleted">
-              <Button type="text">查看更多</Button>
+      <div class="user-list-right" v-if="chatDetail">
+        <div class="header" v-if="currentChatName">{{ currentChatName }}</div>
+        <div class="right-main">
+          <div class="content" ref="messageRef">
+            <div class="no-more" v-if="chatDetail.isCompleted">没有更多了</div>
+            <div class="more" v-else>
+              <Button type="text" @click="seeMore()">查看更多</Button>
             </div>
-            <div class="no-more" v-else>没有更多了</div> -->
-            <div class="no-more">没有更多了</div>
             <div class="message-wrapper">
-              <div class="message-left">
+              <div
+                v-for="(item, index) in chatDetail.messageList"
+                :key="index"
+                :class="item.to !== currentUserId ? 'message-left' : 'message-right'"
+              >
                 <div class="col-1">
-                  <Avatar class="user-avatar" type="C2C" />
+                  <Avatar class="user-avatar" type="C2C" :src="currentAvatar" />
                 </div>
                 <div class="col-2">
                   <div class="base">
-                    <div class="base-name text-ellipsis">测试</div>
-                    <div class="date">2021-09-17 17:13</div>
+                    <div class="base-name text-ellipsis">{{ currentChatName }}</div>
+                    <div class="date">{{ formatDate(item.time) }}</div>
                   </div>
                   <div class="content-wrapper">
                     <div class="message-content message-received">
-                      <span class="text-box">您好，我是示例客服～</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="message-right">
-                <div class="col-1">
-                  <Avatar class="user-avatar" type="C2C" />
-                </div>
-                <div class="col-2">
-                  <div class="base">
-                    <div class="base-name text-ellipsis">我</div>
-                    <div class="date">2021-09-17 17:13</div>
-                  </div>
-                  <div class="content-wrapper">
-                    <div class="message-content message-received">
-                      <span class="text-box">您好，我是示例客服～</span>
+                      <span class="text-box" v-if="item.type == 'TIMTextElem'">
+                        {{ item.payload.text }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -87,7 +99,7 @@
         </div>
         <div class="footer" :style="{ background: focus ? '#fff' : '' }">
           <div class="message-send-box-wrapper">
-            <div class="send-header-bar">
+            <div class="send-header-bar" @click="handleSendImageClick">
               <i class="btn-send-icon iconfont iconfont-tupian"></i>
             </div>
             <div class="send-bottom">
@@ -96,84 +108,408 @@
                 class="text-input"
                 @focus="focus = true"
                 @blur="focus = false"
+                v-model:value="messageText"
+                @pressEnter="messageSendlisten"
               />
-              <Tooltip title="按Enter发送消息，Ctrl+Enter换行" placement="left">
-                <div class="btn-send">
+              <!-- <Tooltip title="按Enter发送消息，Ctrl+Enter换行" placement="left">
+                <div class="btn-send" @click="sendMessage">
                   <i class="iconfont iconfont-send"></i>
                 </div>
-              </Tooltip>
+              </Tooltip> -->
             </div>
           </div>
         </div>
       </div>
     </Col>
   </Row>
+  <input
+    type="file"
+    id="imagePicker"
+    ref="imagePicker"
+    accept=".jpg, .jpeg, .png, .gif, .bmp"
+    @change="sendImage"
+    style="display: none"
+  />
+  <Modal v-model:visible="visible" title="快速发起会话" @ok="handleOk" :width="350">
+    <Input v-model:value="searchId" placeholder="请输入用户ID" />
+  </Modal>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
-  import { Row, Col, Button, Input, Tooltip } from 'ant-design-vue';
-
-  // import TIM from 'tim-js-sdk';
-  // import tim from '/@/utils/lib/tim';
+  import { defineComponent, ref, onMounted, nextTick, onUnmounted, computed } from 'vue';
+  import { Row, Col, Button, Input, Tooltip, message, Modal } from 'ant-design-vue';
+  import tim from '/@/utils/lib/tim';
+  import TIM from 'tim-js-sdk';
+  import { useStore } from 'vuex';
 
   import Avatar from '/@/components/Avatar/index.vue';
-
-  // export default {
-  //   name: 'MessageList',
-  //   // eslint-disable-next-line
-  //   components: { Row, Col, Button, Avatar, TextArea: Input.TextArea, Tooltip },
-  //   data() {
-  //     return {
-  //       focus: false,
-  //     };
-  //   },
-
-  //   mounted() {
-  //     // 初始化监听器
-  //     this.initListener();
-  //   },
-
-  //   methods: {
-  //     initListener() {
-  //       // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
-  //       tim.on(TIM.EVENT.SDK_READY, this.onReadyStateUpdate, this);
-  //       // SDK NOT READT
-  //       tim.on(TIM.EVENT.SDK_NOT_READY, this.onReadyStateUpdate, this);
-  //     },
-
-  //     onReadyStateUpdate({ name }) {
-  //       console.log('name===', name);
-  //     },
-  //   },
-  // };
+  import { getUserSigApi } from '/@/api/user';
+  import moment from 'moment';
 
   export default defineComponent({
     name: 'MessageList',
     // eslint-disable-next-line
-    components: { Row, Col, Button, Avatar, TextArea: Input.TextArea, Tooltip },
+    components: { Row, Col, Button, Avatar, TextArea: Input.TextArea, Tooltip, Modal, Input },
     setup() {
-      const focus = ref(false);
+      const userSig = ref(''); // 用户登录即时通信 IM 的密码
+      const chatList = ref([]); //会话列表
+      const chatDetail = ref<any>(null); //会话具体信息
+      const currentUserId = ref(''); // 当前会话人 userid
+      const currentAvatar = ref(''); // 当前会话人头像
+      const currentChatName = ref(''); // 当前会话人名字
+      const activeId = ref(''); // 选中的会话id
+      const messageRef = ref();
+      const focus = ref(false); // 文本框聚焦
+      const messageText = ref(''); // 文本框输入内容
+      const visible = ref(false);
+      const searchId = ref('');
+      const imagePicker = ref();
 
-      // const onReadyStateUpdate = ({ name }) => {
-      //   console.log('name===', name);
+      const store = useStore();
+
+      const userInfo = computed(() => store.state.userInfo);
+
+      // 自动保持在最底部
+      const setMessageBelow = () => {
+        nextTick(() => {
+          if (messageRef.value) {
+            messageRef.value.scrollTop = messageRef.value.scrollHeight;
+          }
+        });
+      };
+
+      // 消息已读
+      const setMessageRead = (id) => {
+        tim
+          .setMessageRead({ conversationID: id })
+          .then(function (imResponse) {
+            // 已读上报成功，指定 ID 的会话的 unreadCount 属性值被置为0
+            console.log('消息已读imResponse===', imResponse);
+          })
+          .catch(function (imError) {
+            // 已读上报失败
+            console.warn('setMessageRead error:', imError);
+          });
+      };
+
+      // 获取会话列表
+      const getChatList = () => {
+        tim
+          .getConversationList()
+          .then(function (imResponse) {
+            chatList.value = imResponse.data.conversationList;
+          })
+          .catch((imError) => {
+            console.log(imError);
+          });
+      };
+
+      // 获取会话详情
+      const getChatDetail = (conversationID, userID, avatar, chatName) => {
+        if (userID === currentUserId.value) return;
+
+        chatDetail.value = null;
+        currentUserId.value = userID;
+        currentAvatar.value = avatar;
+        activeId.value = conversationID;
+        currentChatName.value = chatName || userID;
+
+        tim
+          .getMessageList({
+            conversationID: conversationID,
+            count: 15,
+          })
+          .then(function (imResponse) {
+            // @ts-ignore
+            chatDetail.value = {
+              messageList: imResponse.data.messageList, // 消息列表。
+              nextReqMessageID: imResponse.data.nextReqMessageID, // 用于续拉，分页续拉时需传入该字段。
+              isCompleted: imResponse.data.isCompleted, // 表示是否已经拉完所有消息。
+              userID, // 点击进去的用户id。
+              conversationID,
+            };
+            setMessageBelow();
+            setMessageRead(conversationID);
+          });
+      };
+
+      // 删除会话
+      const deleteChat = (e, id, name) => {
+        // 停止冒泡，避免和点击会话的事件冲突
+        e.stopPropagation();
+
+        tim
+          .deleteConversation(id)
+          .then(() => {
+            // @ts-ignore
+            chatList.value = chatList.value.filter((item) => item.conversationID !== id);
+            chatDetail.value = null;
+            message.success(`会话【${name}】删除成功!`);
+            // currentConversation
+          })
+          .catch((error) => {
+            message.error(`会话【${name}】删除失败!, error=${error.message}`);
+          });
+      };
+
+      // const pushCurrentMessageList = (newData) => {
+      //   if (chatDetail.value.messageList) {
+      //     if (Array.isArray(newData)) {
+      //       const result = newData.filter(
+      //         (item) => item.ID === state.currentConversation.conversationID,
+      //       );
+      //     }
+      //   }
       // };
 
-      // onMounted(() => {
-      //   tim.login({ userID: 1 }).then(() => {
-      //     // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
-      //     tim.on(TIM.EVENT.SDK_READY, onReadyStateUpdate);
-      //   });
-      // });
+      // 发送消息
+      const sendMessage = () => {
+        if (messageText.value.split(' ').join('').length == 0) return;
 
-      return { focus };
+        const message = tim.createTextMessage({
+          // @ts-ignore
+          to: (chatDetail.value && chatDetail.value.userID) || currentUserId.value,
+          conversationType: TIM.TYPES.CONV_C2C,
+          payload: {
+            text: messageText.value,
+          },
+        });
+
+        tim
+          .sendMessage(message)
+          .then(function (imResponse) {
+            console.log('imResponse.data.message111===', imResponse.data.message);
+
+            // 发送成功
+            messageText.value = '';
+            // @ts-ignore
+            if (chatDetail.value.messageList) {
+              // @ts-ignore
+              chatDetail.value.messageList.push(imResponse.data.message);
+            } else {
+              // @ts-ignore
+              chatDetail.value.messageList = [imResponse.data.message];
+            }
+            // chatDetail.value ? chatDetail.value.messageList.push(imResponse.data.message);
+            setMessageBelow();
+          })
+          .catch(function (imError) {
+            // 发送失败
+            console.warn('sendMessage error:', imError);
+          });
+      };
+
+      // 消息查看更多
+      const seeMore = () => {
+        // @ts-ignore
+        const { nextReqMessageID, messageList = [] } = chatDetail.value || {};
+
+        tim
+          .getMessageList({
+            conversationID: (messageList[0] && messageList[0].conversationID) || activeId.value,
+            nextReqMessageID,
+            count: 15,
+          })
+          .then(function (imResponse) {
+            console.log('imResponse.data.message222===', imResponse.data.messageList);
+            // @ts-ignore
+            chatDetail.value.messageList = [...imResponse.data.messageList, ...messageList];
+            // @ts-ignore
+            chatDetail.value.nextReqMessageID = imResponse.data.nextReqMessageID; // 分页
+            // @ts-ignore
+            chatDetail.value.isCompleted = imResponse.data.isCompleted; // 是否已经拉完
+          });
+      };
+
+      const logData = () => {
+        // 监听事件
+        tim.on(TIM.EVENT.SDK_READY, function (event) {
+          // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+          console.log('SDK_READY ===================', event);
+          getChatList();
+        });
+
+        tim.on(TIM.EVENT.ERROR, function (event) {
+          // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+          console.error('ERROR ===================', event);
+        });
+
+        tim.on(TIM.EVENT.KICKED_OUT, function (event) {
+          // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+          console.error('KICKED_OUT ===================', event);
+        });
+
+        tim.on(TIM.EVENT.NET_STATE_CHANGE, function (event) {
+          // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+          console.error('NET_STATE_CHANGE ===================', event);
+        });
+
+        console.log('TIM.EVENT.MESSAGE_RECEIVED', TIM.EVENT.MESSAGE_RECEIVED);
+        tim.on(TIM.EVENT.MESSAGE_RECEIVED, function (event) {
+          // 收到推送的单聊、群聊、群提示、群系统通知的新消息，可通过遍历 event.data 获取消息列表数据并渲染到页面
+          console.log('MESSAGE_RECEIVED ===================', event);
+          getChatList();
+          if (chatDetail.value) {
+            // @ts-ignore
+            if (event.data[0].from == chatDetail.value.userID) {
+              setMessageRead(event.data[0].conversationID);
+              // @ts-ignore
+              chatDetail.value.messageList.push(event.data[0]);
+              setMessageBelow();
+            }
+          }
+        });
+
+        tim
+          .login({
+            userID: userInfo.value.userId,
+            userSig: userSig.value,
+          })
+          .then(function (imResponse) {
+            console.log('login success ======================');
+            //获取会话列表
+            if (imResponse.data.repeatLogin === true) {
+              // 标识账号已登录，本次登录操作为重复登录。v2.5.1 起支持
+              console.log(imResponse.data.errorInfo);
+            }
+          })
+          .catch(function (imError) {
+            console.warn('login error:', imError); // 登录失败的相关信息
+          });
+      };
+
+      // 回车发送文本 阻止浏览器默认换行操作
+      const messageSendlisten = (e) => {
+        if (e.keyCode === 13) {
+          sendMessage(); // 发送文本
+          e.preventDefault(); // 阻止浏览器默认换行操作
+          return false;
+        }
+      };
+
+      const handleSendImageClick = () => {
+        imagePicker.value.click();
+      };
+
+      const sendImage = () => {
+        const ImageMessage = tim.createImageMessage({
+          // @ts-ignore
+          to: (chatDetail.value && chatDetail.value.userID) || currentUserId.value,
+          conversationType: TIM.TYPES.CONV_C2C,
+          payload: {
+            file: document.getElementById('imagePicker'), // 或者用event.target
+          },
+          onProgress: function (event) {
+            console.log('file uploading:', event);
+          },
+        });
+        console.log(ImageMessage);
+
+        tim
+          .sendMessage(message)
+          .then(() => {
+            // chatDetail.value.messageList = [...chatDetail.value.messageList, message];
+            // imagePicker.value = null;
+          })
+          .catch((imError) => {
+            console.error(imError.message);
+          });
+      };
+
+      onMounted(async () => {
+        try {
+          const res = await getUserSigApi({ userId: userInfo.value.userId });
+          userSig.value = res || '';
+          logData();
+        } catch (error) {
+          throw error;
+        }
+      });
+
+      onUnmounted(() => {
+        tim
+          .logout()
+          .then((imResponse) => {
+            console.log('退出登陆成功imResponse===', imResponse);
+          })
+          .catch(function (imError) {
+            console.warn('logout error:', imError);
+          });
+      });
+
+      const formatDate = (value) =>
+        value ? moment(value * 1000).format('YYYY-MM-DD HH:mm:ss') : '';
+
+      const onShowModal = () => {
+        visible.value = true;
+      };
+
+      const handleOk = () => {
+        if (searchId.value) {
+          // 切换会话前，将切换前的会话进行已读上报
+          if (activeId.value) {
+            setMessageRead(activeId.value);
+          }
+          // 获取会话信息
+          tim
+            .getConversationProfile(`C2C${searchId.value}`) // C2C${userID}（单聊）
+            .then(({ data }) => {
+              const conversation = (data && data.conversation) || {};
+
+              // 获取消息列表
+              getChatList();
+              // 更新当前会话
+              currentUserId.value = conversation.userProfile.userID;
+              currentAvatar.value = conversation.userProfile.avatar;
+              activeId.value = conversation.conversationID;
+              currentChatName.value =
+                conversation.userProfile.nick || conversation.userProfile.userID;
+              chatDetail.value = conversation;
+              setMessageBelow();
+              setMessageRead(data.conversation.conversationID);
+              searchId.value = '';
+              visible.value = false;
+            })
+            .catch(() => {
+              searchId.value = '';
+              message.warning('没有找到该用户');
+            });
+        } else {
+          message.warning('没有找到该用户');
+        }
+      };
+
+      return {
+        focus,
+        chatList,
+        formatDate,
+        getChatDetail,
+        messageRef,
+        currentChatName,
+        activeId,
+        chatDetail,
+        currentAvatar,
+        currentUserId,
+        messageText,
+        messageSendlisten,
+        seeMore,
+        getChatList,
+        deleteChat,
+        visible,
+        onShowModal,
+        searchId,
+        handleOk,
+        imagePicker,
+        handleSendImageClick,
+        sendImage,
+      };
     },
   });
 </script>
 
 <style lang="less">
   .user-list {
-    height: 100%;
+    flex: 1;
     margin: 20px;
 
     .user-list-col2 {
@@ -184,6 +520,14 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
     .user-list-left {
@@ -248,6 +592,10 @@
         }
       }
 
+      .conversation-active {
+        background-color: #404953;
+      }
+
       .close-btn {
         position: absolute;
         right: -20px;
@@ -262,14 +610,6 @@
 
       .conversation-main {
         display: flex;
-      }
-
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        border-radius: 50%;
-        flex-shrink: 0;
       }
 
       .conversation-content {
@@ -338,6 +678,7 @@
       color: #1c2438;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
 
       .header {
         border-bottom: 1px solid #e7e7e7;
@@ -351,26 +692,28 @@
         text-shadow: #76828c 0 0 0.1em;
       }
 
-      .content {
-        display: flex;
+      .right-main {
         flex: 1;
-        flex-direction: column;
-        height: 100%;
-        overflow: hidden;
         position: relative;
+        z-index: 1;
       }
 
-      .message-list {
+      .content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
         width: 100%;
-        box-sizing: border-box;
-        overflow-y: auto;
+        height: 100%;
         padding: 0 20px;
+        overflow-y: auto;
       }
 
       .more {
         display: flex;
         justify-content: center;
         font-size: 12px;
+        padding: 10px;
       }
 
       .no-more {
@@ -388,6 +731,7 @@
       .message-left {
         display: flex;
         justify-content: flex-start;
+        margin: 10px 0;
       }
 
       .col-2 {
@@ -450,6 +794,7 @@
       .message-right {
         display: flex;
         flex-direction: row-reverse;
+        margin: 10px 0;
 
         .col-2 {
           align-items: flex-end;
@@ -513,16 +858,16 @@
           padding: 2px;
         }
 
-        .btn-send {
-          cursor: pointer;
-          position: absolute;
-          color: #2d8cf0;
-          font-size: 30px;
-          right: 0;
-          bottom: -5px;
-          padding: 6px 6px 4px 4px;
-          border-radius: 50%;
-        }
+        // .btn-send {
+        //   cursor: pointer;
+        //   position: absolute;
+        //   color: #2d8cf0;
+        //   font-size: 30px;
+        //   right: 0;
+        //   bottom: -5px;
+        //   padding: 6px 6px 4px 4px;
+        //   border-radius: 50%;
+        // }
       }
     }
   }
