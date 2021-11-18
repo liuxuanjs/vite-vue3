@@ -90,6 +90,9 @@
                       <span class="text-box" v-if="item.type == 'TIMTextElem'">
                         {{ item.payload.text }}
                       </span>
+                      <div class="text-box" v-if="item.type == 'TIMImageElem'">
+                        <img class="image-element" :src="item.payload.imageInfoArray[0].url" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -278,8 +281,6 @@
         tim
           .sendMessage(message)
           .then(function (imResponse) {
-            console.log('imResponse.data.message111===', imResponse.data.message);
-
             // 发送成功
             messageText.value = '';
             // @ts-ignore
@@ -311,7 +312,6 @@
             count: 15,
           })
           .then(function (imResponse) {
-            console.log('imResponse.data.message222===', imResponse.data.messageList);
             // @ts-ignore
             chatDetail.value.messageList = [...imResponse.data.messageList, ...messageList];
             // @ts-ignore
@@ -403,13 +403,15 @@
             console.log('file uploading:', event);
           },
         });
-        console.log(ImageMessage);
 
         tim
-          .sendMessage(message)
-          .then(() => {
-            // chatDetail.value.messageList = [...chatDetail.value.messageList, message];
-            // imagePicker.value = null;
+          .sendMessage(ImageMessage)
+          .then((imResponse) => {
+            chatDetail.value.messageList = [
+              ...chatDetail.value.messageList,
+              imResponse.data.message,
+            ];
+            setMessageBelow();
           })
           .catch((imError) => {
             console.error(imError.message);
@@ -726,6 +728,10 @@
 
       .message-wrapper {
         margin: 20px 0;
+      }
+
+      .image-element {
+        max-height: 300px;
       }
 
       .message-left {
