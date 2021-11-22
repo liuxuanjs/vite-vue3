@@ -25,9 +25,9 @@
     setup() {
       const state = reactive({
         userDetail: [
-          { title: '日活', value: '325423', color: 'rgb(228, 34, 238)' },
-          { title: '周活', value: '2345', color: 'rgba(24, 202, 232, 1)' },
-          { title: '月活', value: '12%', color: 'rgba(244, 62, 62, 1)' },
+          { title: '日活', value: '325423', color: '#E422EE' },
+          { title: '周活', value: '2345', color: '#18CAE8' },
+          { title: '月活', value: '12%', color: '#F43E3E' },
         ],
       });
 
@@ -54,7 +54,7 @@
       justify-content: center;
       align-items: center;
       font-size: 16px;
-      color: rgb(16 16 16);
+      color: #101010;
       line-height: 24px;
     }
 

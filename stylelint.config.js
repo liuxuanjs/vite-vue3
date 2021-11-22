@@ -68,6 +68,8 @@ module.exports = {
       { severity: 'warning' },
     ],
     'keyframes-name-pattern': null,
+    'color-function-notation': null,
+    'alpha-value-notation': null,
   },
   ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
   overrides: [

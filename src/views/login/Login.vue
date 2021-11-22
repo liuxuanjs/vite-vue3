@@ -88,7 +88,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    background: rgb(230 230 230 / 100%);
+    background: #e6e6e6;
     background-size: contain;
 
     .login-page-content {
@@ -108,9 +108,9 @@
       width: 70px;
       height: 70px;
       margin-bottom: 20px;
-      color: rgb(255 255 255);
+      color: #fff;
       font-size: 40px;
-      background: rgb(244 0 0);
+      background: #f40000;
       border-radius: 8px;
     }
 
