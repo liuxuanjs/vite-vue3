@@ -1,59 +1,49 @@
 <template>
   <Table
     :loading="loading"
-    :dataSource="dataSource"
+    :dataSource="tableData"
     :columns="columns"
-    :pagination="pagination"
+    :pagination="false"
     row-key="id"
-    @change="onTableChange"
     :style="{ marginBottom: '20px' }"
   />
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent } from 'vue';
   import { Table } from 'ant-design-vue';
-
-  import usePagination from '/@/hooks/usePagination';
 
   export default defineComponent({
     name: 'AnalysisTable',
     components: { Table },
+    props: {
+      loading: {
+        type: Boolean as PropType<boolean>,
+        default: false,
+      },
+      tableData: {
+        type: Array as PropType<any[]>,
+        default: () => [],
+      },
+    },
     setup() {
-      const state = reactive({
-        loading: false,
-        dataSource: [],
-      });
-
-      const { pagination, onPageChange } = usePagination();
-
-      const getList = () => {};
-
-      const onTableChange = (newPagination) => {
-        onPageChange(newPagination);
-        getList();
-      };
-
       return {
-        ...toRefs(state),
-        pagination,
-        onTableChange,
         columns: [
           {
             title: '日期',
-            dataIndex: 'mock1',
+            dataIndex: 'key',
           },
           {
             title: '用户新增',
-            dataIndex: 'mock2',
+            dataIndex: 'newUserCount',
           },
           {
             title: '用户增长率',
-            dataIndex: 'mock3',
+            dataIndex: 'newUserRate',
           },
           {
             title: '用户总量',
-            dataIndex: 'mock4',
+            dataIndex: 'totalUser',
           },
         ],
       };

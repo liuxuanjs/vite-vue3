@@ -8,29 +8,115 @@
         </div>
       </div>
     </div>
-    <AnalysisPie />
-    <AnalysisLine />
-    <AnalysisTable />
+    <AnalysisPie :loading="loading" :pieData="pieData" />
+    <LineTableWrap />
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent, reactive, toRefs, onMounted } from 'vue';
 
   import AnalysisPie from './AnalysisPie.vue';
-  import AnalysisLine from './AnalysisLine.vue';
-  import AnalysisTable from './AnalysisTable.vue';
+  import LineTableWrap from './LineTableWrap.vue';
+  import { getUserAnalyseApi } from '/@/api/user';
 
   export default defineComponent({
     name: 'UserStatistics',
-    components: { AnalysisPie, AnalysisLine, AnalysisTable },
+    components: { AnalysisPie, LineTableWrap },
     setup() {
-      const state = reactive({
+      const state = reactive<any>({
         userDetail: [
-          { title: '用户总量', value: '325423', color: '#E422E4' },
-          { title: '用户新增（月）', value: '2345', color: '#18CAE8' },
-          { title: '用户增长率（月）', value: '12%', color: '#F43E3E' },
+          { key: 'userCount', title: '用户总量', value: 0, color: '#E422E4' },
+          { key: 'monthCount', title: '用户新增（月）', value: 0, color: '#18CAE8' },
+          { key: 'percentage', title: '用户增长率（月）', value: '0%', color: '#F43E3E' },
         ],
+        pieData: [],
+        loading: false,
+      });
+
+      const getUserAnalyse = () => {
+        const mockData = [
+          {
+            key: 'gender',
+            title: '性别比例',
+            data: [
+              { value: 1048, name: '小哥哥' },
+              { value: 1048, name: '小姐姐' },
+              { value: 1048, name: '其他' },
+            ],
+          },
+          {
+            key: 'age',
+            title: '年龄比例',
+            data: [
+              { value: 1048, name: '10-19' },
+              { value: 1048, name: '18-25' },
+              { value: 1048, name: '25-32' },
+              { value: 1048, name: '32-40' },
+              { value: 1048, name: '40-50' },
+              { value: 1048, name: '>=50' },
+            ],
+          },
+          {
+            key: 'timeRange',
+            title: '时间段',
+            data: [
+              { value: 1048, name: '02-08' },
+              { value: 1048, name: '08-14' },
+              { value: 1048, name: '14-20' },
+              { value: 1048, name: '20-02' },
+            ],
+          },
+        ];
+        state.loading = true;
+        getUserAnalyseApi()
+          .then((res) => {
+            // eslint-disable-next-line
+            const { userCount, monthCount, pie } = res || {};
+            state.userDetail = state.userDetail.map((item) => {
+              switch (item.key) {
+                case 'userCount':
+                  item.value = userCount;
+                  break;
+                case 'monthCount':
+                  item.value = monthCount;
+                  break;
+
+                default:
+                  item.value = `${((monthCount / userCount) * 100).toFixed(2)}%`;
+                  break;
+              }
+              return item;
+            });
+
+            state.pieData = mockData.map(({ key, title, data }) => {
+              const obj: any = { key };
+              obj.title = { text: title, left: 'center' };
+              obj.tooltip = { trigger: 'item' };
+              obj.series = [
+                {
+                  type: 'pie',
+                  radius: '50%',
+                  data,
+                  emphasis: {
+                    itemStyle: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                  },
+                },
+              ];
+              return obj;
+            });
+          })
+          .finally(() => {
+            state.loading = false;
+          });
+      };
+
+      onMounted(() => {
+        getUserAnalyse();
       });
 
       return { ...toRefs(state) };

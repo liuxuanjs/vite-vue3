@@ -30,7 +30,7 @@
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import usePagination from '/@/hooks/usePagination';
-  import { statusList } from '../../../enums/user/status';
+  import { statusList } from '/@/enums/user/status';
   import { genderEnums } from '/@/enums/user/gender';
   import { ageEnums } from '/@/enums/user/age';
   import { createUserListColumns } from './data';

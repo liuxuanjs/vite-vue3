@@ -12,16 +12,14 @@ const difficultyMap = setArrToObj(difficultyEnum, 'value');
 
 export function createDanceListColumns({
   status,
-  handleDelisting,
   handleEdit,
   handleDelete,
-  handleAudit,
+  handleEditDance,
 }: {
   status: Ref<string>;
-  handleDelisting: Fn;
   handleEdit: Fn;
   handleDelete: Fn;
-  handleAudit: Fn;
+  handleEditDance: Fn;
 }) {
   return [
     {
@@ -89,12 +87,18 @@ export function createDanceListColumns({
         const { status: currentStatus } = record;
 
         if (currentStatus === 0) {
-          return <Button onClick={() => handleAudit(record)}>审核</Button>;
+          return <Button onClick={() => handleEditDance(record, { status: '2' })}>审核</Button>;
         }
 
         const actions = [
-          currentStatus === 3 && { title: '上架', onClick: () => handleDelisting(record) },
-          currentStatus === 2 && { title: '下架', onClick: () => handleDelisting(record) },
+          currentStatus === 3 && {
+            title: '上架',
+            onClick: () => handleEditDance(record, { status: '2' }),
+          },
+          currentStatus === 2 && {
+            title: '下架',
+            onClick: () => handleEditDance(record, { status: '3' }),
+          },
           { title: '编辑', onClick: () => handleEdit(record) },
           { title: '删除', onClick: () => handleDelete(record), danger: true },
         ].filter(Boolean);

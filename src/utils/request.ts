@@ -9,7 +9,7 @@ import { isArray, isString } from './is';
 
 const { VITE_GLOB_API_URL: apiPath } = getAppEnvConfig();
 
-interface RequestOptions extends AxiosRequestConfig {
+export interface RequestOptions extends AxiosRequestConfig {
   handleError?: boolean | string | Array<string | number>;
   original?: boolean;
 }

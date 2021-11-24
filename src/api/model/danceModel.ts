@@ -44,7 +44,10 @@ export interface GetCustomerListModel {
  */
 export interface UpdateDanceParams {
   id: number;
-  status: number;
+  status?: number;
+  difficulty?: number;
+  style?: string;
+  calories?: number;
 }
 
 /**

@@ -28,21 +28,34 @@
         @cancel="handleCancel"
         @ok="handleOk"
       >
-        <videoPlay v-if="modalInfo" width="auto" height="310.5px" :src="modalInfo.danceUrl" />
-        <Form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" :style="{ marginTop: '24px' }">
-          <FormItem name="mock1" label="难度">
-            <Rate />
+        <videoPlay v-if="modalInfo" width="auto" height="310.5px" :src="modalInfo.danceUrl || ''" />
+        <Form
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
+          :style="{ marginTop: '24px' }"
+          ref="modalFormRef"
+          :model="modalInfo"
+        >
+          <FormItem name="difficulty" label="难度">
+            <Rate v-model:value="modalInfo.difficulty" />
           </FormItem>
-          <FormItem name="mock1" label="风格">
-            <RadioGroup>
-              <RadioButton value="a">日</RadioButton>
-              <RadioButton value="b">周</RadioButton>
-              <RadioButton value="c">月</RadioButton>
+          <FormItem name="style" label="风格" class="dance-modal-form-item">
+            <RadioGroup v-model:value="modalInfo.style">
+              <RadioButton v-for="item in styleList" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </RadioButton>
             </RadioGroup>
           </FormItem>
-          <!-- <FormItem name="mock2">
-            <Input v-model:value="formState.mock2" placeholder="密码" size="large" allowClear />
-          </FormItem> -->
+          <FormItem name="calories" label="卡路里">
+            <Row>
+              <Col :span="12">
+                <Slider v-model:value="modalInfo.calories" :tip-formatter="formatter" />
+              </Col>
+              <Col :span="4" style="line-height: 36px; margin-left: 8px">
+                {{ `${modalInfo.calories || 0} kal` }}
+              </Col>
+            </Row>
+          </FormItem>
         </Form>
       </Modal>
     </div>
@@ -51,7 +64,7 @@
 
 <script lang="ts">
   import { defineComponent, reactive, ref, computed, toRefs, createVNode, onMounted } from 'vue';
-  import { Table, Modal, Form, Rate, Radio } from 'ant-design-vue';
+  import { Table, Modal, Form, Rate, Radio, Slider, Row, Col } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import 'vue3-video-play/dist/style.css';
@@ -87,13 +100,17 @@
       Rate,
       RadioGroup: Radio.Group,
       RadioButton: Radio.Button,
+      Slider,
+      Row,
+      Col,
     },
     setup() {
       const status = ref<string>('');
       const formRef = ref<any>({});
       const tableState = reactive({ loading: false as Boolean, dataSource: [] as any[] });
       const visible = ref<boolean>(false);
-      const modalInfo = ref();
+      const modalFormRef = ref<any>({});
+      const modalInfo = ref<any>({});
 
       const { pagination, onPageChange } = usePagination();
 
@@ -125,26 +142,19 @@
       const onTableChange = (pagination) => {
         onPageChange(pagination);
         getList();
-        console.log(updateDanceApi);
       };
 
       // 更新舞曲状态
-      // const handleEditDance = (record, status) => {
-      //   updateDanceApi({ id: record.id, status }).then(() => {
-      //     getList();
-      //   });
-      // };
-
-      // 下架操作
-      const handleDelisting = (record) => {
-        console.log('record===', record);
+      const handleEditDance = (record, options) => {
+        updateDanceApi({ id: record.id, ...options }).then(() => {
+          getList();
+        });
       };
 
       // 编辑操作
       const handleEdit = (record) => {
-        console.log('record===', record);
+        modalInfo.value = { ...record };
         visible.value = true;
-        modalInfo.value = record;
       };
 
       // 删除操作
@@ -162,17 +172,21 @@
         });
       };
 
-      /**
-       * 审核操作
-       */
-      const handleAudit = (record) => {
-        console.log('record===', record);
+      const handleCancel = () => {
+        modalInfo.value = {};
+        visible.value = false;
       };
 
-      const handleOk = () => {};
-      const handleCancel = () => {
-        visible.value = false;
-        modalInfo.value = null;
+      const handleOk = () => {
+        const { id, difficulty, style, calories } = modalInfo.value;
+        updateDanceApi({ id, difficulty, style, calories }).then(() => {
+          handleCancel();
+          getList();
+        });
+      };
+
+      const formatter = (value: number) => {
+        return `${value} kal`;
       };
 
       onMounted(() => {
@@ -182,10 +196,9 @@
       const columns = computed(() => {
         return createDanceListColumns({
           status,
-          handleDelisting,
           handleEdit,
           handleDelete,
-          handleAudit,
+          handleEditDance,
         });
       });
 
@@ -210,7 +223,7 @@
           {
             name: 'name',
             type: 'inputSearch',
-            placeholder: '请输入歌曲名或作者',
+            placeholder: '请输入歌曲名',
             formItemProps: { style: { flex: 1 } },
             props: {
               showSearch: true,
@@ -234,6 +247,9 @@
         handleOk,
         handleCancel,
         getList,
+        modalFormRef,
+        styleList: styleEnum.slice(1),
+        formatter,
       };
     },
   });
@@ -268,6 +284,12 @@
       width: 50px;
       height: 50px;
       flex-shrink: 0;
+    }
+  }
+
+  .dance-modal-form-item {
+    .ant-radio-button-wrapper {
+      margin: 6px;
     }
   }
 </style>

@@ -42,11 +42,11 @@ export function createUserListColumns(handleEditUser: Fn, handleDelete: Fn) {
         return (
           <Space>
             {record.disable ? (
-              <Button onClick={() => handleEditUser(record, false)}>禁用</Button>
-            ) : (
-              <Button type="primary" ghost onClick={() => handleEditUser(record, true)}>
+              <Button type="primary" ghost onClick={() => handleEditUser(record, false)}>
                 解禁
               </Button>
+            ) : (
+              <Button onClick={() => handleEditUser(record, true)}>禁用</Button>
             )}
             <Button class="ml10" danger onClick={() => handleDelete(record)}>
               删除

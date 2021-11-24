@@ -36,3 +36,10 @@ export interface GetUserInfoModel {
 export interface UserSigParams {
   userId: string;
 }
+
+/**
+ * @description: newUserCount interface parameters
+ */
+export interface NewUserCountParams {
+  type: string;
+}

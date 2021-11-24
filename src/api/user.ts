@@ -3,6 +3,7 @@ import request from '/@/utils/request';
 import {
   LoginParams,
   LoginResultModel,
+  NewUserCountParams,
   UserInfoParams,
   // GetUserInfoModel,
   UserSigParams,
@@ -13,6 +14,8 @@ enum Api {
   // Logout = '/logout',
   // GetUserInfo = '/admin/emp/getInfo',
   GetUserSig = '/user/genUserSig',
+  GetUserAnalyse = '/index/userDetail',
+  GetNewUserCount = '/index/newUserCount',
 }
 
 /**
@@ -57,4 +60,18 @@ export function getUserInfoApi(params?: UserInfoParams) {
  */
 export function getUserSigApi(params?: UserSigParams) {
   return request.get({ url: Api.GetUserSig, data: params });
+}
+
+/**
+ * @description: getUserAnalyseApi
+ */
+export function getUserAnalyseApi(params?: any) {
+  return request.get({ url: Api.GetUserAnalyse, data: params });
+}
+
+/**
+ * @description: getNewUserCountApi
+ */
+export function getNewUserCountApi(params: NewUserCountParams) {
+  return request.get({ url: Api.GetNewUserCount, data: params });
 }

@@ -78,7 +78,11 @@
                 :class="item.to !== currentUserId ? 'message-left' : 'message-right'"
               >
                 <div class="col-1">
-                  <Avatar class="user-avatar" type="C2C" :src="currentAvatar" />
+                  <Avatar
+                    class="user-avatar"
+                    type="C2C"
+                    :src="item.to !== currentUserId ? currentAvatar : ''"
+                  />
                 </div>
                 <div class="col-2">
                   <div class="base">
