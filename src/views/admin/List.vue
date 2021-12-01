@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list"> AdminList </div>
+  <div class="admin-list"> AdminList </div>
 </template>
 
 <script lang="ts">

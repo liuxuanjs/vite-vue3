@@ -1,5 +1,5 @@
 <template>
-  <div class="dance-list">
+  <div class="user-list">
     <DanceListSidebar :menuList="statusList" :selectedKey="status" @change="handleSelect" />
     <div class="dance-list-main">
       <div class="dance-list-section">
@@ -155,7 +155,7 @@
 </script>
 
 <style lang="less">
-  .dance-list {
+  .user-list {
     display: flex;
     height: 100%;
 
@@ -180,8 +180,8 @@
     }
 
     .user-avatar {
-      width: 50px;
-      height: 50px;
+      width: 50px !important;
+      height: 50px !important;
       border-radius: 50%;
       flex-shrink: 0;
     }

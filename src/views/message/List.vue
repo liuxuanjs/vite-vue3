@@ -1,5 +1,5 @@
 <template>
-  <Row class="user-list">
+  <Row class="message-list">
     <Col :xs="10" :sm="10" :md="8" :lg="8" :xl="7" class="user-list-col1">
       <div class="user-list-left">
         <div class="header-bar">
@@ -514,7 +514,7 @@
 </script>
 
 <style lang="less">
-  .user-list {
+  .message-list {
     flex: 1;
     margin: 20px;
 
