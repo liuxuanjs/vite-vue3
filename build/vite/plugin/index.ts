@@ -2,9 +2,9 @@ import type { Plugin } from 'vite';
 
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 import legacy from '@vitejs/plugin-legacy';
 
-import { configHmrPlugin } from './hmr';
 import { configHtmlPlugin } from './html';
 import { configSvgIconsPlugin } from './svgSprite';
 import { configMockPlugin } from './mock';
@@ -15,9 +15,7 @@ import { configImageminPlugin } from './imagemin';
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_IMAGEMIN, VITE_USE_MOCK, VITE_LEGACY } = viteEnv;
 
-  const vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx()];
-
-  !isBuild && vitePlugins.push(configHmrPlugin());
+  const vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx(), vueSetupExtend()];
 
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
 

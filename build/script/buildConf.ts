@@ -20,14 +20,14 @@ function createConfig(params: CreateConfigParams) {
   const { configName, config, configFileName } = params;
   try {
     const windowConf = `window.${configName}`;
-    // Ensure that the variable will not be modified
+    // 确保变量不会被修改
     const configStr = `${windowConf}=${JSON.stringify(config)};
-       Object.freeze(${windowConf});
-       Object.defineProperty(window, "${configName}", {
-         configurable: false,
-         writable: false,
-       });
-     `.replace(/\s/g, '');
+      Object.freeze(${windowConf});
+      Object.defineProperty(window, "${configName}", {
+        configurable: false,
+        writable: false,
+      });
+    `.replace(/\s/g, '');
     fs.mkdirp(getRootPath(OUTPUT_DIR));
     writeFileSync(getRootPath(`${OUTPUT_DIR}/${configFileName}`), configStr);
 
@@ -41,5 +41,5 @@ function createConfig(params: CreateConfigParams) {
 export function runBuildConfig() {
   const config = getEnvConfig();
   const configFileName = getConfigFileName(config);
-  createConfig({ config, configName: configFileName, configFileName: GLOB_CONFIG_FILE_NAME });
+  createConfig({ configName: configFileName, config, configFileName: GLOB_CONFIG_FILE_NAME });
 }

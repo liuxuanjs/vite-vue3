@@ -1,5 +1,6 @@
 import { generateAntColors, primaryColor } from '../config/themeConfig';
 import { getThemeVariables } from 'ant-design-vue/dist/theme';
+import { resolve } from 'path';
 
 /**
  * less 全局变量
@@ -15,9 +16,11 @@ export function generateModifyVars(dark = false) {
   }
 
   const modifyVars = getThemeVariables({ dark });
-
   return {
     ...modifyVars,
+    // 用于全局导入，避免单独导入每个样式文件
+    // reference:  避免重复引用
+    hack: `${modifyVars.hack} @import (reference) "${resolve('src/assets/style/config.less')}";`,
     'primary-color': primary,
     ...primaryColorObj,
     'info-color': primary,
