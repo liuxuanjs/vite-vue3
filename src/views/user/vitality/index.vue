@@ -1,9 +1,9 @@
 <template>
-  <div class="user-statistics">
-    <div class="user-statistics-head">
-      <div class="user-statistics-detail" v-for="(item, index) in userDetail" :key="index">
+  <div class="user-vitality">
+    <div class="user-vitality-head">
+      <div class="user-vitality-detail" v-for="(item, index) in userDetail" :key="index">
         <div>{{ item.title }}</div>
-        <div class="user-statistics-value-text" :style="{ color: item.color }">
+        <div class="user-vitality-value-text" :style="{ color: item.color }">
           {{ item.value || 0 }}
         </div>
       </div>
@@ -37,17 +37,17 @@
 </script>
 
 <style lang="less">
-  .user-statistics {
+  .user-vitality {
     margin: 20px;
 
-    .user-statistics-head {
+    .user-vitality-head {
       height: 140px;
       display: flex;
       margin-bottom: 20px;
       background: #fff;
     }
 
-    .user-statistics-detail {
+    .user-vitality-detail {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -58,7 +58,7 @@
       line-height: 24px;
     }
 
-    .user-statistics-value-text {
+    .user-vitality-value-text {
       font-size: 36px;
       line-height: 54px;
       margin-top: 10px;

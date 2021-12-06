@@ -55,7 +55,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .analysisLine {
     margin-bottom: 20px;
     background: #fff;

@@ -1,5 +1,5 @@
 <template>
-  <div class="analysisLine">
+  <div class="vitality-analysisLine">
     <Spin :spinning="loading">
       <div class="analysisLine-head">
         <RadioGroup v-model:value="value1" button-style="solid">
@@ -59,15 +59,15 @@
   });
 </script>
 
-<style lang="less" scoped>
-  .analysisLine {
+<style lang="less">
+  .vitality-analysisLine {
     margin-bottom: 20px;
     background: #fff;
-  }
 
-  .analysisLine-head {
-    display: flex;
-    justify-content: space-between;
-    padding: 30px 30px 0;
+    .analysisLine-head {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 30px 0;
+    }
   }
 </style>

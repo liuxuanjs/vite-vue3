@@ -1,5 +1,5 @@
 <template>
-  <div class="avatar" :class="shape === 'circle' ? 'shape-circle' : ''">
+  <div :class="['my-avatar', $attrs.class]">
     <img class="avatar-img" :src="avatarSrc" />
   </div>
 </template>
@@ -18,29 +18,8 @@
         type: String as PropType<string>,
         default: 'C2C',
       },
-      shape: {
-        type: String as PropType<string>,
-        default: 'circle',
-      },
     },
     setup(props) {
-      // const defaultSrc = computed(() => {
-      //   const { type } = props;
-      //   switch (type) {
-      //     case 'C2C':
-      //       // 个人头像
-      //       return '/@/assets/images/avatar-2.png';
-      //     case 'GROUP':
-      //       // 群默认头像
-      //       return '/@/assets/images/avatar-3.png';
-      //     // case TIM.TYPES.CONV_SYSTEM:
-      //     //   return systemAvatar;
-      //     default:
-      //       // 默认头像
-      //       return '/@/assets/images/avatar-1.png';
-      //   }
-      // });
-
       const avatarSrc = computed(() => {
         const { src } = props;
         if (/^(https:|http:|\/\/)/.test(src)) {
@@ -68,8 +47,8 @@
   });
 </script>
 
-<style lang="less" scoped>
-  .avatar {
+<style lang="less">
+  .my-avatar {
     background-color: #a5b5c1;
     text-align: center;
     width: 100%;
@@ -80,9 +59,5 @@
       width: 100%;
       height: 100%;
     }
-  }
-
-  .shape-circle {
-    border-radius: 50%;
   }
 </style>

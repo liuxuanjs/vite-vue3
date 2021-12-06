@@ -283,7 +283,6 @@
     .music-image {
       width: 50px;
       height: 50px;
-      flex-shrink: 0;
     }
   }
 

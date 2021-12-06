@@ -1,9 +1,9 @@
 <template>
-  <div class="user-statistics">
-    <div class="user-statistics-head">
-      <div class="user-statistics-detail" v-for="(item, index) in userDetail" :key="index">
+  <div class="dance-statistics">
+    <div class="dance-statistics-head">
+      <div class="dance-statistics-detail" v-for="(item, index) in userDetail" :key="index">
         <div>{{ item.title }}</div>
-        <div class="user-statistics-value-text" :style="{ color: item.color }">
+        <div class="dance-statistics-value-text" :style="{ color: item.color }">
           {{ item.value || 0 }}
         </div>
       </div>
@@ -35,17 +35,17 @@
 </script>
 
 <style lang="less">
-  .user-statistics {
+  .dance-statistics {
     margin: 20px;
 
-    .user-statistics-head {
+    .dance-statistics-head {
       height: 140px;
       display: flex;
       margin-bottom: 20px;
       background: #fff;
     }
 
-    .user-statistics-detail {
+    .dance-statistics-detail {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -56,7 +56,7 @@
       line-height: 24px;
     }
 
-    .user-statistics-value-text {
+    .dance-statistics-value-text {
       font-size: 36px;
       line-height: 54px;
       margin-top: 10px;

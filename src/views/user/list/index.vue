@@ -180,10 +180,9 @@
     }
 
     .user-avatar {
-      width: 50px !important;
-      height: 50px !important;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      flex-shrink: 0;
     }
   }
 </style>

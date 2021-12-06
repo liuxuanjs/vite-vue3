@@ -529,8 +529,8 @@
     }
 
     .user-avatar {
-      width: 40px !important;
-      height: 40px !important;
+      width: 40px;
+      height: 40px;
       margin-right: 10px;
       border-radius: 50%;
       flex-shrink: 0;

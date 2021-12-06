@@ -1,5 +1,5 @@
 <template>
-  <div class="dance-sidebar">
+  <div class="user-sidebar">
     <div class="sidebar-main">
       <div
         v-for="(menu, index) in menuList"
@@ -43,8 +43,8 @@
   });
 </script>
 
-<style lang="less" scoped>
-  .dance-sidebar {
+<style lang="less">
+  .user-sidebar {
     width: 150px;
     flex-shrink: 0;
     background: #fff;

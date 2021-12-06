@@ -1,5 +1,5 @@
 <template>
-  <div class="analysisPie">
+  <div class="dance-analysisPie">
     <Spin :spinning="loading">
       <div class="analysisPie-content">
         <div class="analysisPie-item">
@@ -74,19 +74,19 @@
   });
 </script>
 
-<style lang="less" scoped>
-  .analysisPie {
+<style lang="less">
+  .dance-analysisPie {
     margin-bottom: 20px;
     background: #fff;
-  }
 
-  .analysisPie-content {
-    display: flex;
-    flex-wrap: wrap;
-  }
+    .analysisPie-content {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-  .analysisPie-item {
-    padding: 20px;
-    width: 50%;
+    .analysisPie-item {
+      padding: 20px;
+      width: 50%;
+    }
   }
 </style>

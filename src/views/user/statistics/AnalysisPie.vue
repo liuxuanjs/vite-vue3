@@ -36,7 +36,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .analysisPie {
     margin-bottom: 20px;
     background: #fff;

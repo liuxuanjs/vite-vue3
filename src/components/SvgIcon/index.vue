@@ -42,7 +42,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .my-svg-icon {
     display: inline-block;
     overflow: hidden;

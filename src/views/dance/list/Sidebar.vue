@@ -43,7 +43,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .dance-sidebar {
     width: 150px;
     flex-shrink: 0;
