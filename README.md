@@ -76,8 +76,7 @@ yarn build
   "lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
   // 执行 stylelint 格式化
   "lint:stylelint": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-  "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
-  "lint:pretty": "pretty-quick --staged",
+  "lint:lint-staged": "lint-staged",
   // 重新安装依赖 该命令会先删除 node_modules、yarn.lock、package.lock.json 后再进行依赖重新安装（安装速度会明显变慢）
   "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
   "prepare": "husky install"
@@ -99,11 +98,10 @@ yarn build
 │   ├── assets # 资源文件
 │   │   ├── fonts # 字体图标文件夹
 │   │   ├── icons # icon sprite 图标文件夹
-│   │   └── images # 项目存放图片的文件夹
+│   │   ├── images # 项目存放图片的文件夹
+│   │   └── style # 公共样式文件
 │   ├── components # 公共组件
-│   ├── design # 样式文件
 │   ├── enums # 枚举/常量
-│   ├── hooks # hook
 │   ├── hooks # hook
 │   ├── layouts # 布局文件
 │   │   ├── basic # 页面布局
@@ -144,3 +142,12 @@ yarn build
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
 | :-: | :-: | :-: | :-: | :-: |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
+## 相关仓库
+
+- [vite-plugin-mock](https://github.com/anncwb/vite-plugin-mock) - 用于本地及开发环境数据 mock
+- [vite-plugin-html](https://github.com/anncwb/vite-plugin-html) - 用于 html 模版转换及压缩
+- [vite-plugin-style-import](https://github.com/anncwb/vite-plugin-style-import) - 用于组件库样式按需引入
+- [vite-plugin-imagemin](https://github.com/anncwb/vite-plugin-imagemin) - 用于打包压缩图片资源
+- [vite-plugin-compression](https://github.com/anncwb/vite-plugin-compression) - 用于打包输出.gz|.brotil 文件
+- [vite-plugin-svg-icons](https://github.com/anncwb/vite-plugin-svg-icons) - 用于快速生成 svg 雪碧图
