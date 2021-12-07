@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, onMounted } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
   import AnalysisLine from './AnalysisLine.vue';
   import AnalysisTable from './AnalysisTable.vue';
 
@@ -21,23 +21,21 @@
     name: 'LineTableWrap',
     components: { AnalysisLine, AnalysisTable },
     setup() {
-      const state = reactive<any>({
-        loading: false,
-        dataType: 'count',
-        type: 'date',
-        lineData: {},
-        tableData: [],
-      });
+      const loading = ref<boolean>(false);
+      const dataType = ref<string>('count');
+      const type = ref<string>('date');
+      const lineData = ref<any>({});
+      const tableData = ref<any[]>([]);
 
       const createTopPercent = (data) => {
         return `${data.name}</br> ${data.marker} ${
-          state.dataType === 'percentage' ? '用户增长率' : '用户新增'
-        }: ${data.data}${state.dataType === 'percentage' ? `%` : ''}`;
+          dataType.value === 'percentage' ? '用户增长率' : '用户新增'
+        }: ${data.data}${dataType.value === 'percentage' ? `%` : ''}`;
       };
 
       const getData = () => {
-        state.loading = true;
-        getNewUserCountApi({ type: state.type })
+        loading.value = true;
+        getNewUserCountApi({ type: type.value })
           .then((res) => {
             const result = {
               xAxis: { type: 'category', data: [] as string[] },
@@ -51,7 +49,7 @@
               series: [{ data: [] as number[], type: 'line' }],
             };
 
-            if (state.dataType === 'percentage') {
+            if (dataType.value === 'percentage') {
               result.yAxis.axisLabel = {
                 show: true,
                 interval: 'auto',
@@ -61,27 +59,27 @@
             (res || []).forEach((item): void => {
               result.xAxis.data.push(item.key);
               result.series[0].data.push(
-                state.dataType === 'percentage'
+                dataType.value === 'percentage'
                   ? item.newUserRate.split('%')[0]
                   : item.newUserCount,
               );
             });
 
-            state.tableData = res || [];
-            state.lineData = result;
+            tableData.value = res || [];
+            lineData.value = result;
           })
           .finally(() => {
-            state.loading = false;
+            loading.value = false;
           });
       };
 
       const onChangeDataType = (e) => {
-        state.dataType = e.target.value;
+        dataType.value = e.target.value;
         getData();
       };
 
       const onChangeType = (e) => {
-        state.type = e.target.value;
+        type.value = e.target.value;
         getData();
       };
 
@@ -89,7 +87,7 @@
         getData();
       });
 
-      return { ...toRefs(state), onChangeDataType, onChangeType };
+      return { loading, dataType, type, lineData, tableData, onChangeDataType, onChangeType };
     },
   });
 </script>

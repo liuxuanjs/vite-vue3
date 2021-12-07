@@ -7,7 +7,7 @@
           ref="formRef"
           :loading="loading"
           :configs="filterConfigs"
-          @onSearch="getList"
+          @onSearch="onSearch"
         />
       </div>
       <div class="dance-list-section">
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, toRefs, createVNode, onMounted } from 'vue';
+  import { defineComponent, ref, computed, createVNode, onMounted } from 'vue';
   import { Table, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
@@ -46,25 +46,31 @@
     setup() {
       const status = ref<number>(0);
       const formRef = ref<any>({});
-      const tableState = reactive({ loading: false as Boolean, dataSource: [] as any[] });
+      const loading = ref<boolean>(false);
+      const dataSource = ref<any[]>([]);
 
       const { pagination, onPageChange } = usePagination();
 
       const getList = () => {
         const params = getParams(pagination, { ...formRef.value.formData, status: status.value });
 
-        tableState.loading = true;
+        loading.value = true;
 
         getCustomerListApi(params)
           .then((res) => {
             const { current, total, records } = res || {};
             pagination.current = current;
             pagination.total = total;
-            tableState.dataSource = records || [];
+            dataSource.value = records || [];
           })
           .finally(() => {
-            tableState.loading = false;
+            loading.value = false;
           });
+      };
+
+      const onSearch = () => {
+        pagination.current = 1;
+        getList();
       };
 
       // 侧边栏选择
@@ -139,7 +145,8 @@
       });
 
       return {
-        ...toRefs(tableState),
+        loading,
+        dataSource,
         status,
         statusList,
         formRef,
@@ -148,7 +155,7 @@
         pagination,
         handleSelect,
         onTableChange,
-        getList,
+        onSearch,
       };
     },
   });

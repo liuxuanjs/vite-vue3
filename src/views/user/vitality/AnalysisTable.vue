@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import { Table } from 'ant-design-vue';
 
   import usePagination from '/@/hooks/usePagination';
@@ -20,10 +20,8 @@
     name: 'AnalysisTable',
     components: { Table },
     setup() {
-      const state = reactive({
-        loading: false,
-        dataSource: [],
-      });
+      const loading = ref<boolean>(false);
+      const dataSource = ref<any[]>([]);
 
       const { pagination, onPageChange } = usePagination();
 
@@ -35,7 +33,8 @@
       };
 
       return {
-        ...toRefs(state),
+        loading,
+        dataSource,
         pagination,
         onTableChange,
         columns: [

@@ -1,4 +1,5 @@
 import type { Ref } from 'vue';
+import type { ActionItem } from '/@/components/ActionGroup/props';
 
 import { Button } from 'ant-design-vue';
 
@@ -12,11 +13,13 @@ const difficultyMap = setArrToObj(difficultyEnum, 'value');
 
 export function createDanceListColumns({
   status,
+  onAudit,
   handleEdit,
   handleDelete,
   handleEditDance,
 }: {
   status: Ref<string>;
+  onAudit: Fn;
   handleEdit: Fn;
   handleDelete: Fn;
   handleEditDance: Fn;
@@ -87,7 +90,7 @@ export function createDanceListColumns({
         const { status: currentStatus } = record;
 
         if (currentStatus === 0) {
-          return <Button onClick={() => handleEditDance(record, { status: '2' })}>审核</Button>;
+          return <Button onClick={() => onAudit(record)}>审核</Button>;
         }
 
         const actions = [
@@ -101,7 +104,7 @@ export function createDanceListColumns({
           },
           { title: '编辑', onClick: () => handleEdit(record) },
           { title: '删除', onClick: () => handleDelete(record), danger: true },
-        ].filter(Boolean);
+        ].filter(Boolean) as ActionItem[];
 
         return <ActionGroup actions={actions} defaultAction />;
       },

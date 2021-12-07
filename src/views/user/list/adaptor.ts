@@ -12,7 +12,7 @@ export const getParams = (pagination, options) => {
   const params: CustomerListParams = { pageNum: current, pageSize };
 
   if (sex) params.sex = sex;
-  if (userName) params.userName = userName;
+  if (userName) params.userName = userName.trim();
   if (isNumber(min)) params.min = min;
   if (isNumber(max)) params.max = max;
   if (status) params.status = status;

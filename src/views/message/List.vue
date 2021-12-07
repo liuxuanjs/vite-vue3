@@ -158,19 +158,19 @@
     // eslint-disable-next-line
     components: { Row, Col, Button, Avatar, TextArea: Input.TextArea, Tooltip, Modal, Input },
     setup() {
-      const userSig = ref(''); // 用户登录即时通信 IM 的密码
-      const chatList = ref([]); //会话列表
+      const userSig = ref<string>(''); // 用户登录即时通信 IM 的密码
+      const chatList = ref<any[]>([]); //会话列表
       const chatDetail = ref<any>(null); //会话具体信息
-      const currentUserId = ref(''); // 当前会话人 userid
-      const currentAvatar = ref(''); // 当前会话人头像
-      const currentChatName = ref(''); // 当前会话人名字
-      const activeId = ref(''); // 选中的会话id
-      const messageRef = ref();
-      const focus = ref(false); // 文本框聚焦
-      const messageText = ref(''); // 文本框输入内容
-      const visible = ref(false);
-      const searchId = ref('');
-      const imagePicker = ref();
+      const currentUserId = ref<string>(''); // 当前会话人 userid
+      const currentAvatar = ref<string>(''); // 当前会话人头像
+      const currentChatName = ref<string>(''); // 当前会话人名字
+      const activeId = ref<string>(''); // 选中的会话id
+      const messageRef = ref<ElRef>(null);
+      const focus = ref<boolean>(false); // 文本框聚焦
+      const messageText = ref<string>(''); // 文本框输入内容
+      const visible = ref<boolean>(false);
+      const searchId = ref<string>('');
+      const imagePicker = ref<ElRef>(null);
 
       const store = useStore();
 
@@ -392,7 +392,7 @@
       };
 
       const handleSendImageClick = () => {
-        imagePicker.value.click();
+        imagePicker.value?.click();
       };
 
       const sendImage = () => {

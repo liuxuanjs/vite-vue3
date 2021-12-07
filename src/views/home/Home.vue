@@ -22,11 +22,19 @@
   import { UserStatisticsRoute, UserVitalityRoute } from '/@/router/routes/modules/user';
   import { DanceStatisticsRoute } from '/@/router/routes/modules/dance';
 
+  interface HomeDataItem {
+    name: string;
+    key: string;
+    bgc: string;
+    path: string;
+    count?: number;
+  }
+
   export default defineComponent({
     name: 'Home',
     components: { Row, Col },
     setup() {
-      const homeData = ref([
+      const homeData = ref<HomeDataItem[]>([
         { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: UserStatisticsRoute.path },
         { name: '舞曲总量', key: 'danceCount', bgc: '#1897E8', path: DanceStatisticsRoute.path },
         {

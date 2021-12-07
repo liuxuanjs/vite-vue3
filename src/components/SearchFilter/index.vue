@@ -11,7 +11,7 @@
         <Input
           v-model:value="formData[item.name]"
           :placeholder="item.placeholder"
-          @press-enter="onSearch"
+          @press-enter="handleSearch"
           v-bind="item.props"
         />
       </template>
@@ -42,6 +42,7 @@
           v-model:value="formData[item.name]"
           v-bind="item.props"
           :options="item.options"
+          @change="handleSearch"
         />
       </template>
     </FormItem>
@@ -65,11 +66,11 @@
     },
     props: {
       loading: {
-        type: Boolean,
+        type: Boolean as PropType<boolean>,
         default: false,
       },
       configs: {
-        type: Array,
+        type: Array as PropType<any[]>,
         require: true,
         default: () => [],
       },
@@ -82,9 +83,9 @@
         // @ts-ignore
         (pre, cur) => ({ [cur.name]: cur.defaultValue, ...pre }),
         {},
-      );
+      ) as { [key: string]: any };
 
-      const formData = ref(defaultData);
+      const formData = ref<{ [key: string]: any }>(defaultData);
 
       const handleSearch = (event) => {
         emit('onSearch', event);

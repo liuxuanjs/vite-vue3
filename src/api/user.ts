@@ -4,7 +4,7 @@ import {
   LoginParams,
   LoginResultModel,
   NewUserCountParams,
-  UserInfoParams,
+  // UserInfoParams,
   // GetUserInfoModel,
   UserSigParams,
 } from './model/userModel';
@@ -39,9 +39,8 @@ export function logoutApi() {
 /**
  * @description: getUserInfoApi
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// eslint-disable-next-line no-unused-vars
-export function getUserInfoApi(params?: UserInfoParams) {
+// export function getUserInfoApi(params?: UserInfoParams) {
+export function getUserInfoApi() {
   // 本身应该由接口校验用户是否登陆的，现在只能前端从缓存中取；接口如果完善了直接去掉，用下面的
   const userInfo = localStorage.getItem('userInfo');
   if (userInfo) {

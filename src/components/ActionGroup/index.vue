@@ -41,35 +41,16 @@
   import { Space, Dropdown, Menu } from 'ant-design-vue';
   import { DownOutlined } from '@ant-design/icons-vue';
 
+  import { ActionGroupProps } from './props';
   import TableAction from '../TableAction/index.vue';
-
-  interface Action {
-    title?: string;
-    danger?: boolean;
-    disabled?: boolean;
-    onClick?: Fn;
-  }
 
   export default defineComponent({
     name: 'ActionGroup',
     components: { Space, TableAction, Dropdown, Menu, MenuItem: Menu.Item, DownOutlined },
-    props: {
-      actions: {
-        type: Array as PropType<Action[]>,
-        default: () => [],
-      },
-      limit: {
-        type: Number as PropType<number>,
-        default: 4,
-      },
-      defaultAction: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-    },
+    props: ActionGroupProps,
 
     setup(props) {
-      const actionList = computed(() => {
+      const actionList = computed((): null | any[] => {
         const { actions, limit, defaultAction } = props;
         if (!actions.length || defaultAction) return null;
 
@@ -77,7 +58,7 @@
         return actions.slice(0, limit);
       });
 
-      const menuList = computed(() => {
+      const menuList = computed((): null | any[] => {
         const { actions, limit, defaultAction } = props;
         if (!actions.length) return null;
         if (defaultAction) return actions;

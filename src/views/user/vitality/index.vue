@@ -14,24 +14,28 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent, ref } from 'vue';
 
   import AnalysisLine from './AnalysisLine.vue';
   import AnalysisTable from './AnalysisTable.vue';
+
+  interface UserDetailItem {
+    title: string;
+    value: string;
+    color: string;
+  }
 
   export default defineComponent({
     name: 'UserStatistics',
     components: { AnalysisLine, AnalysisTable },
     setup() {
-      const state = reactive({
-        userDetail: [
-          { title: '日活', value: '325423', color: '#E422EE' },
-          { title: '周活', value: '2345', color: '#18CAE8' },
-          { title: '月活', value: '12%', color: '#F43E3E' },
-        ],
-      });
+      const userDetail = ref<UserDetailItem[]>([
+        { title: '日活', value: '325423', color: '#E422EE' },
+        { title: '周活', value: '2345', color: '#18CAE8' },
+        { title: '月活', value: '12%', color: '#F43E3E' },
+      ]);
 
-      return { ...toRefs(state) };
+      return { userDetail };
     },
   });
 </script>

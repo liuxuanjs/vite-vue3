@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, watchEffect, reactive, toRefs } from 'vue';
+  import { defineComponent, watchEffect, ref } from 'vue';
   import { Menu } from 'ant-design-vue';
   import { useRouter } from 'vue-router';
 
@@ -44,23 +44,21 @@
       const router = useRouter();
       const { currentRoute } = router;
 
-      const state = reactive({
-        openKeys: [] as string[],
-        selectedKeys: [] as string[],
-      });
+      const openKeys = ref<string[]>([]);
+      const selectedKeys = ref<string[]>([]);
 
       watchEffect(async () => {
         const { matched: routeMatched, path, meta } = currentRoute.value;
 
         if (!routeMatched || routeMatched.length === 0) return;
 
-        state.selectedKeys = [path];
+        selectedKeys.value = [path];
         if (meta.menu !== false) {
-          state.openKeys = routeMatched.map(({ path }) => path).reverse();
+          openKeys.value = routeMatched.map(({ path }) => path).reverse();
         }
       });
 
-      return { ...toRefs(state) };
+      return { openKeys, selectedKeys };
     },
   });
 </script>

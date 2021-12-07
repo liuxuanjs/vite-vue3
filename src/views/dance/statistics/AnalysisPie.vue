@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, onMounted, toRefs } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
   import { Spin } from 'ant-design-vue';
 
   import MyChart from '/@/components/Chart/index.vue';
@@ -29,14 +29,12 @@
     name: 'AnalysisPie',
     components: { Spin, MyChart },
     setup() {
-      const state = reactive({
-        pieData: null as any,
-        loading: false,
-      });
+      const pieData = ref<any>(null);
+      const loading = ref<boolean>(false);
 
       onMounted(() => {
         setTimeout(() => {
-          state.pieData = {
+          pieData.value = {
             title: {
               text: '性别比例',
               left: 'center',
@@ -69,7 +67,7 @@
         }, 1000);
       });
 
-      return { ...toRefs(state) };
+      return { pieData, loading };
     },
   });
 </script>

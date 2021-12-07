@@ -7,7 +7,7 @@
           ref="formRef"
           :loading="loading"
           :configs="filterConfigs"
-          @onSearch="getList"
+          @onSearch="onSearch"
         />
       </div>
       <div class="dance-list-section">
@@ -25,10 +25,18 @@
         v-model:visible="visible"
         title="编辑"
         :width="600"
+        centered
         @cancel="handleCancel"
         @ok="handleOk"
       >
-        <videoPlay v-if="modalInfo" width="auto" height="310.5px" :src="modalInfo.danceUrl || ''" />
+        <template #footer v-if="modalStatus === 'audit'">
+          <Space>
+            <Button @click="handleCancel">取消</Button>
+            <Button danger>不通过</Button>
+            <Button type="primary" ghost>通过</Button>
+          </Space>
+        </template>
+        <videoPlay v-if="modalInfo" width="auto" :src="modalInfo.danceUrl || ''" />
         <Form
           :label-col="{ span: 8 }"
           :wrapper-col="{ span: 16 }"
@@ -37,10 +45,10 @@
           :model="modalInfo"
         >
           <FormItem name="difficulty" label="难度">
-            <Rate v-model:value="modalInfo.difficulty" />
+            <Rate v-model:value="modalInfo.difficulty" :disabled="modalStatus === 'audit'" />
           </FormItem>
           <FormItem name="style" label="风格" class="dance-modal-form-item">
-            <RadioGroup v-model:value="modalInfo.style">
+            <RadioGroup v-model:value="modalInfo.style" :disabled="modalStatus === 'audit'">
               <RadioButton v-for="item in styleList" :key="item.value" :value="item.value">
                 {{ item.label }}
               </RadioButton>
@@ -49,7 +57,11 @@
           <FormItem name="calories" label="卡路里">
             <Row>
               <Col :span="12">
-                <Slider v-model:value="modalInfo.calories" :tip-formatter="formatter" />
+                <Slider
+                  v-model:value="modalInfo.calories"
+                  :tip-formatter="formatter"
+                  :disabled="modalStatus === 'audit'"
+                />
               </Col>
               <Col :span="4" style="line-height: 36px; margin-left: 8px">
                 {{ `${modalInfo.calories || 0} kal` }}
@@ -63,8 +75,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, toRefs, createVNode, onMounted } from 'vue';
-  import { Table, Modal, Form, Rate, Radio, Slider, Row, Col } from 'ant-design-vue';
+  import { defineComponent, ref, computed, createVNode, onMounted } from 'vue';
+  import { Table, Modal, Form, Rate, Radio, Slider, Row, Col, Space, Button } from 'ant-design-vue';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import 'vue3-video-play/dist/style.css';
@@ -103,12 +115,16 @@
       Slider,
       Row,
       Col,
+      Space,
+      Button,
     },
     setup() {
       const status = ref<string>('');
       const formRef = ref<any>({});
-      const tableState = reactive({ loading: false as Boolean, dataSource: [] as any[] });
+      const loading = ref<boolean>(false);
+      const dataSource = ref<any[]>([]);
       const visible = ref<boolean>(false);
+      const modalStatus = ref<string>('');
       const modalFormRef = ref<any>({});
       const modalInfo = ref<any>({});
 
@@ -117,18 +133,23 @@
       const getList = () => {
         const params = getParams(pagination, formRef.value.formData, status.value);
 
-        tableState.loading = true;
+        loading.value = true;
 
         getDanceListApi(params)
           .then((res: DanceData) => {
             const { current, total, records } = res || {};
             pagination.current = current;
             pagination.total = total;
-            tableState.dataSource = records || [];
+            dataSource.value = records || [];
           })
           .finally(() => {
-            tableState.loading = false;
+            loading.value = false;
           });
+      };
+
+      const onSearch = () => {
+        pagination.current = 1;
+        getList();
       };
 
       // 侧边栏选择
@@ -144,6 +165,13 @@
         getList();
       };
 
+      // 审核
+      const onAudit = (record) => {
+        modalInfo.value = { ...record };
+        visible.value = true;
+        modalStatus.value = 'audit';
+      };
+
       // 更新舞曲状态
       const handleEditDance = (record, options) => {
         updateDanceApi({ id: record.id, ...options }).then(() => {
@@ -155,6 +183,13 @@
       const handleEdit = (record) => {
         modalInfo.value = { ...record };
         visible.value = true;
+        modalStatus.value = 'edit';
+      };
+
+      const handleCancel = () => {
+        modalInfo.value = {};
+        visible.value = false;
+        modalStatus.value = '';
       };
 
       // 删除操作
@@ -170,11 +205,6 @@
             });
           },
         });
-      };
-
-      const handleCancel = () => {
-        modalInfo.value = {};
-        visible.value = false;
       };
 
       const handleOk = () => {
@@ -196,6 +226,7 @@
       const columns = computed(() => {
         return createDanceListColumns({
           status,
+          onAudit,
           handleEdit,
           handleDelete,
           handleEditDance,
@@ -233,7 +264,8 @@
       });
 
       return {
-        ...toRefs(tableState),
+        loading,
+        dataSource,
         status,
         statusList,
         formRef,
@@ -241,12 +273,13 @@
         columns,
         pagination,
         visible,
+        modalStatus,
         modalInfo,
         handleSelect,
         onTableChange,
         handleOk,
         handleCancel,
-        getList,
+        onSearch,
         modalFormRef,
         styleList: styleEnum.slice(1),
         formatter,

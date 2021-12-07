@@ -14,7 +14,7 @@ export const getParams = (pagination, options, status) => {
 
   if (difficulty) params.difficulty = difficulty;
   if (style) params.style = style;
-  if (name) params.name = name;
+  if (name) params.name = name.trim();
 
   return params;
 };

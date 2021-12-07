@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, onMounted, toRefs } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
   import { Radio, Spin } from 'ant-design-vue';
 
   import MyChart from '/@/components/Chart/index.vue';
@@ -27,16 +27,14 @@
     name: 'AnalysisPie',
     components: { Spin, MyChart, RadioGroup: Radio.Group, RadioButton: Radio.Button },
     setup() {
-      const state = reactive({
-        lineData: null as any,
-        value1: 'a',
-        value2: 'a',
-        loading: false,
-      });
+      const lineData = ref<any>(null);
+      const value1 = ref<string>('a');
+      const value2 = ref<string>('a');
+      const loading = ref<boolean>(false);
 
       onMounted(() => {
         setTimeout(() => {
-          state.lineData = {
+          lineData.value = {
             xAxis: {
               type: 'category',
               data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -54,7 +52,7 @@
         }, 1000);
       });
 
-      return { ...toRefs(state) };
+      return { lineData, value1, value2, loading };
     },
   });
 </script>

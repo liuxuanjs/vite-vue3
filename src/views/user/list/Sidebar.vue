@@ -2,8 +2,8 @@
   <div class="user-sidebar">
     <div class="sidebar-main">
       <div
-        v-for="(menu, index) in menuList"
-        :key="index"
+        v-for="menu in menuList"
+        :key="menu.value"
         :class="['sidebar-item', selectedKey === menu.value && 'sidebar-item--selected']"
         @click="onchange(menu.value)"
         >{{ menu.label }}</div
@@ -16,8 +16,8 @@
   import { defineComponent } from 'vue';
 
   interface MenuInfo {
-    key: number;
-    value: string;
+    value: number;
+    label: string;
   }
 
   export default defineComponent({

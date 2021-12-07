@@ -14,32 +14,37 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, onMounted } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
 
   import AnalysisPie from './AnalysisPie.vue';
   import LineTableWrap from './LineTableWrap.vue';
   import { getUserAnalyseApi } from '/@/api/user';
 
+  interface UserDetailItem {
+    key: string;
+    title: string;
+    value: string | number;
+    color: string;
+  }
+
   export default defineComponent({
     name: 'UserStatistics',
     components: { AnalysisPie, LineTableWrap },
     setup() {
-      const state = reactive<any>({
-        userDetail: [
-          { key: 'userCount', title: '用户总量', value: 0, color: '#E422E4' },
-          { key: 'monthCount', title: '用户新增（月）', value: 0, color: '#18CAE8' },
-          { key: 'percentage', title: '用户增长率（月）', value: '0%', color: '#F43E3E' },
-        ],
-        pieData: [],
-        loading: false,
-      });
+      const userDetail = ref<UserDetailItem[]>([
+        { key: 'userCount', title: '用户总量', value: 0, color: '#E422E4' },
+        { key: 'monthCount', title: '用户新增（月）', value: 0, color: '#18CAE8' },
+        { key: 'percentage', title: '用户增长率（月）', value: '0%', color: '#F43E3E' },
+      ]);
+      const loading = ref<boolean>(false);
+      const pieData = ref<any[]>([]);
 
       const getUserAnalyse = () => {
-        state.loading = true;
+        loading.value = true;
         getUserAnalyseApi()
           .then((res) => {
             const { userCount, monthCount, pie } = res || {};
-            state.userDetail = state.userDetail.map((item) => {
+            userDetail.value = userDetail.value.map((item) => {
               switch (item.key) {
                 case 'userCount':
                   item.value = userCount;
@@ -55,7 +60,7 @@
               return item;
             });
 
-            state.pieData = (pie || []).map(({ name, data }) => {
+            pieData.value = (pie || []).map(({ name, data }) => {
               const obj: any = {};
               obj.title = { text: name, left: 'center' };
               obj.tooltip = { trigger: 'item' };
@@ -77,7 +82,7 @@
             });
           })
           .finally(() => {
-            state.loading = false;
+            loading.value = false;
           });
       };
 
@@ -85,7 +90,7 @@
         getUserAnalyse();
       });
 
-      return { ...toRefs(state) };
+      return { userDetail, loading, pieData };
     },
   });
 </script>

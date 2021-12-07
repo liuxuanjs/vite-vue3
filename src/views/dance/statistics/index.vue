@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
+  import { defineComponent, ref } from 'vue';
 
   import AnalysisPie from './AnalysisPie.vue';
 
@@ -21,15 +21,13 @@
     name: 'UserStatistics',
     components: { AnalysisPie },
     setup() {
-      const state = reactive({
-        userDetail: [
-          { title: '舞曲总量', value: '325423', color: '#E422EE' },
-          { title: '舞曲新增（月）', value: '2345', color: '#18CAE8' },
-          { title: '用户跳舞次数统计', value: '123121', color: '#F43E3E' },
-        ],
-      });
+      const userDetail = ref([
+        { title: '舞曲总量', value: '325423', color: '#E422EE' },
+        { title: '舞曲新增（月）', value: '2345', color: '#18CAE8' },
+        { title: '用户跳舞次数统计', value: '123121', color: '#F43E3E' },
+      ]);
 
-      return { ...toRefs(state) };
+      return { userDetail };
     },
   });
 </script>
