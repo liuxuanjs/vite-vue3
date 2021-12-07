@@ -15,7 +15,7 @@
   import AnalysisLine from './AnalysisLine.vue';
   import AnalysisTable from './AnalysisTable.vue';
 
-  import { getNewUserCountApi } from '/@/api/user';
+  import { getNewCustomerCountApi } from '/@/api/customer';
 
   export default defineComponent({
     name: 'LineTableWrap',
@@ -35,7 +35,7 @@
 
       const getData = () => {
         loading.value = true;
-        getNewUserCountApi({ type: type.value })
+        getNewCustomerCountApi({ type: type.value })
           .then((res) => {
             const result = {
               xAxis: { type: 'category', data: [] as string[] },

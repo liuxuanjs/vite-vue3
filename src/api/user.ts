@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import request from '/@/utils/request';
 import {
   LoginParams,
   LoginResultModel,
-  NewUserCountParams,
   // UserInfoParams,
   // GetUserInfoModel,
   UserSigParams,
@@ -19,17 +17,15 @@ enum Api {
 }
 
 /**
- * @description: loginApi
+ * @description: loginApi 后台登陆
  */
 export function loginApi(params?: LoginParams) {
   return request.get<LoginResultModel>({ url: Api.Login, data: params });
 }
 
 /**
- * @description: logoutApi
+ * @description: logoutApi 退出登陆
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// eslint-disable-next-line no-unused-vars
 export function logoutApi() {
   // 现在没有退出登陆接口
   return Promise.resolve();
@@ -37,7 +33,7 @@ export function logoutApi() {
 }
 
 /**
- * @description: getUserInfoApi
+ * @description: getUserInfoApi 获取用户信息
  */
 // export function getUserInfoApi(params?: UserInfoParams) {
 export function getUserInfoApi() {
@@ -55,22 +51,8 @@ export function getUserInfoApi() {
 }
 
 /**
- * @description: getUserSigApi
+ * @description: getUserSigApi 获取当前登陆人sign
  */
 export function getUserSigApi(params?: UserSigParams) {
   return request.get({ url: Api.GetUserSig, data: params });
-}
-
-/**
- * @description: getUserAnalyseApi
- */
-export function getUserAnalyseApi(params?: any) {
-  return request.get({ url: Api.GetUserAnalyse, data: params });
-}
-
-/**
- * @description: getNewUserCountApi
- */
-export function getNewUserCountApi(params: NewUserCountParams) {
-  return request.get({ url: Api.GetNewUserCount, data: params });
 }

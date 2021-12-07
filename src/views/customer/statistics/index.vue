@@ -18,7 +18,7 @@
 
   import AnalysisPie from './AnalysisPie.vue';
   import LineTableWrap from './LineTableWrap.vue';
-  import { getUserAnalyseApi } from '/@/api/user';
+  import { getCustomerAnalyseApi } from '/@/api/customer';
 
   interface UserDetailItem {
     key: string;
@@ -41,7 +41,7 @@
 
       const getUserAnalyse = () => {
         loading.value = true;
-        getUserAnalyseApi()
+        getCustomerAnalyseApi()
           .then((res) => {
             const { userCount, monthCount, pie } = res || {};
             userDetail.value = userDetail.value.map((item) => {

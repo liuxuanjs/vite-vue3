@@ -1,4 +1,5 @@
 import { Space, Button } from 'ant-design-vue';
+import moment from 'moment';
 
 import Avatar from '/@/components/Avatar/index.vue';
 
@@ -11,9 +12,9 @@ export function createUserListColumns(handleEditUser: Fn, handleDelete: Fn) {
     {
       title: '头像',
       dataIndex: 'profilePhoto',
-      customRender: ({ record }) => {
-        return <Avatar class="user-avatar" src={record.profilePhoto} type="C2C" />;
-      },
+      customRender: ({ record }) => (
+        <Avatar class="user-avatar" src={record.profilePhoto} type="C2C" />
+      ),
     },
     {
       title: '用户名',
@@ -26,6 +27,8 @@ export function createUserListColumns(handleEditUser: Fn, handleDelete: Fn) {
     {
       title: '生日',
       dataIndex: 'birthday',
+      customRender: ({ record }) =>
+        record.birthday ? moment(record.birthday).format('YYYY-MM-DD') : '',
     },
     {
       title: '跳舞次数',

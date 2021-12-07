@@ -4,7 +4,7 @@
     :dataSource="tableData"
     :columns="columns"
     :pagination="false"
-    row-key="id"
+    row-key="key"
     :style="{ marginBottom: '20px' }"
   />
 </template>

@@ -58,8 +58,6 @@
           loginApi(value)
             .then(() => {
               // 后台先写死用户信息
-              // localStorage.setItem('userId', 'administrator');
-              // localStorage.setItem('username', value.username);
               localStorage.setItem(
                 'userInfo',
                 JSON.stringify({

@@ -26,14 +26,15 @@
         title="编辑"
         :width="600"
         centered
+        :confirmLoading="modalLoading"
         @cancel="handleCancel"
         @ok="handleOk"
       >
         <template #footer v-if="modalStatus === 'audit'">
           <Space>
             <Button @click="handleCancel">取消</Button>
-            <Button danger>不通过</Button>
-            <Button type="primary" ghost>通过</Button>
+            <Button danger @click="handleAudit('2')">不通过</Button>
+            <Button type="primary" ghost @click="handleAudit('3')">通过</Button>
           </Space>
         </template>
         <videoPlay v-if="modalInfo" width="auto" :src="modalInfo.danceUrl || ''" />
@@ -127,6 +128,7 @@
       const modalStatus = ref<string>('');
       const modalFormRef = ref<any>({});
       const modalInfo = ref<any>({});
+      const modalLoading = ref<boolean>(false);
 
       const { pagination, onPageChange } = usePagination();
 
@@ -172,6 +174,19 @@
         modalStatus.value = 'audit';
       };
 
+      const handleAudit = (status) => {
+        modalLoading.value = true;
+        const { id } = modalInfo.value;
+        updateDanceApi({ id, status })
+          .then(() => {
+            handleCancel();
+            getList();
+          })
+          .finally(() => {
+            modalLoading.value = false;
+          });
+      };
+
       // 更新舞曲状态
       const handleEditDance = (record, options) => {
         updateDanceApi({ id: record.id, ...options }).then(() => {
@@ -209,10 +224,15 @@
 
       const handleOk = () => {
         const { id, difficulty, style, calories } = modalInfo.value;
-        updateDanceApi({ id, difficulty, style, calories }).then(() => {
-          handleCancel();
-          getList();
-        });
+        modalLoading.value = true;
+        updateDanceApi({ id, difficulty, style, calories })
+          .then(() => {
+            handleCancel();
+            getList();
+          })
+          .finally(() => {
+            modalLoading.value = false;
+          });
       };
 
       const formatter = (value: number) => {
@@ -275,6 +295,7 @@
         visible,
         modalStatus,
         modalInfo,
+        modalLoading,
         handleSelect,
         onTableChange,
         handleOk,
@@ -283,6 +304,7 @@
         modalFormRef,
         styleList: styleEnum.slice(1),
         formatter,
+        handleAudit,
       };
     },
   });

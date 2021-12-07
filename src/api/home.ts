@@ -6,7 +6,7 @@ enum Api {
 }
 
 /**
- * @description: homeApi
+ * @description: homeApi 首页数据
  */
 export function homeApi(params?: indexParams) {
   return request.get<indexResultModel>({ url: Api.Home, data: params });

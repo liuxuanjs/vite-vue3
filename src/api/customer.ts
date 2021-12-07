@@ -4,12 +4,15 @@ import {
   DeleteCustomerParams,
   GetCustomerListModel,
   UpdateCustomerParams,
+  NewCustomerCountParams,
 } from './model/customerModel';
 
 enum Api {
   GetCustomerList = '/user/getUserList',
   UpdateCustomer = '/user/addOrUpdate',
   DeleteCustomer = '/user/deleteUser',
+  GetCustomerAnalyse = '/index/userDetail',
+  GetNewCustomerCount = '/index/newUserCount',
 }
 
 /**
@@ -31,4 +34,18 @@ export function updateCustomerApi(params?: UpdateCustomerParams) {
  */
 export function deleteCustomerApi(params?: DeleteCustomerParams) {
   return request.get({ url: Api.DeleteCustomer, data: params });
+}
+
+/**
+ * @description: getCustomerAnalyseApi
+ */
+export function getCustomerAnalyseApi() {
+  return request.get({ url: Api.GetCustomerAnalyse });
+}
+
+/**
+ * @description: getNewCustomerCountApi
+ */
+export function getNewCustomerCountApi(params: NewCustomerCountParams) {
+  return request.get({ url: Api.GetNewCustomerCount, data: params });
 }

@@ -4,8 +4,12 @@ import BasicLayout from '/@/layouts/basic/index.vue';
 
 import { HomeRoute } from './modules/home';
 import { ErrorRoute } from './modules/error';
-// import { UserRoute } from './modules/user';
-import { UserListRoute, UserStatisticsRoute, UserVitalityRoute } from './modules/user';
+// import { CustomerRoute } from './modules/customer';
+import {
+  CustomerListRoute,
+  CustomerStatisticsRoute,
+  CustomerVitalityRoute,
+} from './modules/customer';
 // import { DanceRoute } from './modules/dance';
 import { DanceListRoute, DanceStatisticsRoute } from './modules/dance';
 import { MessageRoute } from './modules/message';
@@ -25,9 +29,9 @@ export const RootRoute: AppRouteRecordRaw = {
   children: [
     HomeRoute,
     ErrorRoute,
-    UserListRoute,
-    UserStatisticsRoute,
-    UserVitalityRoute,
+    CustomerListRoute,
+    CustomerStatisticsRoute,
+    CustomerVitalityRoute,
     DanceListRoute,
     DanceStatisticsRoute,
     MessageRoute,

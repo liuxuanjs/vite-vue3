@@ -19,7 +19,10 @@
   import { Row, Col } from 'ant-design-vue';
 
   import { homeApi } from '/@/api/home';
-  import { UserStatisticsRoute, UserVitalityRoute } from '/@/router/routes/modules/user';
+  import {
+    CustomerStatisticsRoute,
+    CustomerVitalityRoute,
+  } from '/@/router/routes/modules/customer';
   import { DanceStatisticsRoute } from '/@/router/routes/modules/dance';
 
   interface HomeDataItem {
@@ -35,7 +38,7 @@
     components: { Row, Col },
     setup() {
       const homeData = ref<HomeDataItem[]>([
-        { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: UserStatisticsRoute.path },
+        { name: '用户总量', key: 'userCount', bgc: '#0DCA4B', path: CustomerStatisticsRoute.path },
         { name: '舞曲总量', key: 'danceCount', bgc: '#1897E8', path: DanceStatisticsRoute.path },
         {
           name: '用户跳舞总次数',
@@ -43,9 +46,9 @@
           bgc: '#A254FF',
           path: DanceStatisticsRoute.path,
         },
-        { name: '日活', key: 'dayCount', bgc: '#F77914', path: UserVitalityRoute.path },
-        { name: '周活', key: 'weekCount', bgc: '#E422EE', path: UserVitalityRoute.path },
-        { name: '月活', key: 'monthCount', bgc: '#F43E3E', path: UserVitalityRoute.path },
+        { name: '日活', key: 'dayCount', bgc: '#F77914', path: CustomerVitalityRoute.path },
+        { name: '周活', key: 'weekCount', bgc: '#E422EE', path: CustomerVitalityRoute.path },
+        { name: '月活', key: 'monthCount', bgc: '#F43E3E', path: CustomerVitalityRoute.path },
       ]);
 
       const getData = async () => {

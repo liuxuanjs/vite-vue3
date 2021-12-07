@@ -54,3 +54,10 @@ export interface UpdateCustomerParams {
 export interface DeleteCustomerParams {
   id: number;
 }
+
+/**
+ * @description: NewCustomerCount interface parameters
+ */
+export interface NewCustomerCountParams {
+  type: string;
+}

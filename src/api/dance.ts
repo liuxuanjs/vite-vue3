@@ -5,6 +5,7 @@ enum Api {
   GetCDanceList = '/dance/list',
   UpdateDance = '/dance/addOrUpdate',
   DeleteDance = '/dance/delete',
+  DanceAnalyse = '',
 }
 
 /**
@@ -26,4 +27,11 @@ export function updateDanceApi(params?: UpdateDanceParams) {
  */
 export function deleteDanceApi(params?: DeleteDanceParams) {
   return request.get({ url: Api.DeleteDance, data: params });
+}
+
+/**
+ * @description: getDanceAnalyseApi
+ */
+export function getDanceAnalyseApi(params?: any) {
+  return request.get({ url: Api.DanceAnalyse, data: params });
 }
