@@ -95,7 +95,10 @@
                         {{ item.payload.text }}
                       </span>
                       <div class="text-box" v-if="item.type == 'TIMImageElem'">
-                        <img class="image-element" :src="item.payload.imageInfoArray[0].url" />
+                        <Image
+                          :src="item.payload.imageInfoArray[0].url"
+                          :style="{ maxHeight: '300px', cursor: 'pointer' }"
+                        />
                       </div>
                     </div>
                   </div>
@@ -144,7 +147,7 @@
 
 <script lang="ts">
   import { defineComponent, ref, onMounted, nextTick, onUnmounted, computed } from 'vue';
-  import { Row, Col, Button, Input, Tooltip, message, Modal } from 'ant-design-vue';
+  import { Row, Col, Button, Input, message, Modal, Image } from 'ant-design-vue';
   import tim from '/@/utils/lib/tim';
   import TIM from 'tim-js-sdk';
   import { useStore } from 'vuex';
@@ -153,10 +156,11 @@
   import { getUserSigApi } from '/@/api/user';
   import moment from 'moment';
 
+  const { TextArea } = Input;
+
   export default defineComponent({
     name: 'MessageList',
-    // eslint-disable-next-line
-    components: { Row, Col, Button, Avatar, TextArea: Input.TextArea, Tooltip, Modal, Input },
+    components: { Row, Col, Button, Avatar, TextArea, Modal, Input, Image },
     setup() {
       const userSig = ref<string>(''); // 用户登录即时通信 IM 的密码
       const chatList = ref<any[]>([]); //会话列表
@@ -732,10 +736,6 @@
 
       .message-wrapper {
         margin: 20px 0;
-      }
-
-      .image-element {
-        max-height: 300px;
       }
 
       .message-left {
