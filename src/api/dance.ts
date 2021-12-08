@@ -5,7 +5,7 @@ enum Api {
   GetCDanceList = '/dance/list',
   UpdateDance = '/dance/addOrUpdate',
   DeleteDance = '/dance/delete',
-  DanceAnalyse = '',
+  DanceAnalyse = '/index/danceDetail',
 }
 
 /**

@@ -13,7 +13,7 @@ export function createUserListColumns(handleEditUser: Fn, handleDelete: Fn) {
       title: '头像',
       dataIndex: 'profilePhoto',
       customRender: ({ record }) => (
-        <Avatar class="user-avatar" src={record.profilePhoto} type="C2C" />
+        <Avatar class="customer-avatar" src={record.profilePhoto} type="C2C" />
       ),
     },
     {

@@ -1,8 +1,19 @@
 <template>
-  <div class="user-list">
-    <DanceListSidebar :menuList="statusList" :selectedKey="status" @change="handleSelect" />
-    <div class="dance-list-main">
-      <div class="dance-list-section">
+  <div class="customer-list">
+    <div class="customer-list-sidebar">
+      <div class="customer-sidebar-main">
+        <div
+          v-for="menu in statusList"
+          :key="menu.value"
+          :class="['sidebar-item', status === menu.value && 'sidebar-item--selected']"
+          @click="handleSelect(menu.value)"
+        >
+          {{ menu.label }}
+        </div>
+      </div>
+    </div>
+    <div class="customer-list-main">
+      <div class="customer-list-section">
         <SearchFilter
           ref="formRef"
           :loading="loading"
@@ -10,7 +21,7 @@
           @onSearch="onSearch"
         />
       </div>
-      <div class="dance-list-section">
+      <div class="customer-list-section">
         <Table
           :loading="loading"
           :dataSource="dataSource"
@@ -37,12 +48,11 @@
   import { getParams } from './adaptor';
   import { getCustomerListApi, updateCustomerApi, deleteCustomerApi } from '/@/api/customer';
 
-  import DanceListSidebar from './Sidebar.vue';
   import SearchFilter from '/@/components/SearchFilter/index.vue';
 
   export default defineComponent({
     name: 'UserList',
-    components: { Table, DanceListSidebar, SearchFilter },
+    components: { Table, SearchFilter },
     setup() {
       const status = ref<number>(0);
       const formRef = ref<any>({});
@@ -55,7 +65,6 @@
         const params = getParams(pagination, { ...formRef.value.formData, status: status.value });
 
         loading.value = true;
-
         getCustomerListApi(params)
           .then((res) => {
             const { current, total, records } = res || {};
@@ -75,6 +84,7 @@
 
       // 侧边栏选择
       const handleSelect = (v: number) => {
+        if (status.value === v) return;
         status.value = v;
         pagination.current = 1;
         getList();
@@ -162,31 +172,44 @@
 </script>
 
 <style lang="less">
-  .user-list {
+  .customer-list {
     display: flex;
     height: 100%;
 
-    .dance-list-main {
+    .customer-list-sidebar {
+      width: 150px;
+      flex-shrink: 0;
+      background: #fff;
+      margin-top: 10px;
+
+      .customer-sidebar-main {
+        padding: 10px 0;
+        cursor: pointer;
+      }
+
+      .sidebar-item {
+        padding-left: 24px;
+        padding-right: 16px;
+        font-size: 14px;
+        line-height: 40px;
+      }
+
+      .sidebar-item--selected {
+        background: #f0f2f5;
+      }
+    }
+
+    .customer-list-main {
       flex: 1;
       margin: 20px 0 0 20px;
       background: #fff;
     }
 
-    .dance-list-section {
+    .customer-list-section {
       margin: 20px;
     }
 
-    .dance-list-form-item {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-
-      .ant-form-item {
-        margin: 0;
-      }
-    }
-
-    .user-avatar {
+    .customer-avatar {
       width: 50px;
       height: 50px;
       border-radius: 50%;

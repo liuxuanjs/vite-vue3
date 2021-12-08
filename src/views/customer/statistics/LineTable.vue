@@ -1,25 +1,41 @@
 <template>
-  <AnalysisLine
+  <div class="customer-analysisLine">
+    <Spin :spinning="loading">
+      <div class="line-head">
+        <RadioGroup :defaultValue="dataType" @change="onChangeDataType" button-style="solid">
+          <RadioButton value="count">用户新增</RadioButton>
+          <RadioButton value="percentage">用户增长率</RadioButton>
+        </RadioGroup>
+        <RadioGroup :defaultValue="type" @change="onChangeType">
+          <RadioButton value="date">日</RadioButton>
+          <RadioButton value="week">周</RadioButton>
+          <RadioButton value="month">月</RadioButton>
+        </RadioGroup>
+      </div>
+      <MyChart :options="lineData" height="380px" />
+    </Spin>
+  </div>
+  <Table
     :loading="loading"
-    :dataType="dataType"
-    :type="type"
-    :lineData="lineData"
-    :onChangeDataType="onChangeDataType"
-    :onChangeType="onChangeType"
+    :dataSource="tableData"
+    :columns="columns"
+    :pagination="false"
+    row-key="key"
+    :style="{ padding: '30px', background: '#fff' }"
   />
-  <AnalysisTable :loading="loading" :tableData="tableData" />
 </template>
 
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import AnalysisLine from './AnalysisLine.vue';
-  import AnalysisTable from './AnalysisTable.vue';
+  import { Radio, Spin, Table } from 'ant-design-vue';
+
+  import MyChart from '/@/components/Chart/index.vue';
 
   import { getNewCustomerCountApi } from '/@/api/customer';
 
   export default defineComponent({
-    name: 'LineTableWrap',
-    components: { AnalysisLine, AnalysisTable },
+    name: 'CustomerStatisticsLineTable',
+    components: { Spin, MyChart, RadioGroup: Radio.Group, RadioButton: Radio.Button, Table },
     setup() {
       const loading = ref<boolean>(false);
       const dataType = ref<string>('count');
@@ -87,7 +103,46 @@
         getData();
       });
 
-      return { loading, dataType, type, lineData, tableData, onChangeDataType, onChangeType };
+      return {
+        loading,
+        dataType,
+        type,
+        lineData,
+        tableData,
+        onChangeDataType,
+        onChangeType,
+        columns: [
+          {
+            title: '日期',
+            dataIndex: 'key',
+          },
+          {
+            title: '用户新增',
+            dataIndex: 'newUserCount',
+          },
+          {
+            title: '用户增长率',
+            dataIndex: 'newUserRate',
+          },
+          {
+            title: '用户总量',
+            dataIndex: 'totalUser',
+          },
+        ],
+      };
     },
   });
 </script>
+
+<style lang="less">
+  .customer-analysisLine {
+    margin-bottom: 20px;
+    background: #fff;
+
+    .line-head {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 30px 0;
+    }
+  }
+</style>

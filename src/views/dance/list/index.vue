@@ -1,6 +1,17 @@
 <template>
   <div class="dance-list">
-    <DanceListSidebar :menuList="statusList" :selectedKey="status" @change="handleSelect" />
+    <div class="dance-list-sidebar">
+      <div class="dance-sidebar-main">
+        <div
+          v-for="menu in statusList"
+          :key="menu.value"
+          :class="['sidebar-item', status === menu.value && 'sidebar-item--selected']"
+          @click="handleSelect(menu.value)"
+        >
+          {{ menu.label }}
+        </div>
+      </div>
+    </div>
     <div class="dance-list-main">
       <div class="dance-list-section">
         <SearchFilter
@@ -91,7 +102,6 @@
   import { createDanceListColumns } from './data';
   import { getParams } from './adaptor';
 
-  import DanceListSidebar from './Sidebar.vue';
   import SearchFilter from '/@/components/SearchFilter/index.vue';
 
   interface DanceData {
@@ -104,7 +114,6 @@
     name: 'DanceList',
     components: {
       Table,
-      DanceListSidebar,
       SearchFilter,
       Modal,
       videoPlay,
@@ -156,6 +165,7 @@
 
       // 侧边栏选择
       const handleSelect = (v: string) => {
+        if (status.value === v) return;
         status.value = v;
         pagination.current = 1;
         getList();
@@ -315,6 +325,29 @@
     display: flex;
     height: 100%;
 
+    .dance-list-sidebar {
+      width: 150px;
+      flex-shrink: 0;
+      background: #fff;
+      margin-top: 10px;
+
+      .dance-sidebar-main {
+        padding: 10px 0;
+        cursor: pointer;
+      }
+
+      .sidebar-item {
+        padding-left: 24px;
+        padding-right: 16px;
+        font-size: 14px;
+        line-height: 40px;
+      }
+
+      .sidebar-item--selected {
+        background: #f0f2f5;
+      }
+    }
+
     .dance-list-main {
       flex: 1;
       margin: 20px 0 0 20px;
@@ -323,16 +356,6 @@
 
     .dance-list-section {
       margin: 20px;
-    }
-
-    .dance-list-form-item {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-
-      .ant-form-item {
-        margin: 0;
-      }
     }
 
     .music-image {
