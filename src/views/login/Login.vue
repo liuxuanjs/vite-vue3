@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import { Form, Input, Button } from 'ant-design-vue';
 
   import { useRoute } from 'vue-router';
@@ -48,8 +48,8 @@
     components: { Form, FormItem: Form.Item, Input, Button },
     setup() {
       const formRef = ref();
-      const formState = reactive({} as FormState);
-      const loding = ref(false);
+      const formState = ref<FormState>({});
+      const loding = ref<boolean>(false);
       const { query } = useRoute();
 
       const onLogin = () => {

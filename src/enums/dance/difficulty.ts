@@ -1,9 +1,4 @@
-export interface Difficulty {
-  value: number;
-  label: string;
-}
-
-export const difficultyEnum: Difficulty[] = [
+export const difficultyEnum: LabelValueOptions = [
   { value: 0, label: '全部' },
   { value: 1, label: '1星' },
   { value: 2, label: '2星' },

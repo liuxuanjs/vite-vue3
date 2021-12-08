@@ -56,8 +56,15 @@ export interface DeleteCustomerParams {
 }
 
 /**
- * @description: NewCustomerCount interface parameters
+ * @description: NewUserCount interface parameters
  */
 export interface NewCustomerCountParams {
+  type: string;
+}
+
+/**
+ * @description: NewUserRecordCount interface parameters
+ */
+export interface NewCustomerRecordCountParams {
   type: string;
 }

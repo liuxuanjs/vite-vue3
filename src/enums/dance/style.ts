@@ -1,9 +1,4 @@
-export interface Style {
-  value: string;
-  label: string;
-}
-
-export const styleEnum: Style[] = [
+export const styleEnum: LabelValueOptions = [
   { value: '', label: '全部' },
   { value: '爵士', label: '爵士' },
   { value: '现代舞', label: '现代舞' },

@@ -13,7 +13,7 @@
   import { defineComponent, ref, onMounted } from 'vue';
   import { Spin } from 'ant-design-vue';
 
-  import { getCustomerAnalyseApi } from '/@/api/customer';
+  import { getCustomerRecordDetailApi } from '/@/api/customer';
 
   interface UserDetailItem {
     key: string;
@@ -27,28 +27,28 @@
     components: { Spin },
     setup() {
       const userDetail = ref<UserDetailItem[]>([
-        { key: 'userCount', title: '日活', value: 0, color: '#E422EE' },
-        { key: 'monthCount', title: '周活', value: 0, color: '#18CAE8' },
-        { key: 'percentage', title: '月活', value: 0, color: '#F43E3E' },
+        { key: 'thisDayCount', title: '日活', value: 0, color: '#E422EE' },
+        { key: 'thisWeekCount', title: '周活', value: 0, color: '#18CAE8' },
+        { key: 'thisMonthCount', title: '月活', value: 0, color: '#F43E3E' },
       ]);
       const loading = ref<boolean>(false);
 
       const getUserVitality = () => {
         loading.value = true;
-        getCustomerAnalyseApi()
+        getCustomerRecordDetailApi()
           .then((res) => {
-            const { userCount, monthCount } = res || {};
+            const { thisDayCount, thisWeekCount, thisMonthCount } = res || {};
             userDetail.value = userDetail.value.map((item) => {
               switch (item.key) {
-                case 'userCount':
-                  item.value = userCount;
+                case 'thisDayCount':
+                  item.value = thisDayCount;
                   break;
-                case 'monthCount':
-                  item.value = monthCount;
+                case 'thisWeekCount':
+                  item.value = thisWeekCount;
                   break;
 
                 default:
-                  item.value = `${((monthCount / userCount) * 100).toFixed(2)}%`;
+                  item.value = thisMonthCount;
                   break;
               }
               return item;

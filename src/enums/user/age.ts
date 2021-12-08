@@ -1,9 +1,13 @@
 export interface Age {
-  value: number;
-  label: string;
+  min: number;
+  max: number;
 }
 
-export const ageEnums: Age[] = [
+export interface AgeOptions {
+  [key: string]: Age;
+}
+
+export const ageEnums: LabelValueOptions = [
   { value: 1, label: '全部' },
   { value: 2, label: '<18' },
   { value: 3, label: '18-25' },
@@ -13,7 +17,7 @@ export const ageEnums: Age[] = [
   { value: 7, label: '>50' },
 ];
 
-export const ageMap = {
+export const ageMap: AgeOptions = {
   1: { min: 0, max: 100 },
   2: { min: 0, max: 18 },
   3: { min: 18, max: 25 },

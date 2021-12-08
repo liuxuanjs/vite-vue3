@@ -31,7 +31,7 @@
 
   import MyChart from '/@/components/Chart/index.vue';
 
-  import { getNewCustomerCountApi } from '/@/api/customer';
+  import { getNewCustomerRecordCountApi } from '/@/api/customer';
 
   export default defineComponent({
     name: 'CustomerVitalityLineTable',
@@ -51,7 +51,7 @@
 
       const getData = () => {
         loading.value = true;
-        getNewCustomerCountApi({ type: type.value })
+        getNewCustomerRecordCountApi({ type: type.value })
           .then((res) => {
             const result = {
               xAxis: { type: 'category', data: [] as string[] },
@@ -129,8 +129,8 @@
             dataIndex: 'newUserRate',
           },
           {
-            title: '人均在线时长（分钟）',
-            dataIndex: 'mock1',
+            title: '人均登陆次数',
+            dataIndex: 'newUserRecordCount',
           },
         ],
       };
