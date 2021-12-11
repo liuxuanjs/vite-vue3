@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import { defHttp } from '/@/utils/axios';
 import {
   LoginParams,
   LoginResultModel,
@@ -20,7 +20,7 @@ enum Api {
  * @description: loginApi 后台登陆
  */
 export function loginApi(params?: LoginParams) {
-  return request.get<LoginResultModel>({ url: Api.Login, data: params });
+  return defHttp.get<LoginResultModel>({ url: Api.Login, params });
 }
 
 /**
@@ -29,7 +29,7 @@ export function loginApi(params?: LoginParams) {
 export function logoutApi() {
   // 现在没有退出登陆接口
   return Promise.resolve();
-  // return request.get({ url: Api.Login, data: params });
+  // return defHttp.get({ url: Api.Login, params });
 }
 
 /**
@@ -47,12 +47,12 @@ export function getUserInfoApi() {
   }
   return Promise.reject();
 
-  // return request.post<GetUserInfoModel>({ url: Api.GetUserInfo, ...params });
+  // return defHttp.post<GetUserInfoModel>({ url: Api.GetUserInfo, data: params });
 }
 
 /**
  * @description: getUserSigApi 获取当前登陆人sign
  */
 export function getUserSigApi(params?: UserSigParams) {
-  return request.get({ url: Api.GetUserSig, data: params });
+  return defHttp.get({ url: Api.GetUserSig, params });
 }

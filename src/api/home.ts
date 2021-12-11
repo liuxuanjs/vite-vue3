@@ -1,5 +1,5 @@
-import request from '/@/utils/request';
-import { indexParams, indexResultModel } from './model/homeModel';
+import { defHttp } from '/@/utils/axios';
+import { indexResultModel } from './model/homeModel';
 
 enum Api {
   Home = '/index/index',
@@ -8,6 +8,6 @@ enum Api {
 /**
  * @description: homeApi 首页数据
  */
-export function homeApi(params?: indexParams) {
-  return request.get<indexResultModel>({ url: Api.Home, data: params });
+export function homeApi() {
+  return defHttp.get<indexResultModel>({ url: Api.Home });
 }

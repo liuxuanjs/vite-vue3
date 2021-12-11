@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import { defHttp } from '/@/utils/axios';
 import {
   CustomerListParams,
   DeleteCustomerParams,
@@ -22,47 +22,47 @@ enum Api {
  * @description: getCustomerListApi
  */
 export function getCustomerListApi(params?: CustomerListParams) {
-  return request.post<GetCustomerListModel>({ url: Api.GetCustomerList, data: params });
+  return defHttp.post<GetCustomerListModel>({ url: Api.GetCustomerList, data: params });
 }
 
 /**
  * @description: updateCustomerApi
  */
 export function updateCustomerApi(params?: UpdateCustomerParams) {
-  return request.post({ url: Api.UpdateCustomer, data: params });
+  return defHttp.post({ url: Api.UpdateCustomer, data: params });
 }
 
 /**
  * @description: deleteCustomerApi
  */
 export function deleteCustomerApi(params?: DeleteCustomerParams) {
-  return request.get({ url: Api.DeleteCustomer, data: params });
+  return defHttp.get({ url: Api.DeleteCustomer, params });
 }
 
 /**
  * @description: getCustomerAnalyseApi
  */
 export function getCustomerAnalyseApi() {
-  return request.get({ url: Api.GetCustomerAnalyse });
+  return defHttp.get({ url: Api.GetCustomerAnalyse });
 }
 
 /**
  * @description: getNewCustomerCountApi
  */
 export function getNewCustomerCountApi(params: NewCustomerCountParams) {
-  return request.get({ url: Api.GetNewCustomerCount, data: params });
+  return defHttp.get({ url: Api.GetNewCustomerCount, params });
 }
 
 /**
  * @description: getCustomerRecordDetailApi
  */
 export function getCustomerRecordDetailApi() {
-  return request.get({ url: Api.CustomerRecordDetail });
+  return defHttp.get({ url: Api.CustomerRecordDetail });
 }
 
 /**
  * @description: getNewCustomerRecordCountApi
  */
 export function getNewCustomerRecordCountApi(params: NewCustomerRecordCountParams) {
-  return request.get({ url: Api.GetNewCustomerRecordCount, data: params });
+  return defHttp.get({ url: Api.GetNewCustomerRecordCount, params });
 }

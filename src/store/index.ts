@@ -3,6 +3,8 @@ import type { AppState } from '/#/store';
 
 import { createStore } from 'vuex';
 import { getUserInfoApi } from '/@/api/user';
+import { router } from '/@/router';
+import { PageEnum } from '/@/enums/pageEnum';
 
 const store = createStore({
   state: (): AppState => ({
@@ -21,6 +23,11 @@ const store = createStore({
       } catch (error) {
         context.commit('setUserInfo', {});
       }
+    },
+    logout(context) {
+      context.commit('setUserInfo', null);
+      localStorage.removeItem('userInfo');
+      router.push(PageEnum.BASE_LOGIN);
     },
   },
 });

@@ -10,7 +10,7 @@ export function getPopupContainer(node?: HTMLElement): HTMLElement {
 }
 
 /**
- * Add the object as a parameter to the URL
+ * 将对象作为参数添加到URL
  * @param baseUrl url
  * @param obj
  * @returns {string}
@@ -29,7 +29,7 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
 }
 
 /**
- * 转换数组到对象形式
+ * 将数组转换成对象
  * @param list 数组列表
  * @param key 待转换成对象的key
  * @returns {Object} 转换后的对象
