@@ -96,7 +96,7 @@ const transform: AxiosTransform = {
       throw new Error('请求出错，请稍候重试');
     }
 
-    const { code, data, message } = responseData;
+    const { code, data, msg } = responseData;
 
     // 请求成功
     const hasSuccess = responseData && code === ResultEnum.SUCCESS;
@@ -104,7 +104,7 @@ const transform: AxiosTransform = {
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
-    let timeoutMsg = message;
+    let timeoutMsg = msg || '请求出错，请稍候重试';
     if (code === ResultEnum.TIMEOUT) {
       timeoutMsg = '登录超时,请重新登录!';
       store.dispatch('getUserInfo');
@@ -116,7 +116,7 @@ const transform: AxiosTransform = {
       createMessage.error(timeoutMsg);
     }
 
-    throw new Error(timeoutMsg || '请求出错，请稍候重试');
+    throw new Error(timeoutMsg);
   },
 
   /**

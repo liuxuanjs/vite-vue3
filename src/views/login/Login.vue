@@ -32,6 +32,7 @@
   import { useRoute } from 'vue-router';
 
   import { loginApi } from '/@/api/user';
+  import { store } from '/@/store';
 
   interface FormState {
     username?: string;
@@ -57,14 +58,14 @@
           loding.value = true;
           loginApi(value)
             .then(() => {
-              // 后台先写死用户信息
-              localStorage.setItem(
-                'userInfo',
-                JSON.stringify({
-                  userId: 'administrator',
-                  username: value.username,
-                }),
-              );
+              // 任何人登陆都用admin的userId，这个userId是为了登陆腾讯IM通信
+              const userInfo = {
+                userId: 'administrator',
+                username: value.username,
+              };
+              localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+              store.commit('setUserInfo', userInfo);
 
               const { backUrl } = query;
               window.location.replace(backUrl?.toString() || '/');

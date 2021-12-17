@@ -370,7 +370,7 @@
 
         tim
           .login({
-            userID: userInfo.value.userId,
+            userID: userInfo?.value?.userId,
             userSig: userSig.value,
           })
           .then(function (imResponse) {
@@ -428,7 +428,7 @@
 
       onMounted(async () => {
         try {
-          const res = await getUserSigApi({ userId: userInfo.value.userId });
+          const res = await getUserSigApi({ userId: userInfo?.value?.userId });
           userSig.value = res || '';
           logData();
         } catch (error) {

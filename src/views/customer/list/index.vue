@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed, createVNode, onMounted } from 'vue';
-  import { Table, Modal } from 'ant-design-vue';
-  import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+  import { defineComponent, ref, computed, onMounted } from 'vue';
+  import { Table } from 'ant-design-vue';
 
   import usePagination from '/@/hooks/usePagination';
+  import { useMessage } from '/@/hooks/useMessage';
   import { statusList } from '/@/enums/user/status';
   import { genderEnums } from '/@/enums/user/gender';
   import { ageEnums } from '/@/enums/user/age';
@@ -60,6 +60,7 @@
       const dataSource = ref<any[]>([]);
 
       const { pagination, onPageChange } = usePagination();
+      const { createConfirm } = useMessage();
 
       const getList = () => {
         const params = getParams(pagination, { ...formRef.value.formData, status: status.value });
@@ -105,12 +106,11 @@
 
       // 删除操作
       const handleDelete = (record) => {
-        Modal.confirm({
+        createConfirm({
+          iconType: 'warning',
           title: '删除确认?',
-          icon: createVNode(ExclamationCircleOutlined),
           content: '删除后不能恢复，确定要删除吗',
-          okType: 'danger',
-          onOk() {
+          onOk: () => {
             deleteCustomerApi({ id: record.id }).then(() => {
               getList();
             });

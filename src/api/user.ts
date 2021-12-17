@@ -8,7 +8,7 @@ import {
 } from './model/userModel';
 
 enum Api {
-  Login = '/user/login',
+  Login = '/admin-user/login',
   // Logout = '/logout',
   // GetUserInfo = '/admin/emp/getInfo',
   GetUserSig = '/user/genUserSig',

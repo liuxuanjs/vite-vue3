@@ -87,15 +87,15 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed, createVNode, onMounted } from 'vue';
+  import { defineComponent, ref, computed, onMounted } from 'vue';
   import { Table, Modal, Form, Rate, Radio, Slider, Row, Col, Space, Button } from 'ant-design-vue';
-  import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   import 'vue3-video-play/dist/style.css';
   import { videoPlay } from 'vue3-video-play';
 
   import { deleteDanceApi, getDanceListApi, updateDanceApi } from '/@/api/dance';
   import usePagination from '/@/hooks/usePagination';
+  import { useMessage } from '/@/hooks/useMessage';
   import { difficultyEnum } from '/@/enums/dance/difficulty';
   import { styleEnum } from '/@/enums/dance/style';
   import { statusList } from '/@/enums/dance/status';
@@ -140,6 +140,7 @@
       const modalLoading = ref<boolean>(false);
 
       const { pagination, onPageChange } = usePagination();
+      const { createConfirm } = useMessage();
 
       const getList = () => {
         const params = getParams(pagination, formRef.value.formData, status.value);
@@ -219,12 +220,11 @@
 
       // 删除操作
       const handleDelete = (record) => {
-        Modal.confirm({
+        createConfirm({
+          iconType: 'warning',
           title: '删除确认?',
-          icon: createVNode(ExclamationCircleOutlined),
           content: '删除后不能恢复，确定要删除吗',
-          okType: 'danger',
-          onOk() {
+          onOk: () => {
             deleteDanceApi({ id: record.id }).then(() => {
               getList();
             });
