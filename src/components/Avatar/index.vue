@@ -6,6 +6,9 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue';
+  import avatar1 from '/@/assets/images/avatar-1.png';
+  import avatar2 from '/@/assets/images/avatar-2.png';
+  import avatar3 from '/@/assets/images/avatar-3.png';
 
   export default defineComponent({
     name: 'Avatar',
@@ -29,15 +32,15 @@
           switch (type) {
             case 'C2C':
               // 个人头像
-              return '/@/assets/images/avatar-2.png';
+              return avatar2;
             case 'GROUP':
               // 群默认头像
-              return '/@/assets/images/avatar-3.png';
+              return avatar3;
             // case TIM.TYPES.CONV_SYSTEM:
             //   return systemAvatar;
             default:
               // 默认头像
-              return '/@/assets/images/avatar-1.png';
+              return avatar1;
           }
         }
       });
