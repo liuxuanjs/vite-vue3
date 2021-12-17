@@ -60,7 +60,7 @@
             .then(() => {
               // 任何人登陆都用admin的userId，这个userId是为了登陆腾讯IM通信
               const userInfo = {
-                userId: 'administrator',
+                userId: '系统消息',
                 username: value.username,
               };
               localStorage.setItem('userInfo', JSON.stringify(userInfo));

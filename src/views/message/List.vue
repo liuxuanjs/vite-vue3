@@ -86,7 +86,9 @@
                 </div>
                 <div class="col-2">
                   <div class="base">
-                    <div class="base-name text-ellipsis">{{ currentChatName }}</div>
+                    <div class="base-name text-ellipsis">
+                      {{ item.to !== currentUserId ? currentChatName : item.from }}
+                    </div>
                     <div class="date">{{ formatDate(item.time) }}</div>
                   </div>
                   <div class="content-wrapper">
