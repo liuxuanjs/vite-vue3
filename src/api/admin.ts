@@ -3,6 +3,7 @@ import { defHttp } from '/@/utils/axios';
 enum Api {
   AdminList = '/admin-user/getList',
   EditAdminUser = '/admin-user/editAdminUser',
+  DelAdminUser = '/admin-user/delAdminUser',
 }
 
 /**
@@ -17,4 +18,10 @@ export function getAdminListApi(params) {
  */
 export function editAdminUsertApi(data) {
   return defHttp.post({ url: Api.EditAdminUser, data });
+}
+/**
+ * @description: delAdminUsertApi
+ */
+export function delAdminUsertApi(params) {
+  return defHttp.get({ url: Api.DelAdminUser, params });
 }

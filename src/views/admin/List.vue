@@ -38,13 +38,16 @@
         <FormItem name="userName" label="账号">
           <Input
             v-model:value="modalInfo.userName"
-            :disabled="modalInfo.isManager"
+            :disabled="modalTitle === '编辑'"
             allowClear
             placeholder="请输入账号"
           />
         </FormItem>
         <FormItem name="userPassword" label="密码">
           <Input v-model:value="modalInfo.userPassword" allowClear placeholder="请输入密码" />
+        </FormItem>
+        <FormItem name="isManager" label="是否是管理员">
+          <Switch v-model:checked="modalInfo.isManager" />
         </FormItem>
       </Form>
     </Modal>
@@ -53,11 +56,11 @@
 
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { Table, Space, Button, Modal, Form, Input } from 'ant-design-vue';
+  import { Table, Space, Button, Modal, Form, Input, Switch } from 'ant-design-vue';
 
   import usePagination from '/@/hooks/usePagination';
   import { useMessage } from '/@/hooks/useMessage';
-  import { getAdminListApi, editAdminUsertApi } from '/@/api/admin';
+  import { getAdminListApi, editAdminUsertApi, delAdminUsertApi } from '/@/api/admin';
 
   const rules = {
     userName: [{ required: true, message: '请输入账号' }],
@@ -66,7 +69,7 @@
 
   export default defineComponent({
     name: 'AdminList',
-    components: { Table, Space, Button, Modal, Form, FormItem: Form.Item, Input },
+    components: { Table, Space, Button, Modal, Form, FormItem: Form.Item, Input, Switch },
     setup() {
       const loading = ref<boolean>(false);
       const dataSource = ref<any[]>([]);
@@ -106,16 +109,15 @@
         visible.value = true;
       };
 
-      const onDelete = () => {
+      const onDelete = (record) => {
         createConfirm({
           iconType: 'warning',
           title: '删除确认?',
           content: '删除后不能恢复，确定要删除吗',
           onOk: async () => {
-            console.log(1);
-            // deleteCustomerApi({ id: record.id }).then(() => {
-            //   getList();
-            // });
+            delAdminUsertApi({ id: record.id }).then(() => {
+              getList();
+            });
           },
         });
       };
@@ -134,12 +136,16 @@
       };
 
       const handleOk = () => {
-        modalFormRef.value.validate().then((res) => {
-          const { id } = modalInfo.value;
-          if (id) {
-            res.id = id;
-          }
-          editAdminUsertApi(res).then(() => {
+        modalFormRef.value.validate().then(() => {
+          const { id, userName, userPassword, isManager } = modalInfo.value;
+          let params = {
+            userName: userName.trim(),
+            userPassword: userPassword.trim(),
+            isManager: !!isManager,
+          } as any;
+          id && (params.id = id);
+
+          editAdminUsertApi(params).then(() => {
             handleCancel();
             getList();
           });
