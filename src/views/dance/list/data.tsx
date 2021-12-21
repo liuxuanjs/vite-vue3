@@ -2,6 +2,7 @@ import type { Ref } from 'vue';
 import type { ActionItem } from '/@/components/ActionGroup/props';
 
 import { Button } from 'ant-design-vue';
+import moment from 'moment';
 
 import { statusEnum } from '/@/enums/dance/status';
 import { difficultyEnum } from '/@/enums/dance/difficulty';
@@ -53,7 +54,13 @@ export function createDanceListColumns({
     {
       title: '时长',
       dataIndex: 'time',
-      // customRender: ({ record }) => record.time ? moment.utc(record.time).format('HH:mm') : '',
+      customRender: ({ record }) => {
+        const { time } = record;
+        if (time) {
+          return moment(time * 1).format('mm:ss');
+        }
+        return null;
+      },
     },
     status.value !== '3' && {
       title: '难度',

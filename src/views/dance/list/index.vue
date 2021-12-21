@@ -35,7 +35,7 @@
       <Modal
         v-model:visible="visible"
         title="编辑"
-        :width="600"
+        :width="570"
         centered
         :confirmLoading="modalLoading"
         @cancel="handleCancel"
@@ -60,11 +60,16 @@
             <Rate v-model:value="modalInfo.difficulty" :disabled="modalStatus === 'audit'" />
           </FormItem>
           <FormItem name="style" label="风格" class="dance-modal-form-item">
-            <RadioGroup v-model:value="modalInfo.style" :disabled="modalStatus === 'audit'">
+            <!-- <RadioGroup v-model:value="modalInfo.style" :disabled="modalStatus === 'audit'">
               <RadioButton v-for="item in styleList" :key="item.value" :value="item.value">
                 {{ item.label }}
               </RadioButton>
-            </RadioGroup>
+            </RadioGroup> -->
+            <CheckboxGroup v-model:value="modalInfo.style" :disabled="modalStatus === 'audit'">
+              <Checkbox v-for="option in styleList" :key="option.value" :value="option.value">
+                {{ option.label }}
+              </Checkbox>
+            </CheckboxGroup>
           </FormItem>
           <FormItem name="calories" label="卡路里">
             <Row>
@@ -88,7 +93,19 @@
 
 <script lang="ts">
   import { defineComponent, ref, computed, onMounted } from 'vue';
-  import { Table, Modal, Form, Rate, Radio, Slider, Row, Col, Space, Button } from 'ant-design-vue';
+  import {
+    Table,
+    Modal,
+    Form,
+    Rate,
+    // Radio,
+    Slider,
+    Row,
+    Col,
+    Space,
+    Button,
+    Checkbox,
+  } from 'ant-design-vue';
 
   import 'vue3-video-play/dist/style.css';
   import { videoPlay } from 'vue3-video-play';
@@ -120,13 +137,15 @@
       Form,
       FormItem: Form.Item,
       Rate,
-      RadioGroup: Radio.Group,
-      RadioButton: Radio.Button,
+      // RadioGroup: Radio.Group,
+      // RadioButton: Radio.Button,
       Slider,
       Row,
       Col,
       Space,
       Button,
+      Checkbox,
+      CheckboxGroup: Checkbox.Group,
     },
     setup() {
       const status = ref<string>('');
@@ -207,7 +226,10 @@
 
       // 编辑操作
       const handleEdit = (record) => {
-        modalInfo.value = { ...record };
+        modalInfo.value = {
+          ...record,
+          style: record.style ? record.style.split(',') : [],
+        };
         visible.value = true;
         modalStatus.value = 'edit';
       };
@@ -235,7 +257,7 @@
       const handleOk = () => {
         const { id, difficulty, style, calories } = modalInfo.value;
         modalLoading.value = true;
-        updateDanceApi({ id, difficulty, style, calories })
+        updateDanceApi({ id, difficulty, style: style.join(','), calories })
           .then(() => {
             handleCancel();
             getList();
