@@ -1,8 +1,10 @@
 import type { UserConfig, ConfigEnv } from 'vite';
 
-import { loadEnv } from 'vite';
 import { resolve } from 'path';
+import { loadEnv } from 'vite';
+import moment from 'moment';
 
+import pkg from './package.json';
 import { createProxy } from './build/vite/proxy';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugin';
@@ -12,6 +14,12 @@ import { generateModifyVars } from './build/generate/generateModifyVars';
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
+
+const { dependencies, devDependencies, name, version } = pkg;
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+};
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
@@ -47,23 +55,34 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: VITE_PORT,
       proxy: createProxy(VITE_PROXY),
     },
+    esbuild: {
+      pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+    },
     build: {
       target: 'es2015',
+      cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          drop_console: VITE_DROP_CONSOLE,
-        },
-      },
+      // minify: 'terser',
+      /**
+       * 当 minify=“minify:'terser'” 解开注释
+       */
+      // terserOptions: {
+      //   compress: {
+      //     keep_infinity: true,
+      //     drop_console: VITE_DROP_CONSOLE,
+      //   },
+      // },
       brotliSize: false,
       chunkSizeWarningLimit: 2000,
+    },
+    define: {
+      __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
     css: {
       preprocessorOptions: {
         less: {
-          javascriptEnabled: true,
           modifyVars: generateModifyVars(),
+          javascriptEnabled: true,
         },
       },
     },

@@ -1,4 +1,4 @@
-import type { Plugin } from 'vite';
+import { PluginOption } from 'vite';
 
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -15,7 +15,7 @@ import { configImageminPlugin } from './imagemin';
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_IMAGEMIN, VITE_USE_MOCK, VITE_LEGACY } = viteEnv;
 
-  const vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx(), vueSetupExtend()];
+  const vitePlugins: (PluginOption | PluginOption[])[] = [vue(), vueJsx(), vueSetupExtend()];
 
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
 
