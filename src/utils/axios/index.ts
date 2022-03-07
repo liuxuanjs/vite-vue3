@@ -9,7 +9,8 @@ import { RequestEnum, ResultEnum, ContentTypeEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { joinTimestamp } from './helper';
-import { store } from '/@/store';
+import { useUserStore } from '/@/store/modules/user';
+import { checkStatus } from './checkStatus';
 
 const globSetting = useGlobSetting();
 const { createMessage, createErrorModal } = useMessage();
@@ -42,12 +43,10 @@ const transform: AxiosTransform = {
         // 非GET请求如果没有提供data，则将params视为data
         if (!Reflect.has(config, 'data') || !config.data) {
           config.data = params;
+          config.params = undefined;
         }
         if (joinParamsToUrl) {
-          config.url = setObjToUrlParams(
-            config.url as string,
-            Object.assign({}, config.params, config.data),
-          );
+          config.url = setObjToUrlParams(config.url as string, Object.assign({}, config.data));
         }
       } else {
         // 兼容restful风格
@@ -59,14 +58,17 @@ const transform: AxiosTransform = {
   },
 
   /**
-   * @description: 请求之前的拦截器
+   * @description: 请求拦截器处理
    */
-  // eslint-disable-next-line
   requestInterceptors: (config, options) => {
     // 请求之前处理config
     const token = window.localStorage.getItem('token');
     if (token && options?.requestOptions?.withToken !== false) {
       config['Auth-Token'] = token;
+      // jwt token
+      // (config as Recordable).headers.Authorization = options.authenticationScheme
+      //   ? `${options.authenticationScheme} ${token}`
+      //   : token;
     }
     return config;
   },
@@ -107,7 +109,8 @@ const transform: AxiosTransform = {
     let timeoutMsg = msg || '请求出错，请稍候重试';
     if (code === ResultEnum.TIMEOUT) {
       timeoutMsg = '登录超时,请重新登录!';
-      store.dispatch('getUserInfo');
+      const userStore = useUserStore();
+      userStore.logout();
     }
 
     if (options.errorMessageMode === 'modal') {
@@ -123,26 +126,36 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (error: any) => {
-    const { message, config } = error || {};
-    // const { status } = error.response || {};
+    const { response, code, message, config } = error || {};
+    console.log(code, message, config);
+    console.log(error?.toString?.());
 
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
+    const msg: string = response?.data?.error?.message ?? '';
     const err: string = error?.toString?.() ?? '';
-    let msg = message;
+    let errMessage = '';
 
     try {
-      message.indexOf('timeout') !== -1 && (msg = '接口请求超时,请刷新页面重试!');
-      err?.includes('Network Error') && (msg = '网络异常，请检查您的网络连接是否正常!');
+      if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
+        errMessage = '接口请求超时,请刷新页面重试!';
+      }
+      if (err?.includes('Network Error')) {
+        errMessage = '网络异常，请检查您的网络连接是否正常!';
+      }
 
-      if (msg) {
-        errorMessageMode === 'modal' && createErrorModal({ title: '错误提示', content: msg });
-        errorMessageMode === 'message' && createMessage.error(msg);
+      if (errMessage) {
+        if (errorMessageMode === 'modal') {
+          createErrorModal({ title: '错误提示', content: errMessage });
+        } else if (errorMessageMode === 'message') {
+          createMessage.error(errMessage);
+        }
         return Promise.reject(error);
       }
     } catch (error) {
       throw new Error(error as unknown as string);
     }
 
+    checkStatus(response?.status, msg, errorMessageMode);
     return Promise.reject(error);
   },
 };
@@ -151,34 +164,38 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
-        headers: { 'Content-Type': ContentTypeEnum.JSON },
+        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
+        // authentication schemes，e.g: Bearer
+        // authenticationScheme: 'Bearer',
+        authenticationScheme: '',
+        // 接口超时时间 单位毫秒
         timeout: 10 * 1000,
+        headers: { 'Content-Type': ContentTypeEnum.JSON },
         // 如果是form-data格式
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
         // 数据处理方式
         transform,
         // 配置项，下面的选项都可以在独立的接口请求中覆盖
         requestOptions: {
-          // 是否忽略重复请求
-          ignoreRepeatedReq: false,
-          // 是否携带token
-          withToken: true,
           // 接口地址
           apiUrl: globSetting.apiUrl,
           // 是否加入时间戳
           joinTime: true,
           // post请求的时候是否添加参数到url
           joinParamsToUrl: false,
-          // 是否返回原生响应头 比如：需要获取响应头时使用该属性
-          isReturnNativeResponse: false,
           // 是否需要对返回数据进行处理
           isTransformResponse: true,
+          // 是否返回原生响应头 比如：需要获取响应头时使用该属性
+          isReturnNativeResponse: false,
           // 消息提示类型
           // ‘modal’ 会显示 modal 错误弹窗，而不是消息提示，用于一些比较重要的错误
           // ‘message’ 会显示 message 消息提示
           // 'none' 一般是调用时明确表示不希望自动弹出错误提示
           errorMessageMode: 'message',
-          ignoreCancelToken: true,
+          // 是否忽略重复请求
+          ignoreRepeatedReq: false,
+          // 是否携带token
+          withToken: true,
         },
       },
       opt || {},

@@ -1,6 +1,6 @@
 export interface UserInfo {
-  userId: string;
-  userNname: string;
+  userId?: string;
+  userNname?: string;
 }
 
 export interface AppState {

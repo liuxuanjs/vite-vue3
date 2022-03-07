@@ -16,7 +16,6 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Layout } from 'ant-design-vue';
-  // import { useStore } from 'vuex';
 
   import { menus } from '/@/router/routes';
 

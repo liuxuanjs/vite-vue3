@@ -152,7 +152,7 @@
   import { Row, Col, Button, Input, message, Modal, Image } from 'ant-design-vue';
   import tim from '/@/utils/lib/tim';
   import TIM from 'tim-js-sdk';
-  import { useStore } from 'vuex';
+  import { useUserStore } from '/@/store/modules/user';
 
   import Avatar from '/@/components/Avatar/index.vue';
   import { getUserSigApi } from '/@/api/user';
@@ -178,9 +178,9 @@
       const searchId = ref<string>('');
       const imagePicker = ref<ElRef>(null);
 
-      const store = useStore();
+      const userStore = useUserStore();
 
-      const userInfo = computed(() => store.state.userInfo);
+      const userInfo = computed(() => userStore.getUserInfo);
 
       // 自动保持在最底部
       const setMessageBelow = () => {

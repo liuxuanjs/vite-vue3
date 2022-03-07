@@ -32,7 +32,7 @@
   import { useRoute } from 'vue-router';
 
   import { loginApi } from '/@/api/user';
-  import { store } from '/@/store';
+  import { useUserStore } from '/@/store/modules/user';
 
   interface FormState {
     username?: string;
@@ -53,6 +53,8 @@
       const loding = ref<boolean>(false);
       const { query } = useRoute();
 
+      const userStore = useUserStore();
+
       const onLogin = () => {
         formRef.value.validate().then((value) => {
           loding.value = true;
@@ -65,7 +67,7 @@
               };
               localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-              store.commit('setUserInfo', userInfo);
+              userStore.setUserInfo(userInfo);
 
               const { backUrl } = query;
               window.location.replace(backUrl?.toString() || '/');

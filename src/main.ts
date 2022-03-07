@@ -6,7 +6,9 @@ import 'virtual:svg-icons-register';
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import { setupStore, store } from '/@/store';
+import { setupStore } from '/@/store';
+import { useUserStore } from '/@/store/modules/user';
+import { registerGlobComp } from '/@/components/registerGlobComp';
 import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
 import { isDevMode } from './utils/env';
@@ -20,6 +22,9 @@ async function bootstrap() {
 
   // store
   setupStore(app);
+
+  // 注册全局组件
+  registerGlobComp(app);
 
   // 路由
   setupRouter(app);
@@ -36,5 +41,6 @@ bootstrap();
 
 // 加载用户信息
 if (location.pathname !== '/login') {
-  store.dispatch('getUserInfo');
+  const userStore = useUserStore();
+  userStore.getUserInfoAction();
 }

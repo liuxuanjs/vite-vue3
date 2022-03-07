@@ -14,7 +14,7 @@ export * from './axiosTransform';
  */
 export class VAxios {
   private axiosInstance: AxiosInstance;
-  private readonly options: CreateAxiosOptions;
+  private options: CreateAxiosOptions;
 
   constructor(options: CreateAxiosOptions) {
     this.options = options;
@@ -81,7 +81,10 @@ export class VAxios {
         headers: { ignoreRepeatedReq },
       } = config;
 
-      const ignoreRepeated = !!ignoreRepeatedReq || this.options.requestOptions?.ignoreRepeatedReq;
+      const ignoreRepeated =
+        ignoreRepeatedReq !== undefined
+          ? ignoreRepeatedReq
+          : this.options.requestOptions?.ignoreRepeatedReq;
 
       // 忽略重复请求
       ignoreRepeated && axiosCanceler.addPending(config);
@@ -135,12 +138,11 @@ export class VAxios {
 
     return this.axiosInstance.request<T>({
       ...config,
-      method: 'POST',
+      method: RequestEnum.POST,
       data: formData,
       headers: {
         'Content-type': ContentTypeEnum.FORM_DATA,
-        // @ts-ignore
-        ignoreCancelToken: true,
+        ignoreRepeatedReq: true,
       },
     });
   }
@@ -165,13 +167,13 @@ export class VAxios {
     let conf: CreateAxiosOptions = cloneDeep(config);
     const transform = this.getTransform();
     const { beforeRequestHook, transformResponseHook } = transform || {};
-    const { requestOptions, headers } = this.options;
+    const { requestOptions } = this.options;
 
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
     isFunction(beforeRequestHook) && (conf = beforeRequestHook(conf, opt));
+
     conf.requestOptions = opt;
-    conf.headers = Object.assign({}, headers, config.headers);
 
     return new Promise((resolve, reject) => {
       this.axiosInstance

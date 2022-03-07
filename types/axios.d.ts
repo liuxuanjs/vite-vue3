@@ -1,10 +1,6 @@
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
 
 export interface RequestOptions {
-  // 是否忽略重复请求
-  ignoreRepeatedReq?: boolean;
-  // 是否携带token
-  withToken?: boolean;
   // 接口地址
   apiUrl?: string;
   // 是否加入时间戳
@@ -17,6 +13,10 @@ export interface RequestOptions {
   isReturnNativeResponse?: boolean;
   // 消息提示类型
   errorMessageMode?: ErrorMessageMode;
+  // 是否忽略重复请求
+  ignoreRepeatedReq?: boolean;
+  // 是否携带token
+  withToken?: boolean;
 }
 
 export interface Result<T = any> {

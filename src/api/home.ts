@@ -2,7 +2,7 @@ import { defHttp } from '/@/utils/axios';
 import { indexResultModel } from './model/homeModel';
 
 enum Api {
-  Home = '/index/index',
+  Home = '/index/index/1',
 }
 
 /**

@@ -18,7 +18,7 @@
   import { Layout } from 'ant-design-vue';
   import { ArrowLeftOutlined } from '@ant-design/icons-vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useStore } from 'vuex';
+  import { useUserStore } from '/@/store/modules/user';
 
   import { routeMap } from '/@/router/routes';
   import { LoginRoute } from '/@/router/routes/basic';
@@ -34,9 +34,9 @@
     setup() {
       const route = useRoute();
       const router = useRouter();
-      const store = useStore();
+      const userStore = useUserStore();
 
-      const userInfo = computed(() => store.state.userInfo);
+      const userInfo = computed(() => userStore.getUserInfo);
 
       /**
        * 不在导航栏菜单范围内的，都可以有返回键
