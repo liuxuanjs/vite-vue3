@@ -430,7 +430,7 @@
 
       onMounted(async () => {
         try {
-          const res = await getUserSigApi({ userId: userInfo?.value?.userId });
+          const res = await getUserSigApi({ userId: userInfo?.value?.userId || '' });
           userSig.value = res || '';
           logData();
         } catch (error) {
