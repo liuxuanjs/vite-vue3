@@ -5,7 +5,9 @@
     "stylelint.vscode-stylelint",
     "esbenp.prettier-vscode",
     "mrmlnc.vscode-less",
+    "lokalise.i18n-ally",
     "antfu.iconify",
-    "mikestead.dotenv"
+    "mikestead.dotenv",
+    "heybourn.headwind"
   ]
 }

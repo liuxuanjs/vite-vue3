@@ -9,7 +9,7 @@ export const runBuild = async () => {
   try {
     const argvList = process.argv.splice(2);
 
-    // 生成配置文件
+    // Generate configuration file
     if (!argvList.includes('disabled-config')) {
       runBuildConfig();
     }

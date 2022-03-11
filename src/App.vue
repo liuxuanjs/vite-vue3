@@ -1,21 +1,20 @@
 <template>
-  <ConfigProvider :locale="zhCN">
-    <router-view />
+  <ConfigProvider :locale="getAntdLocale">
+    <AppProvider>
+      <RouterView />
+    </AppProvider>
   </ConfigProvider>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue';
+<script lang="ts" setup>
   import { ConfigProvider } from 'ant-design-vue';
-  import zhCN from 'ant-design-vue/es/locale/zh_CN';
+  import { AppProvider } from '/@/components/Application';
+  import { useTitle } from '/@/hooks/web/useTitle';
+  import { useLocale } from '/@/locales/useLocale';
 
-  export default defineComponent({
-    name: 'App',
-    components: {
-      ConfigProvider,
-    },
-    setup() {
-      return { zhCN };
-    },
-  });
+  // support Multi-language
+  const { getAntdLocale } = useLocale();
+
+  // 监听路由切换，动态改变网站标题
+  useTitle();
 </script>

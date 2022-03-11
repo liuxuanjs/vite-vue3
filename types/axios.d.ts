@@ -1,29 +1,35 @@
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
 
 export interface RequestOptions {
-  // 接口地址
-  apiUrl?: string;
-  // 是否加入时间戳
-  joinTime?: boolean;
-  // post请求的时候是否添加参数到url
+  // Splicing request parameters to url
   joinParamsToUrl?: boolean;
-  // 是否需要对返回数据进行处理
+  // Format request parameter time
+  formatDate?: boolean;
+  // Whether to process the request result
   isTransformResponse?: boolean;
-  // 是否返回原生响应头 比如：需要获取响应头时使用该属性
+  // Whether to return native response headers
+  // For example: use this attribute when you need to get the response headers
   isReturnNativeResponse?: boolean;
-  // 消息提示类型
+  // Whether to join url
+  joinPrefix?: boolean;
+  // Interface address, use the default apiUrl if you leave it blank
+  apiUrl?: string;
+  // 请求拼接路径
+  urlPrefix?: string;
+  // Error message prompt type
   errorMessageMode?: ErrorMessageMode;
-  // 是否忽略重复请求
-  ignoreRepeatedReq?: boolean;
-  // 是否携带token
+  // Whether to add a timestamp
+  joinTime?: boolean;
+  ignoreCancelToken?: boolean;
+  // Whether to send token in header
   withToken?: boolean;
 }
 
 export interface Result<T = any> {
   code: number;
   type: 'success' | 'error' | 'warning';
-  msg: string;
-  data: T;
+  message: string;
+  result: T;
 }
 
 // multipart/form-data: upload file

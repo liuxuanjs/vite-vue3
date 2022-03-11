@@ -1,5 +1,5 @@
 /**
- * 解析.env.development代理配置
+ * Used to parse the .env.development proxy configuration
  */
 import type { ProxyOptions } from 'vite';
 
@@ -7,12 +7,12 @@ type ProxyItem = [string, string];
 
 type ProxyList = ProxyItem[];
 
-type ProxyTargetList = Record<string, ProxyOptions & { rewrite: (path: string) => string }>;
+type ProxyTargetList = Record<string, ProxyOptions>;
 
 const httpsRE = /^https:\/\//;
 
 /**
- * 生成代理
+ * Generate proxy
  * @param list
  */
 export function createProxy(list: ProxyList = []) {
@@ -20,11 +20,13 @@ export function createProxy(list: ProxyList = []) {
   for (const [prefix, target] of list) {
     const isHttps = httpsRE.test(target);
 
+    // https://github.com/http-party/node-http-proxy#options
     ret[prefix] = {
-      target,
+      target: target,
       changeOrigin: true,
-      rewrite: (path) => path.replace(`/${prefix}/`, '/'),
-      // https 必须 secure=false
+      ws: true,
+      rewrite: (path) => path.replace(new RegExp(`^${prefix}`), ''),
+      // https is require secure=false
       ...(isHttps ? { secure: false } : {}),
     };
   }

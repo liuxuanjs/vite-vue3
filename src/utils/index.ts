@@ -1,5 +1,7 @@
+import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 import type { App, Plugin } from 'vue';
 
+import { unref } from 'vue';
 import { isObject } from '/@/utils/is';
 
 export const noop = () => {};
@@ -12,7 +14,7 @@ export function getPopupContainer(node?: HTMLElement): HTMLElement {
 }
 
 /**
- * 将对象作为参数添加到URL
+ * Add the object as a parameter to the URL
  * @param baseUrl url
  * @param obj
  * @returns {string}
@@ -28,28 +30,6 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
   }
   parameters = parameters.replace(/&$/, '');
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
-}
-
-/**
- * 将数组转换成对象
- * @param list 数组列表
- * @param key 待转换成对象的key
- * @returns {Object} 转换后的对象
- * eg:
- *  let arr = [{a: 1, b: 2}, {a: 3, b: 4}]
- *  setArrToObj(arr, 'a')
- *  ==>{1: {a: 1, b: 2}, 3: {a: 3, b: 4}}
- */
-export function setArrToObj(list: any = [], key?: string) {
-  const obj = {};
-  list.forEach((item, index) => {
-    if (key && isObject(item)) {
-      obj[item[key]] = item;
-    } else {
-      obj[index] = item;
-    }
-  });
-  return obj;
 }
 
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
@@ -71,6 +51,32 @@ export function openWindow(
   noreferrer && feature.push('noreferrer=yes');
 
   window.open(url, target, feature.join(','));
+}
+
+// dynamic use hook props
+export function getDynamicProps<T, U>(props: T): Partial<U> {
+  const ret: Recordable = {};
+
+  Object.keys(props).map((key) => {
+    ret[key] = unref((props as Recordable)[key]);
+  });
+
+  return ret as Partial<U>;
+}
+
+export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormalized {
+  if (!route) return route;
+  const { matched, ...opt } = route;
+  return {
+    ...opt,
+    matched: (matched
+      ? matched.map((item) => ({
+          meta: item.meta,
+          name: item.name,
+          path: item.path,
+        }))
+      : undefined) as RouteRecordNormalized[],
+  };
 }
 
 export const withInstall = <T>(component: T, alias?: string) => {

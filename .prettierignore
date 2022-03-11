@@ -1,4 +1,6 @@
 /dist/*
+.local
+.output.js
 /node_modules/**
 
 **/*.svg
